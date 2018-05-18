@@ -8,6 +8,10 @@ const Schema = new mongoose.Schema({
     _id: { type: mongoose.Types.ObjectId, required: true },
     name: { type: String, required: true }
   },
+  lastUpdateBy: {
+    _id: { type: mongoose.Types.ObjectId },
+    name: { type: String }
+  },
   updatedAt: { type: Date },
   deleted: { type: Boolean, default: false },
   name: { type: String, required: true }

@@ -13,7 +13,8 @@ const Schema = new mongoose.Schema({
   },
   updatedAt: { type: Date },
   deleted: { type: Boolean, default: false },
-  name: { type: String, required: true }
+  name: { type: String, required: true },
+  status: { type: String, enum: ["pending", "processed"], default: "pending" }
 });
 
 Schema.pre("update", function(next) {
