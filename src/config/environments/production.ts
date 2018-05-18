@@ -2,8 +2,6 @@ import { Config as Interface } from "../../contracts/config";
 import { commons } from "../components";
 import { web } from "../components";
 import { db } from "../components";
-import path from "path";
-const logPath = path.join(__dirname, ".../../../logs/development.ts");
 
 const config: Interface = {
   ...commons,
@@ -11,11 +9,10 @@ const config: Interface = {
   db,
   logging: {
     appenders: {
-      console: { type: "console" },
-      everything: { type: "file", filename: logPath }
+      "out": { type: "stdout" }
     },
     categories: {
-      default: { appenders: ["everything"], level: "debug" }
+      default: { appenders: ["out"], level: "all" }
     }
   }
 };

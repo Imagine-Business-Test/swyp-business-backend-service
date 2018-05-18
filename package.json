@@ -35,6 +35,8 @@
   },
   "dependencies": {
     "@types/joi": "^13.0.8",
-    "joi": "^13.3.0"
+    "@types/log4js": "^2.3.5",
+    "joi": "^13.3.0",
+    "log4js": "^2.6.1"
   }
 }
