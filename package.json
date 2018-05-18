@@ -36,7 +36,9 @@
   "dependencies": {
     "@types/joi": "^13.0.8",
     "@types/log4js": "^2.3.5",
+    "@types/mongoose": "^5.0.14",
     "joi": "^13.3.0",
-    "log4js": "^2.6.1"
+    "log4js": "^2.6.1",
+    "mongoose": "^5.1.1"
   }
 }
