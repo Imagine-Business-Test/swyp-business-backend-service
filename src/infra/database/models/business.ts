@@ -6,7 +6,7 @@ const Schema = new mongoose.Schema({
   accounts: [{
     email: { type: String, required: true, email: true, unique: true },
     password: { type: String, required: true, min: 8 },
-    created: { type: Date, default: Date.now() },
+    created: { type: Date, default: Date() },
     phone: { type: String, required: true },
     name: { type: String, required: true },
     passwordResetExpires: { type: Date },

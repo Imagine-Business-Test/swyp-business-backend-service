@@ -2,14 +2,14 @@ import mongoose from "mongoose";
 
 const Schema = new mongoose.Schema({
   workStation: { type: mongoose.Types.ObjectId, required: true },
-  createdAt: { type: Date, default: Date.now() },
+  createdAt: { type: Date, required: true },
   content: { type: String, required: true },
   user: {
-    _id: { type: mongoose.Types.ObjectId, required: true },
+    email: { type: String, email: true },
     name: { type: String, required: true }
   },
   lastUpdateBy: {
-    _id: { type: mongoose.Types.ObjectId },
+    email: { type: String, email: true },
     name: { type: String }
   },
   updatedAt: { type: Date },
@@ -18,7 +18,7 @@ const Schema = new mongoose.Schema({
 });
 
 Schema.pre("update", function(next) {
-  this.update({}, {$set: { updatedAt: Date.now() } });
+  this.update({}, {$set: { updatedAt: new Date() } });
   next();
 });
 
