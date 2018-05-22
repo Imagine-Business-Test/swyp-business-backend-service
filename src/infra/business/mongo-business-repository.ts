@@ -14,8 +14,8 @@ export class MongoBusinessRepository {
 
     try {
       const data = MongoBusinessMapper.toDatabase(business);
-      const newRecord: BusinessInterface = await this.model.create(data);
-      return MongoBusinessMapper.toEntity(newRecord, newRecord.accounts[0]);
+      const doc: BusinessInterface = await this.model.create(data);
+      return MongoBusinessMapper.toEntity(doc, doc.accounts[0]);
     } catch (ex) {
       ex.details = ex.message;
       ex.message = "DatabaseError";

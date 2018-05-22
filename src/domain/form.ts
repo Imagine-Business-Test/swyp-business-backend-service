@@ -1,34 +1,35 @@
-import { User as FormRespondant } from "../contracts/domain";
+import { User } from "../contracts/domain";
 import { Response } from "./response";
 
-type User = { email: string, name: string };
+type Modifier = { email: string, name: string };
 
 export class Form {
   workStation: string;
-  lastUpdateBy: User;
-  deleted: Boolean;
+  lastUpdateBy: Modifier;
+  deleted?: Boolean;
   content: string;
-  updatedAt: Date;
-  createAt: Date;
+  updatedAt?: Date;
+  createAt?: Date;
   name: string;
   _id?: string;
-  user: User;
-  constructor(user: User, name: string, workStation: string, content: string) {
+  constructor(
+    name: string, workStation: string, content: string, modifier: Modifier,
+    updatedAt?: Date, createAt?: Date, _id?: string, deleted?: Boolean
+  ) {
     this.workStation = workStation;
-    this.updatedAt = new Date();
-    this.createAt = new Date();
-    this.lastUpdateBy = user;
+    this.updatedAt = updatedAt;
+    this.createAt = createAt;
+    this.lastUpdateBy = modifier;
     this.content = content;
-    this.deleted = false;
+    this.deleted = deleted;
     this.name = name;
-    this.user = user;
   }
 
-  updateDelete(): void {
+  delete(): void {
     this.deleted = true;
   }
 
-  createResponse(user: FormRespondant, content: string): Response {
+  createResponse(user: User, content: string): Response {
     return new Response(user, content, <string>this._id);
   }
 }

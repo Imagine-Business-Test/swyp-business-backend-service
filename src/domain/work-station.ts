@@ -1,4 +1,4 @@
-import { Form } from "./form";
+// import { Form } from "./form";
 
 type User = { email: string, name: string };
 
@@ -20,7 +20,7 @@ export class WorkStation {
     this.deleted = true;
   }
 
-  createForm(user: User, name: string, content: string): Form {
-    return new Form(user, name, <string>this._id, content);
-  }
+  // createForm(user: User, name: string, content: string): Form {
+  //   return new Form(user, name, <string>this._id, content);
+  // }
 }
