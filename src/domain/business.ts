@@ -12,21 +12,9 @@ export class Business {
   constructor(name: string, logoUrl: string, accounts?: Account[], _id?: string) {
 
     this.accounts = accounts;
-    this.name = name;
-    this.logoUrl = logoUrl;
-    this._id = _id;
-  }
-
-  addAccount(user: Account) {
-
-    user.lastLoginIn = new Date();
-    if (!this.accounts) {
-      this.accounts = [user];
-      return;
-    }
-    this.accounts.push(user);
-    this.setCurrentUser(user);
-    return;
+    this.logoUrl  = logoUrl;
+    this.name     = name;
+    this._id      = _id;
   }
 
   setCurrentUser(user: Account): void {

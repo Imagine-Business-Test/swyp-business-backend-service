@@ -1,9 +1,9 @@
 import { Business } from "../../domain";
-import { Business as BusinessModel } from "../../contracts/infra";
+import { BusinessInterface } from "../../contracts/infra";
 import { Account } from "../../contracts/domain";
 
 export const MongoBusinessMapper = {
-  toEntity(dbRow: BusinessModel, currentUser: Account): Business {
+  toEntity(dbRow: BusinessInterface, currentUser: Account): Business {
     const { _id, name, logoUrl, accounts } = dbRow;
     const business = new Business(name, logoUrl, accounts, _id);
     business.setCurrentUser(currentUser);

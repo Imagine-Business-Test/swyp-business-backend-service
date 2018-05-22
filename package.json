@@ -9,6 +9,7 @@
     "start": "npm run serve",
     "build": "npm run build-ts && npm run tslint",
     "serve": "node dist/server.js",
+    "commit": "git-cz",
     "watch-node": "nodemon dist/server.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "test": "jest --forceExit --coverage --verbose",
@@ -24,8 +25,14 @@
   "devDependencies": {
     "@types/glob": "^5.0.35",
     "@types/jest": "^22.2.3",
+    "@types/joi": "^13.0.8",
+    "@types/log4js": "^2.3.5",
+    "@types/mongoose": "^5.0.14",
     "@types/node": "^10.1.0",
     "concurrently": "^3.5.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "global": "^4.3.2",
+    "husky": "^1.0.0-rc.6",
     "jest": "^22.4.3",
     "nodemon": "^1.17.4",
     "ts-jest": "^22.4.6",
@@ -34,11 +41,20 @@
     "typescript": "^2.8.3"
   },
   "dependencies": {
-    "@types/joi": "^13.0.8",
-    "@types/log4js": "^2.3.5",
-    "@types/mongoose": "^5.0.14",
     "joi": "^13.3.0",
     "log4js": "^2.6.1",
     "mongoose": "^5.1.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm build",
+      "pre-push": "npm build"
+    }
   }
 }
