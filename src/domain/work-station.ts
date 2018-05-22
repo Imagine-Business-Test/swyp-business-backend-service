@@ -4,7 +4,7 @@ type User = { email: string, name: string };
 
 export class WorkStation {
   lastUpdatedBy: User;
-  deleted?: Boolean;
+  deleted: Boolean;
   createdAt?: Date;
   updatedAt?: Date;
   createdBy: User;
@@ -12,7 +12,7 @@ export class WorkStation {
   _id?: string;
 
   constructor(
-    name: string, createdBy: User, lastUpdatedBy: User, _id?: string, deleted?: Boolean,
+    name: string, createdBy: User, lastUpdatedBy: User, deleted: Boolean, _id?: string,
     createdAt?: Date, updatedAt?: Date
   ) {
     this.lastUpdatedBy = lastUpdatedBy;
