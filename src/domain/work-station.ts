@@ -1,4 +1,4 @@
-// import { Form } from "./form";
+import { Form } from "./form";
 
 type User = { email: string, name: string };
 
@@ -6,13 +6,13 @@ export class WorkStation {
   deleted: Boolean;
   createdAt: Date;
   name: string;
-  user: User;
+  createdBy: User;
   _id?: string;
 
   constructor(name: string, user: User) {
     this.createdAt = new Date();
     this.deleted = false;
-    this.user = user;
+    this.createdBy = user;
     this.name = name;
   }
 
@@ -20,7 +20,7 @@ export class WorkStation {
     this.deleted = true;
   }
 
-  // createForm(user: User, name: string, content: string): Form {
-  //   return new Form(user, name, <string>this._id, content);
-  // }
+  createForm(name: string, content: string, currentUser: User): Form {
+    return new Form(name, <string>this._id, content, currentUser);
+  }
 }
