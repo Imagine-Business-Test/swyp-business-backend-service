@@ -24,6 +24,8 @@ export class MongoFormRepository {
   }
 
   async delete(form: Form) {
-    return this.model.updateOne({ _id: form._id }, { $set: { deleted: form.deleted } } );
+    return this.model.updateOne(
+      { _id: form._id },
+      { $set: { deleted: form.deleted, lastUpdatedBy: form.lastUpdateBy } } );
   }
 }

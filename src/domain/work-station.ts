@@ -21,6 +21,6 @@ export class WorkStation {
   }
 
   createForm(name: string, content: string, currentUser: User): Form {
-    return new Form(name, <string>this._id, content, currentUser);
+    return new Form(name, <string>this._id, content, currentUser, currentUser);
   }
 }

@@ -6,6 +6,7 @@ type Modifier = { email: string, name: string };
 export class Form {
   workStation: string;
   lastUpdateBy: Modifier;
+  createdBy: Modifier;
   deleted?: Boolean;
   content: string;
   updatedAt?: Date;
@@ -13,19 +14,21 @@ export class Form {
   name: string;
   _id?: string;
   constructor(
-    name: string, workStation: string, content: string, modifier: Modifier,
+    name: string, workStation: string, content: string, createdBy: Modifier, modifier: Modifier,
     updatedAt?: Date, createAt?: Date, _id?: string, deleted?: Boolean
   ) {
     this.workStation = workStation;
+    this.lastUpdateBy = modifier;
+    this.createdBy = createdBy;
     this.updatedAt = updatedAt;
     this.createAt = createAt;
-    this.lastUpdateBy = modifier;
     this.content = content;
     this.deleted = deleted;
     this.name = name;
   }
 
-  delete(): void {
+  delete(currentUser: Modifier): void {
+    this.lastUpdateBy = currentUser;
     this.deleted = true;
   }
 
