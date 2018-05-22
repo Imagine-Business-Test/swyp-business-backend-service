@@ -37,7 +37,7 @@ export class Business {
 
     const user = { name: <string>this.currentUser!.name, email: <string>this.currentUser!.email};
 
-    return new WorkStation(name, user);
+    return new WorkStation(name, user, user);
   }
 
 }

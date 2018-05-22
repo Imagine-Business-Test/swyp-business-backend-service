@@ -14,17 +14,17 @@ export class Form {
   name: string;
   _id?: string;
   constructor(
-    name: string, workStation: string, content: string, createdBy: Modifier, modifier: Modifier,
-    updatedAt?: Date, createAt?: Date, _id?: string, deleted?: Boolean
+    name: string, workStation: string, content: string, createdBy: Modifier,
+    modifier: Modifier, updatedAt?: Date, createAt?: Date, _id?: string, deleted?: Boolean
   ) {
-    this.workStation = workStation;
+    this.workStation  = workStation;
     this.lastUpdateBy = modifier;
-    this.createdBy = createdBy;
-    this.updatedAt = updatedAt;
-    this.createAt = createAt;
-    this.content = content;
-    this.deleted = deleted;
-    this.name = name;
+    this.createdBy    = createdBy;
+    this.updatedAt    = updatedAt;
+    this.createAt     = createAt;
+    this.content      = content;
+    this.deleted      = deleted;
+    this.name         = name;
   }
 
   delete(currentUser: Modifier): void {

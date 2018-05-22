@@ -3,20 +3,29 @@ import { Form } from "./form";
 type User = { email: string, name: string };
 
 export class WorkStation {
-  deleted: Boolean;
-  createdAt: Date;
-  name: string;
+  lastUpdatedBy: User;
+  deleted?: Boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
   createdBy: User;
+  name: string;
   _id?: string;
 
-  constructor(name: string, user: User) {
-    this.createdAt = new Date();
-    this.deleted = false;
-    this.createdBy = user;
-    this.name = name;
+  constructor(
+    name: string, createdBy: User, lastUpdatedBy: User, _id?: string, deleted?: Boolean,
+    createdAt?: Date, updatedAt?: Date
+  ) {
+    this.lastUpdatedBy = lastUpdatedBy;
+    this.createdBy     = createdBy;
+    this.deleted       = deleted;
+    this.createdAt     = createdAt;
+    this.updatedAt     = updatedAt;
+    this.name          = name;
+    this._id           = _id;
   }
 
-  updateDeleted(): void {
+  updateDeleted(currentUser: User): void {
+    this.lastUpdatedBy = currentUser;
     this.deleted = true;
   }
 

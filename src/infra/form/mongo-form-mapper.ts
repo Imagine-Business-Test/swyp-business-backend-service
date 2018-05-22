@@ -2,7 +2,7 @@ import { FormInterface } from "../../contracts/infra";
 import { Form } from "../../domain";
 
 export const MongoFormMapper = {
-  toEntity(doc: FormInterface) {
+  toEntity(doc: FormInterface): Form {
     const {
       _id, name, workStation, createdBy, lastUpdatedBy, deleted, content, updateAt,
       createdAt

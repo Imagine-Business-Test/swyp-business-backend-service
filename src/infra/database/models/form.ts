@@ -7,11 +7,11 @@ const Schema = new mongoose.Schema({
   deleted: { type: Boolean, default: false },
   content: { type: String, required: true },
   createdBy: {
-    email: { type: String, email: true },
+    email: { type: String, email: true, required: true },
     name: { type: String, required: true }
   },
   lastUpdateBy: {
-    email: { type: String, email: true },
+    email: { type: String, email: true, required: true },
     name: { type: String, required: true }
   },
   name: { type: String, required: true }
