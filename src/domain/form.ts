@@ -7,7 +7,7 @@ export class Form {
   workStation: string;
   lastUpdateBy: Modifier;
   createdBy: Modifier;
-  deleted?: Boolean;
+  deleted: Boolean;
   content: string;
   updatedAt?: Date;
   createAt?: Date;
@@ -15,7 +15,8 @@ export class Form {
   _id?: string;
   constructor(
     name: string, workStation: string, content: string, createdBy: Modifier,
-    modifier: Modifier, updatedAt?: Date, createAt?: Date, _id?: string, deleted?: Boolean
+    modifier: Modifier, deleted: Boolean, updatedAt?: Date, createAt?: Date,
+    _id?: string,
   ) {
     this.workStation  = workStation;
     this.lastUpdateBy = modifier;
@@ -32,7 +33,7 @@ export class Form {
     this.deleted = true;
   }
 
-  createResponse(user: User, content: string): Response {
-    return new Response(user, content, <string>this._id);
+  createResponse(respondant: User, content: string, status: string, deleted: Boolean): Response {
+    return new Response(respondant, <string>this._id, content, status, deleted);
   }
 }

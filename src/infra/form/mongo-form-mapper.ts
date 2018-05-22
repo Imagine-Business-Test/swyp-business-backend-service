@@ -9,7 +9,7 @@ export const MongoFormMapper = {
     } = doc;
 
     return new Form(
-      name, workStation, content, createdBy, lastUpdatedBy, updateAt, createdAt, _id, deleted
+      name, workStation, content, createdBy, lastUpdatedBy, deleted, updateAt, createdAt, _id,
     );
   },
 

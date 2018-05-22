@@ -29,7 +29,7 @@ export class WorkStation {
     this.deleted = true;
   }
 
-  createForm(name: string, content: string, currentUser: User): Form {
-    return new Form(name, <string>this._id, content, currentUser, currentUser);
+  createForm(name: string, content: string, currentUser: User, deleted: Boolean): Form {
+    return new Form(name, <string>this._id, content, currentUser, currentUser, deleted);
   }
 }
