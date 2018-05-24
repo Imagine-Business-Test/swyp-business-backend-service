@@ -75,11 +75,18 @@ export class MongoBusinessRepository implements BusinessRepositoryInterface {
 
   async deleteAccount(email: string): Promise<UpdateResult> {
 
-    return this.model.updateOne(
-      {},
-      { $set: { "accounts.$[elem].deleted": true }},
-      { arrayFilters: [ { "elem.email": email } ] }
-    );
+    try {
+      const result = await this.model.updateOne(
+        {},
+        { $set: { "accounts.$[elem].deleted": true }},
+        { arrayFilters: [ { "elem.email": email } ] }
+      );
+      return result;
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
   }
 
   private async updateLastLogin(user: Account): Promise<UpdateResult> {
