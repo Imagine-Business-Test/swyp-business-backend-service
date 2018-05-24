@@ -13,7 +13,7 @@ export class AddBusinessAccount extends Operation {
   constructor(businessRepository: BusinessRepositoryInterface, config: Config) {
     super();
     this.businessRepository = businessRepository;
-    this.config = config;
+    this.config             = config;
   }
 
   async execute(command: { businessId: string, account: Account}) {
