@@ -37,11 +37,13 @@ export class Business {
     return this.currentUser!.password;
   }
 
-  createWorkStation(name: string, deleted: Boolean): WorkStation {
-
-    const user = { name: <string>this.currentUser!.name, email: <string>this.currentUser!.email};
-
-    return new WorkStation(name, user, user, deleted);
+  createWorkStation(name: string): WorkStation {
+    const loggedinUser = {
+      name: <string>this.currentUser!.name,
+      email: <string>this.currentUser!.email};
+    const business = this._id!;
+    const deleted = false;
+    return new WorkStation(name, business, loggedinUser, loggedinUser, deleted);
   }
 
 }

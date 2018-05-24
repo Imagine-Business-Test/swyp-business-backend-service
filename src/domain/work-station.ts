@@ -5,6 +5,7 @@ type User = { email: string, name: string };
 export class WorkStation {
   lastUpdatedBy: User;
   deleted: Boolean;
+  business: string;
   createdAt?: Date;
   updatedAt?: Date;
   createdBy: User;
@@ -12,11 +13,12 @@ export class WorkStation {
   _id?: string;
 
   constructor(
-    name: string, createdBy: User, lastUpdatedBy: User, deleted: Boolean, _id?: string,
-    createdAt?: Date, updatedAt?: Date
+    name: string, business: string, createdBy: User, lastUpdatedBy: User,
+    deleted: Boolean, _id?: string, createdAt?: Date, updatedAt?: Date
   ) {
     this.lastUpdatedBy = lastUpdatedBy;
     this.createdBy     = createdBy;
+    this.business      = business;
     this.deleted       = deleted;
     this.createdAt     = createdAt;
     this.updatedAt     = updatedAt;
