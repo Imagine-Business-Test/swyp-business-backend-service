@@ -1,8 +1,9 @@
+import { WorkStationRepositoryInterface } from "../../contracts/repositories";
+import { MongoWorkStationMapper } from "./mongo-workstation-mapper";
 import { WorkStationModel } from "../../contracts/infra";
 import { WorkStation } from "../../domain";
-import { MongoWorkStationMapper } from "./mongo-workstation-mapper";
 
-export class MongoWorkStationRepository {
+export class MongoWorkStationRepository implements WorkStationRepositoryInterface {
   private model: WorkStationModel;
 
   constructor(model: WorkStationModel) {
