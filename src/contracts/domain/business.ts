@@ -3,8 +3,9 @@ export interface Account {
   passwordResetExpires?: Date;
   lastLoginIn?: Date;
   password: string;
+  updatedAt?: Date;
   phone: string;
-  created: Date;
+  created?: Date;
   email: string;
   name: string;
 }
