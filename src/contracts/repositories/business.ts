@@ -1,5 +1,6 @@
 import { BusinessModel } from "../infra";
 import { Business } from "../../domain";
+import { Account } from "../domain";
 
 export interface BusinessRepositoryInterface {
  model: BusinessModel;

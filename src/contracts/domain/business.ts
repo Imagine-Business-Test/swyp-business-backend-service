@@ -4,8 +4,8 @@ export interface Account {
   lastLoginIn?: Date;
   password: string;
   updatedAt?: Date;
-  phone: string;
   created?: Date;
+  phone: string;
   email: string;
   name: string;
 }

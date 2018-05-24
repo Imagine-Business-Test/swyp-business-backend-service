@@ -28,6 +28,10 @@ export class Business {
     throw new Error(`${user.name} does not belong to ${(this.constructor.name)}`);
   }
 
+  getCurrentUser(): Account {
+    return this.currentUser!;
+  }
+
   getCurrentUserPassword(): string {
 
     return this.currentUser!.password;

@@ -26,10 +26,14 @@ export class MongoBusinessRepository {
   async addAccount(businessId: string, account: Account): Promise<Business> {
 
     try {
-        account.lastLoginIn = new Date();
-      const doc = await this.model.findByIdAndUpdate(businessId,
+      let doc = await this.model.findOne({ "accounts": { email: account.email }});
+      if (doc)
+        throw new Error(`Account with the provided email already exist`);
+
+      doc = await this.model.findByIdAndUpdate(businessId,
         { $addToSet: { accounts: account } }, { new: true }
       );
+
       if (!doc)
         throw new Error(`Account not found`);
       return MongoBusinessMapper.toEntity(doc, account);

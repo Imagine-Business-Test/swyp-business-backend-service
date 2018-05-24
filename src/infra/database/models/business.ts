@@ -6,13 +6,13 @@ const Schema = new mongoose.Schema({
   accounts: [{
     email: { type: String, required: true, email: true, unique: true },
     password: { type: String, required: true, min: 8 },
-    created: { type: Date, default: Date() },
-    updatedAt: { type: Date },
+    created: { type: Date, default: new Date() },
+    updatedAt: { type: Date, default: new Date() },
     phone: { type: String, required: true },
     name: { type: String, required: true },
     passwordResetExpires: { type: Date },
     passwordResetToken: { type: String},
-    lastLogIn: { type: Date }
+    lastLogIn: { type: Date,  default: new Date() }
   }]
 });
 
