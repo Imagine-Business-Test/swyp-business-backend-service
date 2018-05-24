@@ -9,9 +9,9 @@ export const MongoWorkStationMapper = {
 
   toDatabase(workStation: WorkStation) {
     return {
-      name: workStation.name,
-      createdBy: workStation.createdBy,
       lastUpdatedBy: workStation.lastUpdatedBy,
+      createdBy    : workStation.createdBy,
+      name         : workStation.name,
     };
   }
 };
