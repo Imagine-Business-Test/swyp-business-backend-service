@@ -10,7 +10,7 @@ export class MongoBusinessRepository {
     this.model = model;
   }
 
-  async add(business: Business) {
+  async add(business: Business): Promise<Business> {
 
     try {
       const data = MongoBusinessMapper.toDatabase(business);
@@ -23,7 +23,7 @@ export class MongoBusinessRepository {
     }
   }
 
-  async addAccount(businessId: string, account: Account) {
+  async addAccount(businessId: string, account: Account): Promise<Business> {
 
     try {
         account.lastLoginIn = new Date();
@@ -40,7 +40,7 @@ export class MongoBusinessRepository {
     }
   }
 
-  async findByAccountEmail(email: string) {
+  async findByAccountEmail(email: string): Promise<Business>  {
 
     try {
       const doc = await this.model.findOne({ "accounts": { email: email }});

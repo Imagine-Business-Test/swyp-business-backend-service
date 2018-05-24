@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = new mongoose.Schema({
   logoUrl: { type: String, required: true },
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
   accounts: [{
     email: { type: String, required: true, email: true, unique: true },
     password: { type: String, required: true, min: 8 },
