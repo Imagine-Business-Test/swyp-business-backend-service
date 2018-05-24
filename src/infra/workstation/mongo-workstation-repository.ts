@@ -25,7 +25,14 @@ export class MongoWorkStationRepository implements WorkStationRepositoryInterfac
   }
 
   async delete(id: string, user: LoggedInUser): Promise<UpdateResult> {
-    return this.model.updateOne({ _id: id },
-    { $set: { deleted: true, lastUpdatedBy: user }});
+    try {
+      const result = await this.model.updateOne({ _id: id },
+        { $set: { deleted: true, lastUpdatedBy: user }});
+      return result;
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
   }
 }
