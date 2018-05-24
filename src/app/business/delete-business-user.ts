@@ -30,3 +30,5 @@ export class DeleteBusinessUser extends Operation {
     }
   }
 }
+
+DeleteBusinessUser.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR", "OPERATION_ERROR"]);

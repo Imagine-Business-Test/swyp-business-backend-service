@@ -10,7 +10,6 @@ export class DeleteWorkstation extends Operation {
     this.workstationRepository = worksationRepo;
   }
 
-
   async execute(command: { workstation: string, user: LoggedInUser}) {
     const { SUCCESS, ERROR, DATABASE_ERROR, OPERATION_ERROR } = this.outputs;
 
@@ -34,3 +33,5 @@ export class DeleteWorkstation extends Operation {
     }
   }
 }
+
+DeleteWorkstation.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR", "OPERATION_ERROR"]);
