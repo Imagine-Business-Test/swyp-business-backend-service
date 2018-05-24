@@ -2,6 +2,7 @@ import { WorkStationRepositoryInterface } from "../../contracts/repositories";
 import { MongoWorkStationMapper } from "./mongo-workstation-mapper";
 import { WorkStationModel, UpdateResult } from "../../contracts/infra";
 import { WorkStation } from "../../domain";
+import { LoggedInUser } from "../../contracts/interfaces";
 
 export class MongoWorkStationRepository implements WorkStationRepositoryInterface {
   private model: WorkStationModel;
@@ -23,8 +24,8 @@ export class MongoWorkStationRepository implements WorkStationRepositoryInterfac
     }
   }
 
-  async delete(workStation: WorkStation): Promise<UpdateResult> {
-    return this.model.updateOne({ _id: workStation._id },
-    { $set: { deleted: workStation.deleted, lastUpdatedBy: workStation.lastUpdatedBy }});
+  async delete(id: string, user: LoggedInUser): Promise<UpdateResult> {
+    return this.model.updateOne({ _id: id },
+    { $set: { deleted: true, lastUpdatedBy: user }});
   }
 }

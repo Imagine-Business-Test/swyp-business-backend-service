@@ -26,11 +26,6 @@ export class WorkStation {
     this._id           = _id;
   }
 
-  updateDeleted(currentUser: User): void {
-    this.lastUpdatedBy = currentUser;
-    this.deleted = true;
-  }
-
   createForm(name: string, content: string, currentUser: User, deleted: Boolean): Form {
     return new Form(name, <string>this._id, content, currentUser, currentUser, deleted);
   }
