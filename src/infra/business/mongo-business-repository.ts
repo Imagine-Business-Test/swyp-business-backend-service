@@ -1,9 +1,11 @@
-import { BusinessModel, BusinessInterface } from "../../contracts/infra";
+import { BusinessModel, BusinessInterface, UpdateResult } from "../../contracts/infra";
 import { MongoBusinessMapper } from "./mongo-business-mapper";
 import { Account } from "../../contracts/domain";
 import { Business } from "../../domain";
+import { BusinessRepositoryInterface } from "../../contracts/repositories/business";
 
-export class MongoBusinessRepository {
+
+export class MongoBusinessRepository implements BusinessRepositoryInterface {
   private model: BusinessModel;
 
   constructor(model: BusinessModel) {
@@ -49,11 +51,17 @@ export class MongoBusinessRepository {
     try {
       const doc = await this.model.findOne({ "accounts": { email: email }});
 
-      if (!doc)
+      if (!doc) {
         throw new Error(`Account not found`);
+      }
+
       const currentUser = <Account>doc.accounts.find(account => {
         return account.email === email;
       });
+
+      if (currentUser.deleted) {
+        throw new Error("Account disabled");
+      }
 
       await this.updateLastLogin(currentUser);
 
@@ -65,7 +73,16 @@ export class MongoBusinessRepository {
     }
   }
 
-  private async updateLastLogin(user: Account) {
+  async deleteAccount(email: string): Promise<UpdateResult> {
+
+    return this.model.updateOne(
+      {},
+      { $set: { "accounts.$[elem].deleted": true }},
+      { arrayFilters: [ { "elem.email": email } ] }
+    );
+  }
+
+  private async updateLastLogin(user: Account): Promise<UpdateResult> {
 
     return this.model.updateOne(
       { },

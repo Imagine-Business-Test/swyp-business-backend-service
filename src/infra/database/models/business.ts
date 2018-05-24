@@ -12,6 +12,7 @@ const Schema = new mongoose.Schema({
     name: { type: String, required: true },
     passwordResetExpires: { type: Date },
     passwordResetToken: { type: String},
+    deleted: { type: Boolean, default: false },
     lastLogIn: { type: Date,  default: new Date() }
   }]
 });
