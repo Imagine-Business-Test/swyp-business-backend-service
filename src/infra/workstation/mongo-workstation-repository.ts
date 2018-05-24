@@ -1,8 +1,12 @@
 import { WorkStationRepositoryInterface } from "../../contracts/repositories";
 import { MongoWorkStationMapper } from "./mongo-workstation-mapper";
-import { WorkStationModel, UpdateResult } from "../../contracts/infra";
-import { WorkStation } from "../../domain";
 import { LoggedInUser } from "../../contracts/interfaces";
+import { WorkStation } from "../../domain";
+import {
+  WorkStationInterface,
+  WorkStationModel,
+  UpdateResult
+} from "../../contracts/infra";
 
 export class MongoWorkStationRepository implements WorkStationRepositoryInterface {
   private model: WorkStationModel;
@@ -34,6 +38,10 @@ export class MongoWorkStationRepository implements WorkStationRepositoryInterfac
       ex.message = "DatabaseError";
       throw ex;
     }
+  }
+
+  async findByBusiness(businessId: string): Promise<WorkStationInterface[]> {
+    return this.model.find({ business: businessId});
   }
 }
 
