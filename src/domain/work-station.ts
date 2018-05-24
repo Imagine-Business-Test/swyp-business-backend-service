@@ -26,7 +26,8 @@ export class WorkStation {
     this._id           = _id;
   }
 
-  createForm(name: string, content: string, currentUser: User, deleted: Boolean): Form {
-    return new Form(name, <string>this._id, content, currentUser, currentUser, deleted);
+  createForm(name: string, content: string, currentUser: User): Form {
+    const deleted = false, status = "active";
+    return new Form(name, <string>this._id, content, status, currentUser, currentUser, deleted);
   }
 }

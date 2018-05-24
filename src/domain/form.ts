@@ -4,19 +4,20 @@ import { Response } from "./response";
 type Modifier = { email: string, name: string };
 
 export class Form {
-  workStation: string;
   lastUpdateBy: Modifier;
   createdBy: Modifier;
+  workStation: string;
+  updatedAt?: Date;
   deleted: Boolean;
   content: string;
-  updatedAt?: Date;
   createAt?: Date;
+  status: string;
   name: string;
   _id?: string;
   constructor(
-    name: string, workStation: string, content: string, createdBy: Modifier,
-    modifier: Modifier, deleted: Boolean, updatedAt?: Date, createAt?: Date,
-    _id?: string,
+    name: string, workStation: string, content: string, status: string,
+    createdBy: Modifier, modifier: Modifier, deleted: Boolean,
+    updatedAt?: Date, createAt?: Date, _id?: string,
   ) {
     this.workStation  = workStation;
     this.lastUpdateBy = modifier;
@@ -25,6 +26,7 @@ export class Form {
     this.createAt     = createAt;
     this.content      = content;
     this.deleted      = deleted;
+    this.status       = status;
     this.name         = name;
   }
 

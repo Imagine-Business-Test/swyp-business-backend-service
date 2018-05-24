@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const Schema = new mongoose.Schema({
+  status: { type: String, enum: ["active", "disabled"], default: "active" },
   workStation: { type: mongoose.Types.ObjectId, required: true },
   createdAt: { type: Date, default: new Date() },
   updatedAt: { type: Date, default: new Date() },
@@ -14,7 +15,7 @@ const Schema = new mongoose.Schema({
     email: { type: String, email: true, required: true },
     name: { type: String, required: true }
   },
-  name: { type: String, required: true }
+  name: { type: String, required: true },
 });
 
 
