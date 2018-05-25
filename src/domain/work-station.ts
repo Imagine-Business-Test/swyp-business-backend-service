@@ -1,19 +1,19 @@
 import { Form } from "./form";
+import { LoggedInUser } from "../contracts/interfaces";
 
-type User = { email: string, name: string };
 
 export class WorkStation {
-  lastUpdatedBy: User;
+  lastUpdatedBy: LoggedInUser;
   deleted: Boolean;
   business: string;
   createdAt?: Date;
   updatedAt?: Date;
-  createdBy: User;
+  createdBy: LoggedInUser;
   name: string;
   _id?: string;
 
   constructor(
-    name: string, business: string, createdBy: User, lastUpdatedBy: User,
+    name: string, business: string, createdBy: LoggedInUser, lastUpdatedBy: LoggedInUser,
     deleted: Boolean, _id?: string, createdAt?: Date, updatedAt?: Date
   ) {
     this.lastUpdatedBy = lastUpdatedBy;
@@ -26,7 +26,7 @@ export class WorkStation {
     this._id           = _id;
   }
 
-  createForm(name: string, content: string, currentUser: User): Form {
+  createForm(name: string, content: string, currentUser: LoggedInUser): Form {
     const deleted = false, status = "active";
     return new Form(name, <string>this._id, content, status, currentUser, currentUser, deleted);
   }

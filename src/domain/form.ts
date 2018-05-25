@@ -1,11 +1,11 @@
 import { User } from "../contracts/domain";
 import { Response } from "./response";
+import { LoggedInUser } from "../contracts/interfaces";
 
-type Modifier = { email: string, name: string };
 
 export class Form {
-  lastUpdateBy: Modifier;
-  createdBy: Modifier;
+  lastUpdateBy: LoggedInUser;
+  createdBy: LoggedInUser;
   workStation: string;
   updatedAt?: Date;
   deleted: Boolean;
@@ -16,7 +16,7 @@ export class Form {
   _id?: string;
   constructor(
     name: string, workStation: string, content: string, status: string,
-    createdBy: Modifier, modifier: Modifier, deleted: Boolean,
+    createdBy: LoggedInUser, modifier: LoggedInUser, deleted: Boolean,
     updatedAt?: Date, createAt?: Date, _id?: string,
   ) {
     this.workStation  = workStation;
@@ -28,11 +28,6 @@ export class Form {
     this.deleted      = deleted;
     this.status       = status;
     this.name         = name;
-  }
-
-  delete(currentUser: Modifier): void {
-    this.lastUpdateBy = currentUser;
-    this.deleted = true;
   }
 
   createResponse(respondant: User, content: string, status: string, deleted: Boolean): Response {
