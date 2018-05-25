@@ -23,3 +23,5 @@ export class UpdateFormContent extends Operation {
     }
   }
 }
+
+UpdateFormContent.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
