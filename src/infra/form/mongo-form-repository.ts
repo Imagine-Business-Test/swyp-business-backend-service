@@ -1,4 +1,4 @@
-import { FormModel, FormInterface, UpdateResult } from "../../contracts/infra";
+import { FormModel, FormInterface } from "../../contracts/infra";
 import { FormRepository } from "../../contracts/repositories";
 import { LoggedInUser } from "../../contracts/interfaces";
 import { MongoFormMapper } from "./mongo-form-mapper";
@@ -29,20 +29,29 @@ export class MongoFormRepository implements FormRepository {
     return this.model.find({ workstation: workstation });
   }
 
-  async updateContent(id: string, content: string): Promise<UpdateResult> {
-    return this.model.updateOne(
-      { _id: id },
-      { $set: { content: content }}
-    );
+  async updateContent(id: string, content: string) {
+    try {
+      const result = await this.model.updateOne(
+        { _id: id },
+        { $set: { content: content }}
+      );
+      if (result.nModified !== 1 && result.nMatched === 1) {
+        throw  new Error("Unable to update content");
+      }
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
   }
 
-  async disable(formId: string): Promise<UpdateResult> {
+  async disable(formId: string) {
     return this.model.updateOne(
       { _id: formId },
       { $set: { status: "disabled" } } );
   }
 
-  async delete(id: string, user: LoggedInUser): Promise<UpdateResult> {
+  async delete(id: string, user: LoggedInUser) {
     return this.model.updateOne(
       { _id: id },
       { $set: { deleted: true, lastUpdatedBy: user } } );

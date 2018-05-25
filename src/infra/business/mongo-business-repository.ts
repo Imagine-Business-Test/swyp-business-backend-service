@@ -1,11 +1,11 @@
-import { BusinessModel, BusinessInterface, UpdateResult } from "../../contracts/infra";
+import { BusinessModel, BusinessInterface } from "../../contracts/infra";
+import { BusinessRepository } from "../../contracts/repositories";
 import { MongoBusinessMapper } from "./mongo-business-mapper";
 import { Account } from "../../contracts/domain";
 import { Business } from "../../domain";
-import { BusinessRepositoryInterface } from "../../contracts/repositories/business";
 
 
-export class MongoBusinessRepository implements BusinessRepositoryInterface {
+export class MongoBusinessRepository implements BusinessRepository {
   private model: BusinessModel;
 
   constructor(model: BusinessModel) {
@@ -73,7 +73,7 @@ export class MongoBusinessRepository implements BusinessRepositoryInterface {
     }
   }
 
-  async deleteAccount(email: string): Promise<UpdateResult> {
+  async deleteAccount(email: string) {
 
     try {
       const result = await this.model.updateOne(
@@ -81,7 +81,9 @@ export class MongoBusinessRepository implements BusinessRepositoryInterface {
         { $set: { "accounts.$[elem].deleted": true }},
         { arrayFilters: [ { "elem.email": email } ] }
       );
-      return result;
+      if (result.nModified !== 1 && result.nMatched === 1) {
+        throw  new Error("Unable to delete account");
+      }
     } catch (ex) {
       ex.details = ex.message;
       ex.message = "DatabaseError";
@@ -89,7 +91,7 @@ export class MongoBusinessRepository implements BusinessRepositoryInterface {
     }
   }
 
-  private async updateLastLogin(user: Account): Promise<UpdateResult> {
+  private async updateLastLogin(user: Account) {
 
     return this.model.updateOne(
       { },

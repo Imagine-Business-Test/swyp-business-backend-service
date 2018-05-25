@@ -1,14 +1,14 @@
-import { BusinessRepositoryInterface } from "../../contracts/repositories/business";
+import { BusinessRepository } from "../../contracts/repositories";
 import { Config } from "../../contracts/config";
 import { Operation } from "../operation";
 import jwt from "jsonwebtoken";
 import bycrpt from "bcrypt";
 
 class LoginBusinessUser extends Operation {
-  private businessRepository: BusinessRepositoryInterface;
+  private businessRepository: BusinessRepository;
   private config: Config;
 
-  constructor(businessRepo: BusinessRepositoryInterface, config: Config) {
+  constructor(businessRepo: BusinessRepository, config: Config) {
     super();
     this.businessRepository = businessRepo;
     this.config             = config;

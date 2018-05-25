@@ -2,17 +2,17 @@ import { LoggedInUser } from "../../contracts/interfaces";
 import { Operation } from "../operation";
 import {
   WorkstationRepository,
-  BusinessRepositoryInterface
+  BusinessRepository
 } from "../../contracts/repositories";
 
 
 export class CreateWorkStation extends Operation {
-  private businessRepository: BusinessRepositoryInterface;
+  private businessRepository: BusinessRepository;
   private workStationRepository: WorkstationRepository;
 
   constructor(
     workStationRepo: WorkstationRepository,
-    businessRepo: BusinessRepositoryInterface) {
+    businessRepo: BusinessRepository) {
     super();
     this.workStationRepository = workStationRepo;
     this.businessRepository    = businessRepo;

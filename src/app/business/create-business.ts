@@ -1,11 +1,11 @@
 import { Operation } from "../operation";
-import { BusinessRepositoryInterface } from "../../contracts/repositories/business";
+import { BusinessRepository } from "../../contracts/repositories";
 import { Business } from "../../domain";
 
 export class CreateBusiness extends Operation {
-  private businessRepository: BusinessRepositoryInterface;
+  private businessRepository: BusinessRepository;
 
-  constructor(businessRepository: BusinessRepositoryInterface) {
+  constructor(businessRepository: BusinessRepository) {
     super();
     this.businessRepository = businessRepository;
   }

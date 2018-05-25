@@ -1,4 +1,4 @@
-import { BusinessRepositoryInterface } from "../../contracts/repositories/business";
+import { BusinessRepository } from "../../contracts/repositories";
 import { Account } from "../../contracts/domain";
 import { Operation } from "../operation";
 import jwt from "jsonwebtoken";
@@ -7,10 +7,10 @@ import { Config } from "../../contracts/config";
 
 export class AddBusinessAccount extends Operation {
 
-  private businessRepository: BusinessRepositoryInterface;
+  private businessRepository: BusinessRepository;
   private config: Config;
 
-  constructor(businessRepository: BusinessRepositoryInterface, config: Config) {
+  constructor(businessRepository: BusinessRepository, config: Config) {
     super();
     this.businessRepository = businessRepository;
     this.config             = config;

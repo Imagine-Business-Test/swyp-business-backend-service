@@ -1,6 +1,6 @@
-import { Operation } from "../operation";
 import { FormRepository, WorkstationRepository } from "../../contracts/repositories";
 import { LoggedInUser } from "../../contracts/interfaces";
+import { Operation } from "../operation";
 
 export class CreateForm extends Operation {
   private formRepository: FormRepository;
@@ -12,12 +12,11 @@ export class CreateForm extends Operation {
     this.formRepository        = formRepo;
   }
 
-
   async execute(
     command: { workstationId: string, name: string, content: string, user: LoggedInUser}
   ) {
 
-    const { SUCCESS, ERROR, DATABASE_ERROR, NOTFOUND } = this.outputs;
+    const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
       const { workstationId, name, content, user } = command;
 
@@ -28,9 +27,6 @@ export class CreateForm extends Operation {
 
       this.emit(SUCCESS, form);
     } catch (ex) {
-      if (ex.message === "NotFound") {
-        this.emit(NOTFOUND, ex);
-      }
       if (ex.message === "DatabaseError") {
         this.emit(DATABASE_ERROR, ex);
       }
@@ -39,4 +35,4 @@ export class CreateForm extends Operation {
   }
 }
 
-CreateForm.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR", "NOTFOUND"]);
+CreateForm.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);

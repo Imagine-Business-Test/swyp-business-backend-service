@@ -4,8 +4,7 @@ import { LoggedInUser } from "../../contracts/interfaces";
 import { WorkStation } from "../../domain";
 import {
   WorkStationInterface,
-  WorkStationModel,
-  UpdateResult
+  WorkStationModel
 } from "../../contracts/infra";
 
 export class MongoWorkStationRepository implements WorkstationRepository {
@@ -32,20 +31,23 @@ export class MongoWorkStationRepository implements WorkstationRepository {
     try {
       const doc = await this.model.findOne({ _id: id});
       if (!doc) {
-        throw new Error("NotFound");
+        throw new Error("The specified workstation record is not found");
       }
       return MongoWorkStationMapper.toEntity(doc);
     } catch (ex) {
-      ex.details = "The specified workstation record is not found";
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
       throw ex;
     }
   }
 
-  async delete(id: string, user: LoggedInUser): Promise<UpdateResult> {
+  async delete(id: string, user: LoggedInUser) {
     try {
       const result = await this.model.updateOne({ _id: id },
         { $set: { deleted: true, lastUpdatedBy: user }});
-      return result;
+        if (result.nModified !== 1 && result.nMatched === 1) {
+          throw  new Error("Unable to delete workstation");
+        }
     } catch (ex) {
       ex.details = ex.message;
       ex.message = "DatabaseError";
