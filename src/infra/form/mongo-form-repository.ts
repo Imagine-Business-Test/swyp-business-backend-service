@@ -47,11 +47,11 @@ export class MongoFormRepository implements FormRepository {
     }
   }
 
-  async disable(id: string) {
+  async disable(id: string, modifier: LoggedInUser) {
     try {
       const result = await this.model.updateOne(
         { _id: id },
-        { $set: { status: "disabled" } }
+        { $set: { status: "disabled", lastUpdatedBy: modifier } }
       );
       if (result.nModified !== 1 && result.nMatched === 1) {
         throw  new Error(`Error disabling form: ${result.nModified } affected `);
