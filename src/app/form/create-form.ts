@@ -38,3 +38,5 @@ export class CreateForm extends Operation {
     }
   }
 }
+
+CreateForm.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR", "NOTFOUND"]);
