@@ -1,8 +1,7 @@
 import { ResponseRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
-
-export class ProcessResponse extends Operation {
+export class DeleteResponse extends Operation {
   private responseRepository: ResponseRepository;
 
   constructor(responseRepo: ResponseRepository) {
@@ -14,9 +13,8 @@ export class ProcessResponse extends Operation {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {
-      await this.responseRepository.makeAsprocessed(command.response);
-      this.emit(SUCCESS, { processed: true });
-      // emit response processed event
+      await this.responseRepository.delete(command.response);
+      this.emit(SUCCESS, { deleted: true });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
         this.emit(DATABASE_ERROR, ex);
@@ -26,4 +24,4 @@ export class ProcessResponse extends Operation {
   }
 }
 
-ProcessResponse.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
+DeleteResponse.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
