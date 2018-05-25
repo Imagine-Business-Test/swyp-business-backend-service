@@ -82,7 +82,24 @@ export class MongoBusinessRepository implements BusinessRepository {
         { arrayFilters: [ { "elem.email": email } ] }
       );
       if (result.nModified !== 1 && result.nMatched === 1) {
-        throw  new Error(`Error deleting account: ${result.nModified } affected `);
+        throw  new Error(`Error updating account: ${result.nModified } affected `);
+      }
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
+  }
+
+  async updatePassword(email: string, password: string) {
+    try {
+      const result = await this.model.updateOne(
+        {},
+        { $set: {"account.$[elem].password": password } },
+        { arrayFilters: [ { "elem.email": email } ] }
+      );
+      if (result.nModified !== 1 && result.nMatched === 1) {
+        throw  new Error(`Error updating account: ${result.nModified } affected `);
       }
     } catch (ex) {
       ex.details = ex.message;
