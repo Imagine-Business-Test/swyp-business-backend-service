@@ -26,7 +26,9 @@ export class MongoFormRepository implements FormRepository {
   }
 
   async getByWorkstation (workstation: string): Promise<FormInterface[]> {
-    return this.model.find({ workstation: workstation });
+    return this.model.find(
+      { workstation: workstation, status: "active", deleted: false }
+    );
   }
 
   async updateContent(id: string, content: string) {
@@ -36,7 +38,7 @@ export class MongoFormRepository implements FormRepository {
         { $set: { content: content }}
       );
       if (result.nModified !== 1 && result.nMatched === 1) {
-        throw  new Error("Unable to update content");
+        throw  new Error(`Error updating content ${result.nModified} affected`);
       }
     } catch (ex) {
       ex.details = ex.message;
@@ -45,15 +47,36 @@ export class MongoFormRepository implements FormRepository {
     }
   }
 
-  async disable(formId: string) {
-    return this.model.updateOne(
-      { _id: formId },
-      { $set: { status: "disabled" } } );
+  async disable(id: string) {
+    try {
+      const result = await this.model.updateOne(
+        { _id: id },
+        { $set: { status: "disabled" } }
+      );
+      if (result.nModified !== 1 && result.nMatched === 1) {
+        throw  new Error(`Error disabling form: ${result.nModified } affected `);
+      }
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
   }
 
   async delete(id: string, user: LoggedInUser) {
-    return this.model.updateOne(
-      { _id: id },
-      { $set: { deleted: true, lastUpdatedBy: user } } );
+
+    try {
+      const result = await this.model.updateOne(
+        { _id: id },
+        { $set: { deleted: true, lastUpdatedBy: user } }
+      );
+      if (result.nModified !== 1 && result.nMatched === 1) {
+        throw  new Error(`Error deleting form: ${result.nModified } affected `);
+      }
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
   }
 }

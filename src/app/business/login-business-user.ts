@@ -19,9 +19,9 @@ class LoginBusinessUser extends Operation {
 
     try {
       const business = await this.businessRepository.findByAccountEmail(command.email);
-      const user = business.getCurrentUser();
+      const user     = business.getCurrentUser();
+      const result    = await bycrpt.compare(command.password, user.password);
 
-      const result = bycrpt.compare(command.password, user.password);
       if (!result) {
         throw new Error("AuthenticationError");
       }

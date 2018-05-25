@@ -1,5 +1,5 @@
-import { Operation } from "../operation";
 import { BusinessRepository } from "../../contracts/repositories";
+import { Operation } from "../operation";
 import { Business } from "../../domain";
 
 export class CreateBusiness extends Operation {
@@ -15,8 +15,8 @@ export class CreateBusiness extends Operation {
 
     try {
       const { name, logoUrl } = command;
-      const business = new Business(name, logoUrl);
-      const savedBusiness = this.businessRepository.add(business);
+      const business          = new Business(name, logoUrl);
+      const savedBusiness     = this.businessRepository.add(business);
 
       this.emit(SUCCESS, savedBusiness);
     } catch (ex) {

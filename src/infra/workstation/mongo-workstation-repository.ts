@@ -41,12 +41,16 @@ export class MongoWorkStationRepository implements WorkstationRepository {
     }
   }
 
+  async findByBusiness(businessId: string): Promise<WorkStationInterface[]> {
+    return this.model.find({ business: businessId, deleted: false });
+  }
+
   async delete(id: string, user: LoggedInUser) {
     try {
       const result = await this.model.updateOne({ _id: id },
         { $set: { deleted: true, lastUpdatedBy: user }});
         if (result.nModified !== 1 && result.nMatched === 1) {
-          throw  new Error("Unable to delete workstation");
+          throw  new Error(`Error deleting workstation: ${result.nModified } affected `);
         }
     } catch (ex) {
       ex.details = ex.message;
@@ -55,9 +59,6 @@ export class MongoWorkStationRepository implements WorkstationRepository {
     }
   }
 
-  async findByBusiness(businessId: string): Promise<WorkStationInterface[]> {
-    return this.model.find({ business: businessId});
-  }
 }
 
 

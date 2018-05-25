@@ -82,7 +82,7 @@ export class MongoBusinessRepository implements BusinessRepository {
         { arrayFilters: [ { "elem.email": email } ] }
       );
       if (result.nModified !== 1 && result.nMatched === 1) {
-        throw  new Error("Unable to delete account");
+        throw  new Error(`Error deleting account: ${result.nModified } affected `);
       }
     } catch (ex) {
       ex.details = ex.message;

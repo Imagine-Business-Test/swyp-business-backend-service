@@ -1,9 +1,9 @@
 import { BusinessRepository } from "../../contracts/repositories";
 import { Account } from "../../contracts/domain";
+import { Config } from "../../contracts/config";
 import { Operation } from "../operation";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { Config } from "../../contracts/config";
 
 export class AddBusinessAccount extends Operation {
 
@@ -20,10 +20,11 @@ export class AddBusinessAccount extends Operation {
 
     const {SUCCESS, ERROR, DATABASE_ERROR} = this.outputs;
     try {
-      command.account.password = await bcrypt.hash(command.account.password, 10);
-      const { businessId, account } = command;
+      command.account.password       = await bcrypt.hash(command.account.password, 10);
+      const { businessId, account }  = command;
+
       const business = await this.businessRepository.addAccount(businessId, account);
-      const user = business.getCurrentUser();
+      const user     = business.getCurrentUser();
 
       const token = jwt.sign({
         email: user.email,

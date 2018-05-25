@@ -1,5 +1,5 @@
+import { BusinessRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
-import { BusinessRepository } from "../../contracts/repositories/business";
 
 export class DeleteBusinessUser extends Operation {
   private businessRepository: BusinessRepository;
