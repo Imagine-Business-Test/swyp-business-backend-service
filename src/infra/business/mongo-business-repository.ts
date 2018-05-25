@@ -62,10 +62,28 @@ export class MongoBusinessRepository implements BusinessRepository {
       if (currentUser.deleted) {
         throw new Error("Account disabled");
       }
-
       await this.updateLastLogin(currentUser);
-
       return MongoBusinessMapper.toEntity(doc, currentUser);
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
+  }
+
+  async requestPasswordReset(email: string, token: string, expires: Date) {
+    try {
+      const result = await this.model.updateOne(
+        {},
+        { $set: {
+          "account.$[elem].passwordResetToken": token,
+          "account.$[elem].passwordResetExpires": expires}
+        },
+        { arrayFilters: [ { "elem.email": email } ] }
+      );
+      if (result.nModified !== 1 && result.nMatched === 1) {
+        throw  new Error(`Error deleting account: ${result.nModified } affected `);
+      }
     } catch (ex) {
       ex.details = ex.message;
       ex.message = "DatabaseError";

@@ -32,11 +32,6 @@ export class Business {
     return this.currentUser!;
   }
 
-  getCurrentUserPassword(): string {
-
-    return this.currentUser!.password;
-  }
-
   createWorkStation(name: string): WorkStation {
     const loggedinUser = {
       name: <string>this.currentUser!.name,

@@ -15,12 +15,12 @@ class LoginBusinessUser extends Operation {
   }
 
   async execute(command: { email: string, password: string }) {
-    const { SUCCESS, ERROR, DATABASE_ERROR, AUTHENTICATION_ERROR } = this.outputs;
+    const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {
       const business = await this.businessRepository.findByAccountEmail(command.email);
       const user     = business.getCurrentUser();
-      const result    = await bycrpt.compare(command.password, user.password);
+      const result   = await bycrpt.compare(command.password, user.password);
 
       if (!result) {
         throw new Error("AuthenticationError");
@@ -36,12 +36,9 @@ class LoginBusinessUser extends Operation {
       if (ex.message === "DatabaseError") {
         this.emit(DATABASE_ERROR, ex);
       }
-      if (ex.message === "AuthenticationError") {
-        this.emit(AUTHENTICATION_ERROR, ex);
-      }
       this.emit(ERROR, ex);
     }
   }
 }
 
-LoginBusinessUser.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR", "AUTHENTICATION_ERROR"]);
+LoginBusinessUser.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);

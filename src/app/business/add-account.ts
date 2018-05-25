@@ -19,6 +19,7 @@ export class AddBusinessAccount extends Operation {
   async execute(command: { businessId: string, account: Account}) {
 
     const {SUCCESS, ERROR, DATABASE_ERROR} = this.outputs;
+
     try {
       command.account.password       = await bcrypt.hash(command.account.password, 10);
       const { businessId, account }  = command;
