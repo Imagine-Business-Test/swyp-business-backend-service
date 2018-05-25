@@ -25,6 +25,20 @@ export class MongoFormRepository implements FormRepository {
     }
   }
 
+  async find(id: string): Promise<Form> {
+    try {
+      const doc = await this.model.findOne({ _id: id});
+      if (!doc) {
+        throw new Error("The specified form record is not found");
+      }
+      return MongoFormMapper.toEntity(doc);
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
+  }
+
   async getByWorkstation (workstation: string): Promise<FormInterface[]> {
     return this.model.find(
       { workstation: workstation, status: "active", deleted: false }

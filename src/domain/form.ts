@@ -30,7 +30,9 @@ export class Form {
     this.name         = name;
   }
 
-  createResponse(respondant: User, content: string, status: string, deleted: Boolean): Response {
+  createResponse(content: string, respondant: User): Response {
+    const deleted = false;
+    const status = "pending";
     return new Response(respondant, <string>this._id, content, status, deleted);
   }
 }

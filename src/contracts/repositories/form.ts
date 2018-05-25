@@ -7,5 +7,6 @@ export interface FormRepository {
   updateContent: (id: string, content: string) => void;
   disable: (id: string, modifier: LoggedInUser) => void;
   delete: (id: string, user: LoggedInUser) => void;
+  find: ( id: string) => Promise<Form>;
   add: (form: Form) => Promise<Form>;
 }
