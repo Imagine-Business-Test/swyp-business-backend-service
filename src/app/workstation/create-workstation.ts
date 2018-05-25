@@ -1,18 +1,17 @@
 import { LoggedInUser } from "../../contracts/interfaces";
 import { Operation } from "../operation";
 import {
-  WorkStationRepositoryInterface,
+  WorkstationRepository,
   BusinessRepositoryInterface
 } from "../../contracts/repositories";
 
 
-
 export class CreateWorkStation extends Operation {
   private businessRepository: BusinessRepositoryInterface;
-  private workStationRepository: WorkStationRepositoryInterface;
+  private workStationRepository: WorkstationRepository;
 
   constructor(
-    workStationRepo: WorkStationRepositoryInterface,
+    workStationRepo: WorkstationRepository,
     businessRepo: BusinessRepositoryInterface) {
     super();
     this.workStationRepository = workStationRepo;
@@ -25,7 +24,7 @@ export class CreateWorkStation extends Operation {
     try {
       const { name, user } = command;
 
-      const business = await this.businessRepository.findByAccountEmail(user.email);
+      const business    = await this.businessRepository.findByAccountEmail(user.email);
       const workStation = await this.workStationRepository.add(
         business.createWorkStation(name)
       );

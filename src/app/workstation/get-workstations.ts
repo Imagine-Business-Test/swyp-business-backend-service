@@ -1,10 +1,10 @@
-import { WorkStationRepositoryInterface } from "../../contracts/repositories";
+import { WorkstationRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
 export class GetWorkstations extends Operation {
-  private workstationRepository: WorkStationRepositoryInterface;
+  private workstationRepository: WorkstationRepository;
 
-  constructor(workstationRepo: WorkStationRepositoryInterface) {
+  constructor(workstationRepo: WorkstationRepository) {
     super();
     this.workstationRepository = workstationRepo;
   }

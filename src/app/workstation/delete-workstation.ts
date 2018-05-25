@@ -1,11 +1,11 @@
 import { Operation } from "../operation";
-import { WorkStationRepositoryInterface } from "../../contracts/repositories";
+import { WorkstationRepository } from "../../contracts/repositories";
 import { LoggedInUser } from "../../contracts/interfaces";
 
 export class DeleteWorkstation extends Operation {
-  private workstationRepository: WorkStationRepositoryInterface;
+  private workstationRepository: WorkstationRepository;
 
-  constructor(worksationRepo: WorkStationRepositoryInterface) {
+  constructor(worksationRepo: WorkstationRepository) {
     super();
     this.workstationRepository = worksationRepo;
   }

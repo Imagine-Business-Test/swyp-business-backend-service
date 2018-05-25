@@ -1,4 +1,4 @@
-import { WorkStationRepositoryInterface } from "../../contracts/repositories";
+import { WorkstationRepository } from "../../contracts/repositories";
 import { MongoWorkStationMapper } from "./mongo-workstation-mapper";
 import { LoggedInUser } from "../../contracts/interfaces";
 import { WorkStation } from "../../domain";
@@ -8,7 +8,7 @@ import {
   UpdateResult
 } from "../../contracts/infra";
 
-export class MongoWorkStationRepository implements WorkStationRepositoryInterface {
+export class MongoWorkStationRepository implements WorkstationRepository {
   private model: WorkStationModel;
 
   constructor(model: WorkStationModel) {
@@ -24,6 +24,19 @@ export class MongoWorkStationRepository implements WorkStationRepositoryInterfac
     } catch (ex) {
       ex.details = ex.message;
       ex.message = "DatabaseError";
+      throw ex;
+    }
+  }
+
+  async find(id: string): Promise<WorkStation> {
+    try {
+      const doc = await this.model.findOne({ _id: id});
+      if (!doc) {
+        throw new Error("NotFound");
+      }
+      return MongoWorkStationMapper.toEntity(doc);
+    } catch (ex) {
+      ex.details = "The specified workstation record is not found";
       throw ex;
     }
   }
