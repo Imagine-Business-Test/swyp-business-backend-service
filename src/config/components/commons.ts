@@ -9,6 +9,7 @@ const schema = joi.object().keys({
 
 const { error, value } = joi.validate(process.env, schema);
 
+
 if (error)
   throw new Error(`Config validation failed ${error.message}`);
 

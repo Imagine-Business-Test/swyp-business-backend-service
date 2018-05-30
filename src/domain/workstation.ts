@@ -2,7 +2,7 @@ import { Form } from "./form";
 import { LoggedInUser } from "../contracts/interfaces";
 
 
-export class WorkStation {
+export class Workstation {
   lastUpdatedBy: LoggedInUser;
   deleted: Boolean;
   business: string;

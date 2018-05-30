@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export type WorkStationInterface = mongoose.Document & {
+export type WorkstationInterface = mongoose.Document & {
   lastUpdatedBy: { email: string, name: string };
   createdBy: { email: string, name: string };
   business: string;
@@ -11,4 +11,4 @@ export type WorkStationInterface = mongoose.Document & {
   _id: string;
 };
 
-export type WorkStationModel = mongoose.Model<WorkStationInterface>;
+export type WorkstationModel = mongoose.Model<WorkstationInterface>;

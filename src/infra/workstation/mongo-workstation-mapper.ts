@@ -1,15 +1,15 @@
-import { WorkStationInterface } from "../../contracts/infra";
-import { WorkStation } from "../../domain";
+import { WorkstationInterface } from "../../contracts/infra";
+import { Workstation } from "../../domain";
 
 export const MongoWorkStationMapper = {
-  toEntity(doc: WorkStationInterface): WorkStation {
+  toEntity(doc: WorkstationInterface): Workstation {
     const {
       _id, name, business, createdBy, lastUpdatedBy, deleted, createdAt, updatedAt
     } = doc;
-    return new WorkStation(name, business, createdBy, lastUpdatedBy, deleted, _id, createdAt, updatedAt);
+    return new Workstation(name, business, createdBy, lastUpdatedBy, deleted, _id, createdAt, updatedAt);
   },
 
-  toDatabase(workStation: WorkStation) {
+  toDatabase(workStation: Workstation) {
     return {
       lastUpdatedBy: workStation.lastUpdatedBy,
       createdBy    : workStation.createdBy,

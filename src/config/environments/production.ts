@@ -19,5 +19,5 @@ const config: Interface = {
   }
 };
 
-exports.config = config;
+module.exports = config;
 

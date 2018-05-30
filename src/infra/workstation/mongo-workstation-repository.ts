@@ -1,20 +1,20 @@
 import { WorkstationRepository } from "../../contracts/repositories";
 import { MongoWorkStationMapper } from "./mongo-workstation-mapper";
 import { LoggedInUser } from "../../contracts/interfaces";
-import { WorkStation } from "../../domain";
+import { Workstation } from "../../domain";
 import {
-  WorkStationInterface,
-  WorkStationModel
+  WorkstationInterface,
+  WorkstationModel
 } from "../../contracts/infra";
 
 export class MongoWorkStationRepository implements WorkstationRepository {
-  private model: WorkStationModel;
+  private model: WorkstationModel;
 
-  constructor(model: WorkStationModel) {
+  constructor(model: WorkstationModel) {
     this.model = model;
   }
 
-  async add(workStation: WorkStation): Promise<WorkStation> {
+  async add(workStation: Workstation): Promise<Workstation> {
     try {
       const doc = await this.model.create(
         MongoWorkStationMapper.toDatabase(workStation)
@@ -27,7 +27,7 @@ export class MongoWorkStationRepository implements WorkstationRepository {
     }
   }
 
-  async find(id: string): Promise<WorkStation> {
+  async find(id: string): Promise<Workstation> {
     try {
       const doc = await this.model.findOne({ _id: id});
       if (!doc) {
@@ -41,7 +41,7 @@ export class MongoWorkStationRepository implements WorkstationRepository {
     }
   }
 
-  async findByBusiness(businessId: string): Promise<WorkStationInterface[]> {
+  async findByBusiness(businessId: string): Promise<WorkstationInterface[]> {
     return this.model.find({ business: businessId, deleted: false });
   }
 

@@ -1,4 +1,4 @@
-import { WorkStation } from "./work-station";
+import { Workstation } from "./workstation";
 import { Account } from "../contracts/domain";
 
 
@@ -32,13 +32,13 @@ export class Business {
     return this.currentUser!;
   }
 
-  createWorkStation(name: string): WorkStation {
+  createWorkStation(name: string): Workstation {
     const loggedinUser = {
       name: <string>this.currentUser!.name,
       email: <string>this.currentUser!.email};
     const business = this._id!;
     const deleted = false;
-    return new WorkStation(name, business, loggedinUser, loggedinUser, deleted);
+    return new Workstation(name, business, loggedinUser, loggedinUser, deleted);
   }
 
 }
