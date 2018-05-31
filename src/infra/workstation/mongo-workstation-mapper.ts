@@ -1,7 +1,7 @@
 import { WorkstationInterface } from "../../contracts/infra";
 import { Workstation } from "../../domain";
 
-export const MongoWorkStationMapper = {
+export const MongoWorkstationMapper = {
   toEntity(doc: WorkstationInterface): Workstation {
     const {
       _id, name, business, createdBy, lastUpdatedBy, deleted, createdAt, updatedAt

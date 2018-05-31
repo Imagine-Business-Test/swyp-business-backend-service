@@ -4,7 +4,7 @@ import { Operation } from "../operation";
 import jwt from "jsonwebtoken";
 import bycrpt from "bcrypt";
 
-class LoginBusinessUser extends Operation {
+export class LoginBusinessUser extends Operation {
   private businessRepository: BusinessRepository;
   private config: Config;
 

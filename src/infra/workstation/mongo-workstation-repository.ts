@@ -1,5 +1,5 @@
 import { WorkstationRepository } from "../../contracts/repositories";
-import { MongoWorkStationMapper } from "./mongo-workstation-mapper";
+import { MongoWorkstationMapper } from "./mongo-workstation-mapper";
 import { LoggedInUser } from "../../contracts/interfaces";
 import { Workstation } from "../../domain";
 import {
@@ -7,7 +7,7 @@ import {
   WorkstationModel
 } from "../../contracts/infra";
 
-export class MongoWorkStationRepository implements WorkstationRepository {
+export class MongoWorkstationRepository implements WorkstationRepository {
   private model: WorkstationModel;
 
   constructor(model: WorkstationModel) {
@@ -17,9 +17,9 @@ export class MongoWorkStationRepository implements WorkstationRepository {
   async add(workStation: Workstation): Promise<Workstation> {
     try {
       const doc = await this.model.create(
-        MongoWorkStationMapper.toDatabase(workStation)
+        MongoWorkstationMapper.toDatabase(workStation)
       );
-      return MongoWorkStationMapper.toEntity(doc);
+      return MongoWorkstationMapper.toEntity(doc);
     } catch (ex) {
       ex.details = ex.message;
       ex.message = "DatabaseError";
@@ -33,7 +33,7 @@ export class MongoWorkStationRepository implements WorkstationRepository {
       if (!doc) {
         throw new Error("The specified workstation record is not found");
       }
-      return MongoWorkStationMapper.toEntity(doc);
+      return MongoWorkstationMapper.toEntity(doc);
     } catch (ex) {
       ex.details = ex.message;
       ex.message = "DatabaseError";

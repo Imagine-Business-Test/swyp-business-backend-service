@@ -1,10 +1,11 @@
 import { Server } from "../contracts/interfaces";
 import { Logger } from "../contracts/infra";
+import { App } from "../contracts/app";
 
-export class Application {
-  server: Server;
-  database: any;
-  logger: Logger;
+export class Application implements App {
+  private server: Server;
+  private database: any;
+  private logger: Logger;
 
   constructor(server: Server, database: any, logger: Logger) {
     this.database = database;
@@ -13,9 +14,19 @@ export class Application {
   }
 
   async start() {
-    if (this.database) {
-      this.database.authenticate(this.logger);
+    try {
+      if (this.database) {
+        this.database.authenticate(this.logger);
+      }
+      await this.server.start();
+    } catch (ex) {
+      this.logError(ex);
     }
-    await this.server.start();
   }
+
+  private logError(error: Error): void {
+
+    this.logger.error(error.stack!);
+  }
+
 }
