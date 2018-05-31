@@ -11,10 +11,10 @@ export const MongoWorkStationMapper = {
 
   toDatabase(workStation: Workstation) {
     return {
-      lastUpdatedBy: workStation.lastUpdatedBy,
-      createdBy    : workStation.createdBy,
-      business     : workStation.business,
-      name         : workStation.name,
+      lastUpdatedBy: workStation.getLastModifier(),
+      createdBy    : workStation.getCreator(),
+      business     : workStation.getBusinessId(),
+      name         : workStation.getName(),
     };
   }
 };

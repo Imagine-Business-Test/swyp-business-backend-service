@@ -25,7 +25,7 @@ export class AddBusinessAccount extends Operation {
       const { businessId, account }  = command;
 
       const business = await this.businessRepository.addAccount(businessId, account);
-      const user     = business.getCurrentUser();
+      const user     = business.getUser();
 
       const token = jwt.sign({
         email: user.email,

@@ -1,25 +1,25 @@
+import { LoggedInUser } from "../contracts/interfaces";
 import { User } from "../contracts/domain";
 import { Response } from "./response";
-import { LoggedInUser } from "../contracts/interfaces";
-
 
 export class Form {
-  lastUpdateBy: LoggedInUser;
-  createdBy: LoggedInUser;
-  workStation: string;
-  updatedAt?: Date;
-  deleted: Boolean;
-  content: string;
-  createAt?: Date;
-  status: string;
-  name: string;
-  _id?: string;
+  private lastUpdateBy: LoggedInUser;
+  private createdBy: LoggedInUser;
+  private workstation: string;
+  private updatedAt?: Date;
+  private deleted: Boolean;
+  private content: string;
+  private createAt?: Date;
+  private status: string;
+  private name: string;
+  private _id?: string;
+
   constructor(
-    name: string, workStation: string, content: string, status: string,
+    name: string, workstation: string, content: string, status: string,
     createdBy: LoggedInUser, modifier: LoggedInUser, deleted: Boolean,
-    updatedAt?: Date, createAt?: Date, _id?: string,
+    _id?: string, updatedAt?: Date, createAt?: Date,
   ) {
-    this.workStation  = workStation;
+    this.workstation  = workstation;
     this.lastUpdateBy = modifier;
     this.createdBy    = createdBy;
     this.updatedAt    = updatedAt;
@@ -28,11 +28,48 @@ export class Form {
     this.deleted      = deleted;
     this.status       = status;
     this.name         = name;
+    this._id          = _id;
   }
 
   createResponse(content: string, respondant: User): Response {
     const deleted = false;
     const status = "pending";
     return new Response(respondant, <string>this._id, content, status, deleted);
+  }
+
+  getLastModifier(): LoggedInUser {
+    return this.lastUpdateBy;
+  }
+
+  getCreationDate(): Date {
+    return this.createAt!;
+  }
+
+  getLastUpdateDate(): Date {
+    return this.updatedAt!;
+  }
+
+  getCreator(): LoggedInUser {
+    return this.createdBy;
+  }
+
+  getWorkstationId(): string {
+    return this.workstation;
+  }
+
+  isDeleted(): Boolean {
+    return this.deleted;
+  }
+
+  getContent(): string {
+    return this.content;
+  }
+
+  getStatus(): string {
+    return this.status;
+  }
+
+  getName(): string {
+    return this.name;
   }
 }

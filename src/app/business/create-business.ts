@@ -15,7 +15,7 @@ export class CreateBusiness extends Operation {
 
     try {
       const { name, logoUrl } = command;
-      const business          = new Business(name, logoUrl);
+      const business          = new Business(name, logoUrl, []);
       const savedBusiness     = this.businessRepository.add(business);
 
       this.emit(SUCCESS, savedBusiness);

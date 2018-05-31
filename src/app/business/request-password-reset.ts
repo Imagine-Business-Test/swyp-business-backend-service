@@ -23,7 +23,7 @@ export class RequestPasswordReset extends Operation {
       expires.setHours(2);
       await this.businessRepository.requestPasswordReset(command.email, token, expires);
       const business = await this.businessRepository.findByAccountEmail(command.email);
-      const user     = business.getCurrentUser();
+      const user     = business.getUser();
       const link     = command.origin + `?token=${token}`;
 
       this.mailer.sendPasswordRequest(user.name, user.email, link);

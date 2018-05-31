@@ -9,20 +9,20 @@ export const MongoFormMapper = {
     } = doc;
 
     return new Form(
-      name, workStation, content, status, createdBy, lastUpdatedBy, deleted, updateAt, createdAt, _id,
+      name, workStation, content, status, createdBy, lastUpdatedBy, deleted, _id, updateAt, createdAt,
     );
   },
 
   toDatabase(form: Form) {
     return {
-      lastUpdatedBy: form.lastUpdateBy,
-      workStation  : form.workStation,
-      updateAt     : form.updatedAt,
-      createdBy    : form.createdBy,
-      createdAt    : form.createAt,
-      content      : form.content,
-      deleted      : form.deleted,
-      name         : form.name,
+      lastUpdatedBy: form.getLastModifier(),
+      workStation  : form.getWorkstationId(),
+      updateAt     : form.getLastUpdateDate(),
+      createdBy    : form.getCreator(),
+      createdAt    : form.getCreationDate(),
+      content      : form.getContent(),
+      deleted      : form.isDeleted(),
+      name         : form.getName(),
     };
   }
 };

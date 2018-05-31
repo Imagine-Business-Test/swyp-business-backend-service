@@ -13,13 +13,13 @@ export const MongoResponseMapper = {
 
   toDatabase(response: Response) {
     return {
-      respondant: response.respondant,
-      form      : response.form,
-      content   : response.content,
-      status    : response.status,
-      deleted   : response.deleted,
-      createdAt : response.createdAt,
-      updatedAt : response.updatedAt
+      respondant: response.getRespondant(),
+      form      : response.getFormId(),
+      content   : response.getContent(),
+      status    : response.getStatus(),
+      deleted   : response.isDeleted(),
+      createdAt : response.getCreationDate(),
+      updatedAt : response.getLastMoficationDate()
     };
   }
 };

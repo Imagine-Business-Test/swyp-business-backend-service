@@ -15,7 +15,7 @@ export class ResetPassword extends Operation {
 
     try {
       const business = await this.businessRepository.findByAccountEmail(command.email);
-      const user = business.getCurrentUser();
+      const user = business.getUser();
       const password = await bcrypt.hash(command.password, 10);
       await this.businessRepository.updatePassword(user.email, password);
       this.emit(SUCCESS, {updated: true });

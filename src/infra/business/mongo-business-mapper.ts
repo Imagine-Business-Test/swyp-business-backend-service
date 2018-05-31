@@ -8,16 +8,16 @@ export const MongoBusinessMapper = {
     const business = new Business(name, logoUrl, accounts, _id);
 
     if (currentUser) {
-      business.setCurrentUser(currentUser);
+      business.setUser(currentUser);
     }
     return business;
   },
 
   toDatabase(business: Business) {
     return {
-      name: business.name,
-      logoUrl: business.logoUrl,
-      accounts: business.accounts
+      name: business.getName(),
+      logoUrl: business.getLogo(),
+      accounts: business.getAccounts()
     };
   }
 };

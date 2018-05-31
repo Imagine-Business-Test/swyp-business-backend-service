@@ -21,4 +21,4 @@ Schema.pre("update", function update(next) {
   next();
 });
 
-export const WorkStationModel = mongoose.model("work-stations", Schema);
+export const WorkstationModel = mongoose.model("workstations", Schema);
