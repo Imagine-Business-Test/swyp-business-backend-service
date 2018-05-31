@@ -3,27 +3,27 @@ import { LoggedInUser } from "../contracts/interfaces";
 
 
 export class Workstation {
-  private lastUpdatedBy: LoggedInUser;
+  private lastModifier: LoggedInUser;
   private deleted: Boolean;
   private business: string;
   private createdAt?: Date;
   private updatedAt?: Date;
-  private createdBy: LoggedInUser;
+  private creator: LoggedInUser;
   private name: string;
   private _id?: string;
 
   constructor(
-    name: string, business: string, createdBy: LoggedInUser, lastUpdatedBy: LoggedInUser,
+    name: string, business: string, creator: LoggedInUser, lastModifier: LoggedInUser,
     deleted: Boolean, _id?: string, createdAt?: Date, updatedAt?: Date
   ) {
-    this.lastUpdatedBy = lastUpdatedBy;
-    this.createdBy     = createdBy;
-    this.business      = business;
-    this.deleted       = deleted;
-    this.createdAt     = createdAt;
-    this.updatedAt     = updatedAt;
-    this.name          = name;
-    this._id           = _id;
+    this.lastModifier = lastModifier;
+    this.creator      = creator;
+    this.business     = business;
+    this.deleted      = deleted;
+    this.createdAt    = createdAt;
+    this.updatedAt    = updatedAt;
+    this.name         = name;
+    this._id          = _id;
   }
 
   createForm(name: string, content: string, creator: LoggedInUser): Form {
@@ -40,7 +40,7 @@ export class Workstation {
   }
 
   getLastModifier(): LoggedInUser {
-    return this.lastUpdatedBy;
+    return this.lastModifier;
   }
 
   getBusinessId(): string {
@@ -48,7 +48,7 @@ export class Workstation {
   }
 
   getCreator(): LoggedInUser {
-    return this.createdBy;
+    return this.creator;
   }
 
   isDeleted(): Boolean {

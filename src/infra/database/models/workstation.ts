@@ -5,16 +5,17 @@ const Schema = new mongoose.Schema({
   name: { type: String, required: true },
   createdAt: { type: Date, default: Date.now() },
   updatedAt: { type: Date, default: new Date() },
-  createdBy: {
+  creator: {
     email: { type: String, email: true, required: true },
     name: { type: String, required: true }
   },
-  lastUpdatedBy: {
+  lastModifier: {
     email: { type: String, email: true, required: true },
     name: { type: String, required: true }
   },
   deleted: { type: Boolean, default: false }
 });
+
 
 Schema.pre("update", function update(next) {
   this.update({}, {$set: { updatedAt: new Date() } });

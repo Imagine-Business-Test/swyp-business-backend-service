@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 export type WorkstationInterface = mongoose.Document & {
-  lastUpdatedBy: { email: string, name: string };
-  createdBy: { email: string, name: string };
+  lastModifier: { email: string, name: string };
+  creator: { email: string, name: string };
   business: string;
   createdAt: Date;
   updatedAt: Date;

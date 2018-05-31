@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 export type FormInterface = mongoose.Document & {
-  workStation: string;
-  lastUpdatedBy: { email: string, name: string };
-  createdBy: { email: string, name: string };
+  workstation: string;
+  lastModifier: { email: string, name: string };
+  creator: { email: string, name: string };
   deleted: Boolean;
   content: string;
   updateAt: Date;

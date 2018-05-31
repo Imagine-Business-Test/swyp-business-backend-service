@@ -5,7 +5,7 @@ import { Operation } from "../operation";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-export class AddBusinessAccount extends Operation {
+export class AddBusinessUser extends Operation {
 
   private businessRepository: BusinessRepository;
   private config: Config;
@@ -44,6 +44,6 @@ export class AddBusinessAccount extends Operation {
   }
 }
 
-AddBusinessAccount.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
+AddBusinessUser.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
 
 

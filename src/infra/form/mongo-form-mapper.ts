@@ -4,12 +4,12 @@ import { Form } from "../../domain";
 export const MongoFormMapper = {
   toEntity(doc: FormInterface): Form {
     const {
-      _id, name, workStation, status, createdBy, lastUpdatedBy, deleted, content, updateAt,
+      _id, name, workstation, status, creator, lastModifier, deleted, content, updateAt,
       createdAt
     } = doc;
 
     return new Form(
-      name, workStation, content, status, createdBy, lastUpdatedBy, deleted, _id, updateAt, createdAt,
+      name, workstation, content, status, creator, lastModifier, deleted, _id, updateAt, createdAt,
     );
   },
 

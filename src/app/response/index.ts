@@ -1,4 +1,4 @@
-export * from "./record-form-response";
+export * from "./record-response";
 export * from "./get-form-responses";
 export * from "./process-response";
 export * from "./delete-response";

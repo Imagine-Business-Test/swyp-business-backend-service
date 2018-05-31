@@ -6,7 +6,7 @@ import {
 } from "../../contracts/repositories";
 
 
-export class CreateWorkStation extends Operation {
+export class CreateWorkstation extends Operation {
   private businessRepository: BusinessRepository;
   private workStationRepository: WorkstationRepository;
 
@@ -39,4 +39,4 @@ export class CreateWorkStation extends Operation {
   }
 }
 
-CreateWorkStation.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
+CreateWorkstation.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);

@@ -34,20 +34,20 @@ import {
 import {
   RequestPasswordReset,
   DeleteBusinessUser,
-  AddBusinessAccount,
+  AddBusinessUser,
   LoginBusinessUser,
   CreateBusiness,
   ResetPassword
 } from "../../app/business";
 
 import {
-  CreateWorkStation,
+  CreateWorkstation,
   DeleteWorkstation,
   GetWorkstations,
 } from "../../app/workstation";
 
 import {
-  RecordFormResponse,
+  RecordResponse,
   GetFormResponses,
   ProcessResponse,
   DeleteResponse,
@@ -110,22 +110,20 @@ container.register({
 container.register({
   requestPasswordReset: asClass(RequestPasswordReset),
   deleteBusinessUser: asClass(DeleteBusinessUser),
-  addBusinessAccount: asClass(AddBusinessAccount),
+  addBusinessUser: asClass(AddBusinessUser),
   loginBusinessUser: asClass(LoginBusinessUser),
   createBusiness: asClass(CreateBusiness),
   resetPassword: asClass(ResetPassword),
 
-
-  createWorkStation: asClass(CreateWorkStation),
-  deleteWorkStation: asClass(DeleteWorkstation),
+  createWorkstation: asClass(CreateWorkstation),
+  deleteWorkstation: asClass(DeleteWorkstation),
   getWorkstations: asClass(GetWorkstations),
 
-  recordFormResponse: asClass(RecordFormResponse),
-  getFormResponses: asClass(GetFormResponses),
+  GetFormResponses: asClass(GetFormResponses),
   processResponse: asClass(ProcessResponse),
+  recordResponse: asClass(RecordResponse),
   deleteResponse: asClass(DeleteResponse),
   updateResponse: asClass(UpdateResponse),
-
 
   getWorkstationForms: asClass(GetWorkstationForms),
   disableForm: asClass(DisableForm),

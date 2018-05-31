@@ -3,8 +3,8 @@ import { User } from "../contracts/domain";
 import { Response } from "./response";
 
 export class Form {
-  private lastUpdateBy: LoggedInUser;
-  private createdBy: LoggedInUser;
+  private lastModifier: LoggedInUser;
+  private creator: LoggedInUser;
   private workstation: string;
   private updatedAt?: Date;
   private deleted: Boolean;
@@ -20,8 +20,8 @@ export class Form {
     _id?: string, updatedAt?: Date, createAt?: Date,
   ) {
     this.workstation  = workstation;
-    this.lastUpdateBy = modifier;
-    this.createdBy    = createdBy;
+    this.lastModifier = modifier;
+    this.creator    = createdBy;
     this.updatedAt    = updatedAt;
     this.createAt     = createAt;
     this.content      = content;
@@ -38,7 +38,7 @@ export class Form {
   }
 
   getLastModifier(): LoggedInUser {
-    return this.lastUpdateBy;
+    return this.lastModifier;
   }
 
   getCreationDate(): Date {
@@ -50,7 +50,7 @@ export class Form {
   }
 
   getCreator(): LoggedInUser {
-    return this.createdBy;
+    return this.creator;
   }
 
   getWorkstationId(): string {

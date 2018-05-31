@@ -1,9 +1,9 @@
 import { ResponseRepository, FormRepository } from "../../contracts/repositories";
-import { Operation } from "../operation";
 import { User } from "../../contracts/domain";
+import { Operation } from "../operation";
 
 
-export class RecordFormResponse extends Operation {
+export class RecordResponse extends Operation {
   private responseRepository: ResponseRepository;
   private formResponse: FormRepository;
 
@@ -31,4 +31,4 @@ export class RecordFormResponse extends Operation {
   }
 }
 
-RecordFormResponse.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
+RecordResponse.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);

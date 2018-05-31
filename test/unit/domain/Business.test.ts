@@ -75,8 +75,8 @@ describe("Domain :: Business", () => {
 
      expect(workstation).toEqual(expect.objectContaining({
        name: "Account Opening",
-       lastUpdatedBy: { name: user.name, email: user.email },
-       createdBy: { name: user.name, email: user.email },
+       lastModifier: { name: user.name, email: user.email },
+       creator: { name: user.name, email: user.email },
        business: "1234",
        deleted: false
      }));
