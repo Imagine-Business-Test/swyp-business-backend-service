@@ -16,14 +16,14 @@ export class CreateBusiness extends Operation {
     try {
       const { name, logoUrl } = command;
       const business          = new Business(name, logoUrl, []);
-      const savedBusiness     = this.businessRepository.add(business);
+      const savedBusiness     = await this.businessRepository.add(business);
 
-      this.emit(SUCCESS, savedBusiness);
+      return this.emit(SUCCESS, savedBusiness);
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

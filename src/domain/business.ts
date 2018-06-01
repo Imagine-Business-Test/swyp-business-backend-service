@@ -40,6 +40,10 @@ export class Business {
     return true;
   }
 
+  getId() {
+    return this._id;
+  }
+
   getAccounts() {
     return this.accounts;
   }

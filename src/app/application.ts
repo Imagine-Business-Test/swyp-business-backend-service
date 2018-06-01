@@ -16,7 +16,7 @@ export class Application implements App {
   async start() {
     try {
       if (this.database) {
-        this.database.authenticate(this.logger);
+        await this.database.authenticate(this.logger);
       }
       await this.server.start();
     } catch (ex) {

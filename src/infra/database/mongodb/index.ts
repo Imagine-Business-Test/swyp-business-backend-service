@@ -5,9 +5,10 @@ import { Logger } from "../../../contracts/infra";
 
 export default (config: Config) => {
   return {
-    authenticate(logger: Logger): void {
-      mongoose.connect(config.db.mongo_url)
-        .then(() => logger.info("Connection to database esterblished "));
+    authenticate(logger: Logger) {
+      return mongoose.connect(config.db.mongo_url)
+        .then(() => logger.info("Connection to database esterblished "))
+        .catch(err => logger.error(err.message));
     },
 
     drop(logger: Logger): void {

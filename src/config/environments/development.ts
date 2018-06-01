@@ -4,9 +4,9 @@ import { web } from "../components";
 import { db } from "../components";
 import { mail } from "../components";
 import path from "path";
-const logPath = path.join(__dirname, ".../../../logs/development.ts");
+const logPath = path.join(__dirname, "../../../logs/development.log");
 
-const config: Interface = {
+export const config: Interface = {
   ...commons,
   web,
   db,
@@ -22,5 +22,4 @@ const config: Interface = {
   }
 };
 
-exports.config = config;
 

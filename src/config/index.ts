@@ -3,10 +3,9 @@ import { Config } from "../contracts/config";
 
 dotenv.load();
 const processType = process.env.PROCESS_TYPE;
-let configuration: Config;
-
+let env;
 try {
-  configuration = require(`./${processType}`);
+  env = require(`./${processType}`);
 } catch (exception) {
   if (exception.code === " MODULE_NOT_FOUND") {
     throw new Error(`No config for process type: ${processType}`);
@@ -14,4 +13,4 @@ try {
   throw exception;
 }
 
-export const config: Config = configuration;
+export const config: Config = env.config;

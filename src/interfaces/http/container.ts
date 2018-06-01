@@ -5,9 +5,12 @@ import { MongoFormRepository } from "../../infra/form";
 import { Application } from "../../app/application";
 import mongoDB from "../../infra/database/mongodb";
 import { scopePerRequest } from  "awilix-express";
+import { BusinessSerializer } from "./business";
+import { Logger } from "../../infra/logging";
 import { HttpServer } from "./server";
 import { config }  from "../../config";
 import router from "./router";
+
 import {
   WorkstationModel,
   BusinessModel,
@@ -71,14 +74,14 @@ ErrorHandler = config.process.env === "production" ? errorHandler : devErrorHand
 // System
 container.register({
   database: asFunction(mongoDB).singleton(),
-  app: asClass(Application).singleton(),
   server: asClass(HttpServer).singleton(),
-  config: asValue(config),
-  router: asFunction(router).singleton()
+  router: asFunction(router).singleton(),
+  logger: asFunction(Logger).singleton(),
+  app: asClass(Application).singleton(),
+  config: asValue(config)
 });
 
 // Data Models
-
 container.register({
   workstationModel: asValue(WorkstationModel),
   businessModel: asValue(BusinessModel),
@@ -98,8 +101,8 @@ container.register({
 // Middleware
 container.register({
   configMiddleware: asFunction(configMiddleware).singleton(),
-  containerMiddleware: asValue(scopePerRequest(container)),
   logMiddleware: asFunction(logMiddleware).singleton(),
+  container: asValue(scopePerRequest(container)),
   errorHandler: asValue(ErrorHandler),
   validator: asValue(validator),
 });
@@ -110,8 +113,8 @@ container.register({
 container.register({
   requestPasswordReset: asClass(RequestPasswordReset),
   deleteBusinessUser: asClass(DeleteBusinessUser),
-  addBusinessUser: asClass(AddBusinessUser),
   loginBusinessUser: asClass(LoginBusinessUser),
+  addBusinessUser: asClass(AddBusinessUser),
   createBusiness: asClass(CreateBusiness),
   resetPassword: asClass(ResetPassword),
 
@@ -129,6 +132,13 @@ container.register({
   disableForm: asClass(DisableForm),
   deleteForm: asClass(DeleteForm),
   createForm: asClass(CreateForm)
+});
+
+
+ // Serializers
+
+container.register({
+  businessSerializer: asValue(BusinessSerializer)
 });
 
 export default container;

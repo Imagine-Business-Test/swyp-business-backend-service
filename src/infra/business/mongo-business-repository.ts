@@ -8,8 +8,8 @@ import { Business } from "../../domain";
 export class MongoBusinessRepository implements BusinessRepository {
   private model: BusinessModel;
 
-  constructor(model: BusinessModel) {
-    this.model = model;
+  constructor(businessModel: BusinessModel) {
+    this.model = businessModel;
   }
 
   async add(business: Business): Promise<Business> {

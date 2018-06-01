@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const Schema = new mongoose.Schema({
-  form: { type: mongoose.Types.ObjectId, required: true },
+  form: { type: mongoose.Schema.Types.ObjectId, required: true },
   createdAt: { type: Date, required: true },
   content: { type: String, required: true },
   user: {
-    _id: { type: mongoose.Types.ObjectId, required: true },
+    _id: { type: mongoose.Schema.Types.ObjectId, required: true },
     email: { type: String, email: true, required: true },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
