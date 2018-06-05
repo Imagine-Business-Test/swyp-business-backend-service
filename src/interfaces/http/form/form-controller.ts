@@ -1,13 +1,15 @@
 import { CreateForm } from "../../../app/form";
 import { Router, Response } from "express";
 import { FormRules } from "../validation";
+import { auth } from "../middleware";
 import Status from "http-status";
+
 
 
 export const FormController = {
   get router() {
     const router = Router();
-    router.post("/", this.create);
+    router.post("/", auth, this.create);
 
     return router;
   },

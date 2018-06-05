@@ -11,8 +11,8 @@ export const MongoWorkstationMapper = {
 
   toDatabase(workStation: Workstation) {
     return {
-      lastUpdatedBy: workStation.getLastModifier(),
-      createdBy    : workStation.getCreator(),
+      lastModifier: workStation.getLastModifier(),
+      creator    : workStation.getCreator(),
       business     : workStation.getBusinessId(),
       name         : workStation.getName(),
     };

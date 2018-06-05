@@ -58,4 +58,8 @@ export class Workstation {
   getName(): string {
     return this.name;
   }
+
+  getId(): string {
+    return this._id!;
+  }
 }

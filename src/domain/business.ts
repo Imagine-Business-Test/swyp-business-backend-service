@@ -20,7 +20,9 @@ export class Business {
 
     const loggedinUser = {
       name: <string>this.currentUser!.name,
-      email: <string>this.currentUser!.email};
+      email: <string>this.currentUser!.email
+    };
+
     const business = this._id!;
     const deleted = false;
     return new Workstation(name, business, loggedinUser, loggedinUser, deleted);

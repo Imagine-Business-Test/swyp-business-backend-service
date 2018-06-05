@@ -5,17 +5,16 @@ import {
   BusinessRepository
 } from "../../contracts/repositories";
 
-
 export class CreateWorkstation extends Operation {
   private businessRepository: BusinessRepository;
   private workStationRepository: WorkstationRepository;
 
   constructor(
-    workStationRepo: WorkstationRepository,
-    businessRepo: BusinessRepository) {
+    workstationRepository: WorkstationRepository,
+    businessRepository: BusinessRepository) {
     super();
-    this.workStationRepository = workStationRepo;
-    this.businessRepository    = businessRepo;
+    this.workStationRepository = workstationRepository;
+    this.businessRepository    = businessRepository;
   }
 
   async execute(command: { businessId: string, name: string, user: LoggedInUser }) {
@@ -29,12 +28,12 @@ export class CreateWorkstation extends Operation {
         business.createWorkStation(name)
       );
 
-    this.emit(SUCCESS, workStation);
+    return this.emit(SUCCESS, workStation);
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+       return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

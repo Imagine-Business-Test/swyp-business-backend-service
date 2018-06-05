@@ -10,8 +10,8 @@ import {
 export class MongoWorkstationRepository implements WorkstationRepository {
   private model: WorkstationModel;
 
-  constructor(model: WorkstationModel) {
-    this.model = model;
+  constructor(workstationModel: WorkstationModel) {
+    this.model = workstationModel;
   }
 
   async add(workStation: Workstation): Promise<Workstation> {

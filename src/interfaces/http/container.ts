@@ -65,6 +65,7 @@ import {
   DeleteForm,
   CreateForm
 } from "../../app/form";
+import { WorkStationSerializer } from "./workstation";
 
 
 const container = createContainer({
@@ -142,7 +143,8 @@ container.register({
 
 container.register({
   businessSerializer: asValue(BusinessSerializer),
-  formSerializer: asValue(FormSerializer)
+  formSerializer: asValue(FormSerializer),
+  workstationSerializer: asValue(WorkStationSerializer)
 });
 
 // Services
