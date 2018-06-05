@@ -7,6 +7,7 @@ export const BusinessRule = {
   }).required(),
 
   addBusinessUser: joi.object().keys({
+    business: joi.string().required(),
     email: joi.string().email().required(),
     password: joi.string().min(8).required(),
     name: joi.string().required(),
@@ -19,6 +20,10 @@ export const BusinessRule = {
   }).required(),
 
   requestPasswordReset: joi.object().keys({
+    email: joi.string().email().required()
+  }).required(),
+
+  deleteBusinessUser: joi.object().keys({
     email: joi.string().email().required()
   }).required(),
 

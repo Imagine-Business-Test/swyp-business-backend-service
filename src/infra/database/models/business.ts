@@ -4,7 +4,7 @@ const Schema = new mongoose.Schema({
   logoUrl: { type: String, required: true },
   name: { type: String, required: true, unique: true },
   accounts: [{
-    email: { type: String, required: true, email: true, unique: true },
+    email: { type: String, required: true, email: true},
     password: { type: String, required: true, min: 8 },
     created: { type: Date, default: new Date() },
     updatedAt: { type: Date, default: new Date() },

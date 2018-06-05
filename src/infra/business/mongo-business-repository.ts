@@ -4,7 +4,6 @@ import { MongoBusinessMapper } from "./mongo-business-mapper";
 import { Account } from "../../contracts/domain";
 import { Business } from "../../domain";
 
-
 export class MongoBusinessRepository implements BusinessRepository {
   private model: BusinessModel;
 
@@ -28,7 +27,7 @@ export class MongoBusinessRepository implements BusinessRepository {
   async addAccount(businessId: string, account: Account): Promise<Business> {
 
     try {
-      let doc = await this.model.findOne({ "accounts": { email: account.email }});
+      let doc = await this.model.findOne({ "accounts.email": account.email });
       if (doc)
         throw new Error(`Account with the provided email already exist`);
 
@@ -49,7 +48,7 @@ export class MongoBusinessRepository implements BusinessRepository {
   async findByAccountEmail(email: string): Promise<Business>  {
 
     try {
-      const doc = await this.model.findOne({ "accounts": { email: email }});
+      const doc = await this.model.findOne({ "accounts.email": email });
 
       if (!doc) {
         throw new Error(`Account not found`);
@@ -76,8 +75,8 @@ export class MongoBusinessRepository implements BusinessRepository {
       const result = await this.model.updateOne(
         {},
         { $set: {
-          "account.$[elem].passwordResetToken": token,
-          "account.$[elem].passwordResetExpires": expires}
+          "accounts.$[elem].passwordResetToken": token,
+          "accounts.$[elem].passwordResetExpires": expires}
         },
         { arrayFilters: [ { "elem.email": email } ] }
       );
@@ -95,7 +94,7 @@ export class MongoBusinessRepository implements BusinessRepository {
     try {
       const result = await this.model.updateOne(
         {},
-        { $set: {"account.$[elem].password": password } },
+        { $set: {"accounts.$[elem].password": password } },
         { arrayFilters: [ { "elem.email": email } ] }
       );
       if (result.nModified !== 1 && result.nMatched === 1) {
@@ -127,11 +126,10 @@ export class MongoBusinessRepository implements BusinessRepository {
   }
 
   private async updateLastLogin(user: Account) {
-
     return this.model.updateOne(
       { },
-      { $set: { "accounts.$[elem].lastLogIn": new Date()}},
-      { arrayFilters: [ { "elem.email": user.email} ] }
+      { $set: { "accounts.$[element].lastLogIn": new Date()}},
+      { arrayFilters: [ { "element.email": user.email} ] }
     );
   }
 }

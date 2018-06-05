@@ -8,9 +8,9 @@ export class LoginBusinessUser extends Operation {
   private businessRepository: BusinessRepository;
   private config: Config;
 
-  constructor(businessRepo: BusinessRepository, config: Config) {
+  constructor(businessRepository: BusinessRepository, config: Config) {
     super();
-    this.businessRepository = businessRepo;
+    this.businessRepository = businessRepository;
     this.config             = config;
   }
 
@@ -31,12 +31,12 @@ export class LoginBusinessUser extends Operation {
         name: user.name
       }, this.config.web.json_secret);
 
-      this.emit(SUCCESS, { user, token, business });
+      return this.emit(SUCCESS, { user, token, business });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

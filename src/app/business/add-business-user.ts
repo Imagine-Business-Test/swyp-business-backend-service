@@ -34,12 +34,12 @@ export class AddBusinessUser extends Operation {
 
       // new account created event
 
-      this.emit(SUCCESS, { business, token });
+      return this.emit(SUCCESS, { business, user, token });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

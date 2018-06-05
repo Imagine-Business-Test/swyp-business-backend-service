@@ -7,7 +7,7 @@ export default (config: Config) => {
   return {
     authenticate(logger: Logger) {
       return mongoose.connect(config.db.mongo_url)
-        .then(() => logger.info("Connection to database esterblished "))
+        .then(() => logger.info("Connection to database established "))
         .catch(err => logger.error(err.message));
     },
 
