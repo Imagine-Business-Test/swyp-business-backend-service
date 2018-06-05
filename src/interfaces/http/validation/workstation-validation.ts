@@ -7,10 +7,10 @@ export const WorkstationRule = {
   }).required(),
 
   deleteWorkstation: joi.object().keys({
-    workstation: joi.string().required()
+    id: joi.string().required()
   }).required(),
 
-  getWorkstations: joi.object().keys({
+  getBusinessWorkstations: joi.object().keys({
     business: joi.string().required()
   }).required()
 };

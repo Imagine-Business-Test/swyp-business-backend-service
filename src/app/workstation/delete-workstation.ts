@@ -5,9 +5,9 @@ import { LoggedInUser } from "../../contracts/interfaces";
 export class DeleteWorkstation extends Operation {
   private workstationRepository: WorkstationRepository;
 
-  constructor(worksationRepo: WorkstationRepository) {
+  constructor(workstationRepository: WorkstationRepository) {
     super();
-    this.workstationRepository = worksationRepo;
+    this.workstationRepository = workstationRepository;
   }
 
   async execute(command: { workstation: string, user: LoggedInUser}) {
