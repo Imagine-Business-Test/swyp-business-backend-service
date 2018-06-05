@@ -63,6 +63,7 @@ import {
   DeleteForm,
   CreateForm
 } from "../../app/form";
+import { Mailer } from "../../services";
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -139,6 +140,12 @@ container.register({
 
 container.register({
   businessSerializer: asValue(BusinessSerializer)
+});
+
+// Services
+
+container.register({
+  mailer: asClass(Mailer).singleton()
 });
 
 export default container;

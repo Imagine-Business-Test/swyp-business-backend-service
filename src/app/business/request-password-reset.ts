@@ -8,9 +8,9 @@ export class RequestPasswordReset extends Operation {
   private businessRepository: BusinessRepository;
   private mailer: Mailer;
 
-  constructor(businessRepo: BusinessRepository, mailer: Mailer) {
+  constructor(businessRepository: BusinessRepository, mailer: Mailer) {
     super();
-    this.businessRepository = businessRepo;
+    this.businessRepository = businessRepository;
     this.mailer = mailer;
   }
 

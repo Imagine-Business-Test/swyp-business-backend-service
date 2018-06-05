@@ -54,13 +54,8 @@ export class MongoBusinessRepository implements BusinessRepository {
         throw new Error(`Account not found`);
       }
 
-      const currentUser = <Account>doc.accounts.find(account => {
-        return account.email === email;
-      });
+      const currentUser = this.processCurrentUser(doc.accounts, email);
 
-      if (currentUser.deleted) {
-        throw new Error("Account disabled");
-      }
       await this.updateLastLogin(currentUser);
       return MongoBusinessMapper.toEntity(doc, currentUser);
     } catch (ex) {
@@ -68,6 +63,20 @@ export class MongoBusinessRepository implements BusinessRepository {
       ex.message = "DatabaseError";
       throw ex;
     }
+  }
+
+  async findByPasswordResetToken(email: string, token: string): Promise<Business> {
+    const doc = await this.model.findOne({
+      "accounts.email": email,
+      "accounts.passwordResetToken": token
+    });
+    if (!doc) {
+      throw new Error(`Account not found`);
+    }
+
+    const currentUser = this.processCurrentUser(doc.accounts, email);
+
+    return MongoBusinessMapper.toEntity(doc, currentUser);
   }
 
   async requestPasswordReset(email: string, token: string, expires: Date) {
@@ -123,6 +132,18 @@ export class MongoBusinessRepository implements BusinessRepository {
       ex.message = "DatabaseError";
       throw ex;
     }
+  }
+
+  private processCurrentUser(users: Account[], email: string): Account {
+
+    const currentUser = <Account>users.find(account => {
+      return account.email === email;
+    });
+
+    if (currentUser.deleted) {
+      throw new Error("Account disabled");
+    }
+    return currentUser;
   }
 
   private async updateLastLogin(user: Account) {

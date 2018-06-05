@@ -21,7 +21,7 @@ export class Mailer {
 
   private configureMailOPtion() {
     return {
-      from: "Swyp",
+      from: "'Swyp 👻' <foo@example.com>",
       to: "",
       subject: "",
       "h:Reply-To": "info@naijachamps.com",
@@ -29,9 +29,8 @@ export class Mailer {
     };
   }
 
-
   public sendPasswordChanged (name: string, email: string) {
-    const text = `Hello ${name} . \n Your password on Naija Champs app was changed.`;
+    const text = `Hello ${name} . \n Your password on swyp app was changed.`;
     this.send(text, "Password Changed", email);
   }
 

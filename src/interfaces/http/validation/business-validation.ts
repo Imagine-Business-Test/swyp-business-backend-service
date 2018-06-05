@@ -20,6 +20,7 @@ export const BusinessRule = {
   }).required(),
 
   requestPasswordReset: joi.object().keys({
+    origin: joi.string().required().label("Origin to redirect user is missing"),
     email: joi.string().email().required()
   }).required(),
 
@@ -28,6 +29,7 @@ export const BusinessRule = {
   }).required(),
 
   resetPassword: joi.object().keys({
+    token: joi.string().required(),
     email: joi.string().email().required(),
     password: joi.string().min(8).required()
   }).required()

@@ -9,5 +9,6 @@ export interface BusinessRepository {
  findByAccountEmail: (email: string) => Promise<Business>;
  add: (business: Business) => Promise<Business>;
  deleteAccount: (email: string) => void;
+ findByPasswordResetToken: (email: string, token: string) => Promise<Business>;
 
 }
