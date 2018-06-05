@@ -28,8 +28,9 @@ export class LoginBusinessUser extends Operation {
 
       const token = jwt.sign({
         email: user.email,
-        name: user.name
-      }, this.config.web.json_secret);
+        name: user.name,
+        isBusiness: true
+      }, this.config.web.json_secret, { expiresIn: "24h"});
 
       return this.emit(SUCCESS, { user, token, business });
     } catch (ex) {

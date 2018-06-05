@@ -30,7 +30,9 @@ export const BusinessSerializer = {
 
 const pruneSensitiveData = (accounts: Account[] | Account ) => {
   if ( Array.isArray(accounts) ) {
-    return( <Account[]>accounts).map((account: Account ) => {
+
+    return accounts.filter((account: Account) => !account.deleted)
+      .map((account: Account ) => {
       return {
         lastLogIn: account.lastLoginIn,
         created: account.created,

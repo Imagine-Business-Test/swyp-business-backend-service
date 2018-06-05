@@ -1,19 +1,20 @@
 import { BusinessRepository } from "../../contracts/repositories";
+import { LoggedInUser } from "../../contracts/interfaces";
 import { Operation } from "../operation";
 
 export class DeleteBusinessUser extends Operation {
   private businessRepository: BusinessRepository;
 
-  constructor(businessRepo: BusinessRepository) {
+  constructor(businessRepository: BusinessRepository) {
     super();
-    this.businessRepository = businessRepo;
+    this.businessRepository = businessRepository;
   }
 
-  async execute(command: { email: string }) {
+  async execute(command: { email: string, modifier: LoggedInUser }) {
     const { SUCCESS, ERROR, DATABASE_ERROR} = this.outputs;
-    // test to see what happens when a deleted account is deleted again
+    // do not update record if already deleted
     try {
-      await this.businessRepository.deleteAccount(command.email);
+      await this.businessRepository.deleteAccount(command.email, command.modifier);
 
       this.emit(SUCCESS, { deleted: true });
     } catch (ex) {

@@ -9,6 +9,8 @@ import { BusinessSerializer } from "./business";
 import { Logger } from "../../infra/logging";
 import { HttpServer } from "./server";
 import { config }  from "../../config";
+import { Mailer } from "../../services";
+import { FormSerializer } from "./form";
 import router from "./router";
 
 import {
@@ -63,7 +65,7 @@ import {
   DeleteForm,
   CreateForm
 } from "../../app/form";
-import { Mailer } from "../../services";
+
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -139,7 +141,8 @@ container.register({
  // Serializers
 
 container.register({
-  businessSerializer: asValue(BusinessSerializer)
+  businessSerializer: asValue(BusinessSerializer),
+  formSerializer: asValue(FormSerializer)
 });
 
 // Services

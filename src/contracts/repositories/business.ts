@@ -1,5 +1,6 @@
 import { Business } from "../../domain";
 import { Account } from "../domain";
+import { LoggedInUser } from "../interfaces";
 
 export interface BusinessRepository {
 
@@ -8,7 +9,7 @@ export interface BusinessRepository {
  updatePassword: (email: string, password: string) => void;
  findByAccountEmail: (email: string) => Promise<Business>;
  add: (business: Business) => Promise<Business>;
- deleteAccount: (email: string) => void;
+ deleteAccount: (email: string, modifier: LoggedInUser) => void;
  findByPasswordResetToken: (email: string, token: string) => Promise<Business>;
 
 }

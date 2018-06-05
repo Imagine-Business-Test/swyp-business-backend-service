@@ -9,7 +9,7 @@ export class Form {
   private updatedAt?: Date;
   private deleted: Boolean;
   private content: string;
-  private createAt?: Date;
+  private createdAt?: Date;
   private status: string;
   private name: string;
   private _id?: string;
@@ -17,13 +17,13 @@ export class Form {
   constructor(
     name: string, workstation: string, content: string, status: string,
     createdBy: LoggedInUser, modifier: LoggedInUser, deleted: Boolean,
-    _id?: string, updatedAt?: Date, createAt?: Date,
+    _id?: string, updatedAt?: Date, createdAt?: Date,
   ) {
     this.workstation  = workstation;
     this.lastModifier = modifier;
     this.creator    = createdBy;
     this.updatedAt    = updatedAt;
-    this.createAt     = createAt;
+    this.createdAt     = createdAt;
     this.content      = content;
     this.deleted      = deleted;
     this.status       = status;
@@ -42,7 +42,7 @@ export class Form {
   }
 
   getCreationDate(): Date {
-    return this.createAt!;
+    return this.createdAt!;
   }
 
   getLastUpdateDate(): Date {
@@ -67,6 +67,10 @@ export class Form {
 
   getStatus(): string {
     return this.status;
+  }
+
+  getId(): string {
+    return this._id!;
   }
 
   getName(): string {

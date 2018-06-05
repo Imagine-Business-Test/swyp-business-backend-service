@@ -1,8 +1,10 @@
 import { BusinessModel, BusinessInterface } from "../../contracts/infra";
 import { BusinessRepository } from "../../contracts/repositories";
 import { MongoBusinessMapper } from "./mongo-business-mapper";
+import { LoggedInUser } from "../../contracts/interfaces";
 import { Account } from "../../contracts/domain";
 import { Business } from "../../domain";
+
 
 export class MongoBusinessRepository implements BusinessRepository {
   private model: BusinessModel;
@@ -120,12 +122,15 @@ export class MongoBusinessRepository implements BusinessRepository {
     }
   }
 
-  async deleteAccount(email: string) {
+  async deleteAccount(email: string, modifer: LoggedInUser) {
 
     try {
       const result = await this.model.updateOne(
         {},
-        { $set: { "accounts.$[elem].deleted": true }},
+        { $set: {
+          "accounts.$[elem].deleted": true,
+          "accounts.$[elem].deletedBy": modifer
+        }},
         { arrayFilters: [ { "elem.email": email } ] }
       );
       if (result.nModified !== 1 && result.nMatched === 1) {

@@ -1,17 +1,25 @@
-import { CreateBusiness, AddBusinessUser, LoginBusinessUser, DeleteBusinessUser, ResetPassword, RequestPasswordReset } from "../../../app/business";
 import { BusinessRule } from "../validation";
 import { Router, Response } from "express";
+import { auth } from "../middleware";
 import  Status from "http-status";
 
+import {
+  RequestPasswordReset,
+  DeleteBusinessUser,
+  LoginBusinessUser,
+  AddBusinessUser,
+  CreateBusiness,
+  ResetPassword,
+} from "../../../app/business";
 
 export const BusinessController = {
 
   get router() {
     const router = Router();
     router.post("/", this.create)
-      .post("/adduser", this.addUser)
+      .post("/adduser", auth, this.addUser)
       .post("/loginuser", this.loginUser)
-      .post("/deleteuser", this.deleteUser)
+      .post("/deleteuser", auth, this.deleteUser)
       .post("/requestpasswordrest", this.requestPasswordRest)
       .post("/resetpassword", this.resetPassword);
 
@@ -103,8 +111,8 @@ export const BusinessController = {
       });
     })
     .on(ERROR, next);
-
-    handler.execute(req.body);
+    const command = { email: req.body.email, modifier: req.user };
+    handler.execute(command);
   },
 
   requestPasswordRest(req: any, res: Response, next: any) {

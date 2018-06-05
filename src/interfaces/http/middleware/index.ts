@@ -3,3 +3,4 @@ export * from "./config-middleware";
 export * from "./log-middleware";
 export * from "./error-handler";
 export * from "./validator";
+export * from "./auth";

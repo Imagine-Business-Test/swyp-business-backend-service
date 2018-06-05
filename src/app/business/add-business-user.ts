@@ -28,8 +28,9 @@ export class AddBusinessUser extends Operation {
       const user     = business.getUser();
       const token = jwt.sign({
         email: user.email,
-        name: user.name
-      }, this.config.web.json_secret);
+        name: user.name,
+        isBusiness: true
+      }, this.config.web.json_secret, {expiresIn: "24h"});
 
       // new account created event
 

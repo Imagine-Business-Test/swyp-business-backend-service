@@ -13,6 +13,7 @@ const Schema = new mongoose.Schema({
     passwordResetExpires: { type: Date },
     passwordResetToken: { type: String},
     deleted: { type: Boolean, default: false },
+    deletedBy: { email: String, name: String },
     lastLogIn: { type: Date,  default: new Date() }
   }]
 });
