@@ -103,7 +103,11 @@ export class MongoBusinessRepository implements BusinessRepository {
     try {
       const result = await this.model.updateOne(
         {},
-        { $set: {"accounts.$[elem].password": password } },
+        { $set: {
+          "accounts.$[elem].password": password,
+          "accounts.$[elem].passwordResetToken": null,
+          "accounts.$[elem].passwordResetExpires": null
+        } },
         { arrayFilters: [ { "elem.email": email } ] }
       );
       if (result.nModified !== 1 && result.nMatched === 1) {
