@@ -1,7 +1,7 @@
 import { Operation } from "../operation";
 import { ResponseRepository } from "../../contracts/repositories";
 
-export class UpdateResponse extends Operation {
+export class UpdateResponseContent extends Operation {
   private responseRepository: ResponseRepository;
 
   constructor(responseRepo: ResponseRepository) {
@@ -25,4 +25,4 @@ export class UpdateResponse extends Operation {
   }
 }
 
-UpdateResponse.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
+UpdateResponseContent.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);

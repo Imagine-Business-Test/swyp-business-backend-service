@@ -13,10 +13,15 @@ export const ResponseRule = {
     }).required(),
   }).required(),
 
-  updateResponse: joi.object().keys({
-    content: joi.string().required(),
-    response: joi.string().required(),
-  }).required(),
+  updateContent: {
+    content: joi.object().keys({
+      content: joi.string().required(),
+    }).required(),
+
+    response: joi.object().keys({
+      response: joi.string().required(),
+    }).required()
+  },
 
   getFormResponse: joi.object().keys({
     form: joi.string().required()

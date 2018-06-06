@@ -54,9 +54,9 @@ import {
 import {
   RecordResponse,
   GetFormResponses,
+  UpdateResponseContent,
   ProcessResponse,
   DeleteResponse,
-  UpdateResponse,
 } from "../../app/response";
 
 import {
@@ -66,6 +66,7 @@ import {
   CreateForm
 } from "../../app/form";
 import { WorkStationSerializer } from "./workstation";
+import { ResponseSerializer } from "./response";
 
 
 const container = createContainer({
@@ -126,11 +127,11 @@ container.register({
   createWorkstation: asClass(CreateWorkstation),
   deleteWorkstation: asClass(DeleteWorkstation),
 
+  updateResponse: asClass(UpdateResponseContent),
   GetFormResponses: asClass(GetFormResponses),
   processResponse: asClass(ProcessResponse),
   recordResponse: asClass(RecordResponse),
   deleteResponse: asClass(DeleteResponse),
-  updateResponse: asClass(UpdateResponse),
 
   getWorkstationForms: asClass(GetWorkstationForms),
   disableForm: asClass(DisableForm),
@@ -142,9 +143,10 @@ container.register({
  // Serializers
 
 container.register({
+  workstationSerializer: asValue(WorkStationSerializer),
+  responseSerializer: asValue(ResponseSerializer),
   businessSerializer: asValue(BusinessSerializer),
   formSerializer: asValue(FormSerializer),
-  workstationSerializer: asValue(WorkStationSerializer)
 });
 
 // Services

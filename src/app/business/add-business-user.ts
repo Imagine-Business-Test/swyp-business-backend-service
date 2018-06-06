@@ -21,8 +21,8 @@ export class AddBusinessUser extends Operation {
     const {SUCCESS, ERROR, DATABASE_ERROR} = this.outputs;
 
     try {
-      command.account.password       = await bcrypt.hash(command.account.password, 10);
       const { businessId, account }  = command;
+      account.password       = await bcrypt.hash(account.password, 10);
 
       const business = await this.businessRepository.addAccount(businessId, account);
       const user     = business.getUser();

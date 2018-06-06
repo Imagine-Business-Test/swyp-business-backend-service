@@ -4,7 +4,7 @@ const Schema = new mongoose.Schema({
   form: { type: mongoose.Schema.Types.ObjectId, required: true },
   createdAt: { type: Date, required: true },
   content: { type: String, required: true },
-  user: {
+  respondant: {
     _id: { type: mongoose.Schema.Types.ObjectId, required: true },
     email: { type: String, email: true, required: true },
     firstname: { type: String, required: true },

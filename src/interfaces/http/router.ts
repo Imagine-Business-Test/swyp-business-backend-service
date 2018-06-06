@@ -1,10 +1,12 @@
+import { WorkstationController } from "./workstation";
+import { BusinessController } from "./business";
+import { ResponseController } from "./response";
+import { FormController } from "./form";
 import compression from "compression";
 import bodyParser from "body-parser";
 import { Router } from "express";
 import cors from "cors";
-import { BusinessController } from "./business";
-import { FormController } from "./form";
-import { WorkstationController } from "./workstation";
+
 
 
 export default (logMiddleware: any, errorHandler: any, container: any, validator: any, configMiddleware: any) => {
@@ -23,8 +25,9 @@ export default (logMiddleware: any, errorHandler: any, container: any, validator
     .get("/", (_req, res) => {
       res.send("Welcome to swyp business API");
     })
-    .use("/businesses", BusinessController.router)
     .use("/workstations", WorkstationController.router)
+    .use("/businesses", BusinessController.router)
+    .use("/responses", ResponseController.router)
     .use("/forms", FormController.router);
 
   router.use("/api/v1", apiRouter)
