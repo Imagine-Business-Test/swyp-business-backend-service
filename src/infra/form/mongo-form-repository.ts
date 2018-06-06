@@ -45,11 +45,11 @@ export class MongoFormRepository implements FormRepository {
     );
   }
 
-  async updateContent(id: string, content: string) {
+  async updateContent(id: string, content: string, modifier: LoggedInUser) {
     try {
       const result = await this.model.updateOne(
         { _id: id },
-        { $set: { content: content }}
+        { $set: { content: content, lastModifier: modifier }}
       );
       if (result.nModified !== 1 && result.nMatched === 1) {
         throw  new Error(`Error updating content ${result.nModified} affected`);

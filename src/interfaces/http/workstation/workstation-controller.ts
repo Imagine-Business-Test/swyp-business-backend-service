@@ -47,16 +47,10 @@ export const WorkstationController = {
 
     const handler = <GetBusinessWorkstations>req.container.resolve("getBusinessWorkstations");
     const serializer = req.container.resolve("workstationSerializer");
-    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+    const { SUCCESS, ERROR } = handler.outputs;
 
     handler.on(SUCCESS, workstation => {
       res.status(Status.OK).json(serializer.serialize(workstation));
-    })
-    .on(DATABASE_ERROR, error => {
-      res.status(Status.BAD_GATEWAY).json({
-        type: "DatabaseError",
-        details: error.details
-      });
     })
     .on(ERROR, next);
 

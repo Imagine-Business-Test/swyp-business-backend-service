@@ -1,5 +1,7 @@
-import { Operation } from "../operation";
 import { FormRepository } from "../../contracts/repositories";
+import { LoggedInUser } from "../../contracts/interfaces";
+import { Operation } from "../operation";
+
 
 export class UpdateFormContent extends Operation {
   private formRepository: FormRepository;
@@ -9,11 +11,13 @@ export class UpdateFormContent extends Operation {
     this.formRepository = formRepo;
   }
 
-  async execute(command: {form: string, content: string}) {
+  async execute(command: {form: string, content: string, modifier: LoggedInUser}) {
     const { SUCCESS, ERROR, DATABSE_ERROR } = this.outputs;
 
     try {
-      await this.formRepository.updateContent(command.form, command.content);
+      const { form, content, modifier } = command;
+
+      await this.formRepository.updateContent(form, content, modifier);
       this.emit(SUCCESS, { updated: true });
     } catch (ex) {
       if (ex.message === "DatabaseError") {

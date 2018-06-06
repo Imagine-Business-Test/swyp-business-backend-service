@@ -11,6 +11,15 @@ export const FormRules = {
     form: joi.string().required()
   }).required(),
 
+  updateContent: {
+    content: joi.object().keys({
+      content: joi.string().required()
+    }).required(),
+    form: joi.object().keys({
+      form: joi.string().required()
+    }).required()
+  },
+
   disableForm: joi.object().keys({
     form: joi.string().required(),
   }).required(),
