@@ -37,13 +37,13 @@ Fork and clone the application repository:
 
 ```shell
 # Clone your GitHub repository:
-git clone git@github.com:<github username>/angular.git
+git clone git@bitbucket.org:oracka/business-backend-service.git
 
 # Go to the appplication directory:
-cd angular
+cd business-frontend-service
 
 # Add the main  repository as an upstream remote to your repository:
-git remote add upstream https://github.com/angular/angular.git
+git remote add upstream git@bitbucket.org:oracka/business-backend-service.git
 ```
 ## Installing NPM Modules
 
@@ -70,9 +70,8 @@ Before you submit your Pull Request (PR) consider the following guidelines:
   is necessary because release notes are automatically generated from these messages.
 
      ```shell
-     git commit -a
+     npm run commit
      ```
-    Note: the optional commit `-a` command line option will automatically "add" and "rm" edited files.
 
 6. Push your branch to GitHub:
 
@@ -122,7 +121,7 @@ from the main (upstream) repository:
     git pull --ff upstream master
     ```
 
-## <a name="rules"></a> Coding Rules
+## Coding Rules
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
 * All features or bug fixes **must be tested** by one or more specs (unit-tests).
@@ -131,7 +130,7 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
   **100 characters**. An automated formatter is available, see
   [DEVELOPER.md](docs/DEVELOPER.md#clang-format).
 
-## <a name="commit"></a> Commit Message Guidelines
+## Commit Message Guidelines
 
 We have very precise rules over how our git commit messages can be formatted.  This leads to **more
 readable messages** that are easy to follow when looking through the **project history**.  But also,
@@ -243,7 +242,7 @@ $ npm run build
 
 * Results are put in the dist folder.
 
-## <a name="test"></a> Running Tests Locally
+## Running Tests Locally
 
 To run tests:
 
@@ -262,7 +261,7 @@ All the tests are executed on our Continuous Integration infrastructure and a PR
 - CircleCI fails if your code is not formatted properly,
 - Travis CI fails if any of the test suites described above fails.
 
-## <a name="clang-format"></a> Formatting your source code
+## Formatting your source code
 
 The Application uses eslint to format the source code. If the source code
 is not properly formatted, the CI will fail and the PR can not be merged.
