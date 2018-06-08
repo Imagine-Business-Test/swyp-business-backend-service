@@ -31,7 +31,7 @@ export const auth = (req: any, res: Response, next: any) => {
 
     return res.status(Status.UNAUTHORIZED).json({
       type: "InvalidateToken",
-      details: ""
+      details: ex.message
     });
   }
 };

@@ -6,8 +6,8 @@ import { Response } from "../../domain";
 export class MongoResponseRepository implements ResponseRepository {
   private model: ResponseModel;
 
-  constructor(model: ResponseModel) {
-    this.model = model;
+  constructor(responseModel: ResponseModel) {
+    this.model = responseModel;
   }
 
   async add(response: Response): Promise<Response> {
@@ -31,10 +31,10 @@ export class MongoResponseRepository implements ResponseRepository {
     try {
       const result = await this.model.updateOne(
         {_id: id},
-        { $set: { content }}
+        { $set: { content: content }}
       );
-      if (result.nModified !== 1 && result.nMatched === 1) {
-        throw  new Error(`Error updating content: ${result.nModified } affected `);
+      if (result.nModified !== 1 || result.nMatched === 1) {
+        throw  new Error(`Error updating content: ${result.nModified } updated `);
       }
     } catch (ex) {
       ex.details = ex.message;
@@ -44,14 +44,15 @@ export class MongoResponseRepository implements ResponseRepository {
   }
 
   async makeAsprocessed(id: string) {
+    console.log(id);
     try {
       const result = await this.model.updateOne(
         {_id: id},
         { $set: { status:  "processed"}}
       );
-      if (result.nModified !== 1 && result.nMatched === 1) {
+      if (result.nModified !== 1 || result.nMatched === 1) {
         throw  new Error(
-          `Error marking response as processed: ${result.nModified } affected `
+          `Error marking response as processed: ${result.nModified } processed `
         );
       }
     } catch (ex) {
@@ -67,9 +68,9 @@ export class MongoResponseRepository implements ResponseRepository {
         {_id: id},
         { $set: { deleted:  true }}
       );
-      if (result.nModified !== 1 && result.nMatched === 1) {
+      if (result.nModified !== 1 || result.nMatched === 1) {
         throw  new Error(
-          `Error deleting response: ${result.nModified } affected `
+          `Error deleting response: ${result.nModified } deleted `
         );
       }
     } catch (ex) {

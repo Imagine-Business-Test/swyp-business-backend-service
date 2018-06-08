@@ -2,15 +2,18 @@ import { MongoWorkstationRepository } from "../../infra/workstation";
 import { MongoResponseRepository } from "../../infra/response";
 import { MongoBusinessRepository } from "../../infra/business";
 import { MongoFormRepository } from "../../infra/form";
+import { WorkStationSerializer } from "./workstation";
 import { Application } from "../../app/application";
 import mongoDB from "../../infra/database/mongodb";
 import { scopePerRequest } from  "awilix-express";
+import { ResponseSerializer } from "./response";
 import { BusinessSerializer } from "./business";
 import { Logger } from "../../infra/logging";
 import { HttpServer } from "./server";
 import { config }  from "../../config";
 import { Mailer } from "../../services";
 import { FormSerializer } from "./form";
+
 import router from "./router";
 
 import {
@@ -63,10 +66,10 @@ import {
   GetWorkstationForms,
   DisableForm,
   DeleteForm,
-  CreateForm
+  CreateForm,
+  UpdateFormContent
 } from "../../app/form";
-import { WorkStationSerializer } from "./workstation";
-import { ResponseSerializer } from "./response";
+
 
 
 const container = createContainer({
@@ -127,13 +130,14 @@ container.register({
   createWorkstation: asClass(CreateWorkstation),
   deleteWorkstation: asClass(DeleteWorkstation),
 
-  updateResponse: asClass(UpdateResponseContent),
-  GetFormResponses: asClass(GetFormResponses),
+  updateResponseContent: asClass(UpdateResponseContent),
+  getFormResponses: asClass(GetFormResponses),
   processResponse: asClass(ProcessResponse),
   recordResponse: asClass(RecordResponse),
   deleteResponse: asClass(DeleteResponse),
 
   getWorkstationForms: asClass(GetWorkstationForms),
+  updateFormContent: asClass(UpdateFormContent),
   disableForm: asClass(DisableForm),
   deleteForm: asClass(DeleteForm),
   createForm: asClass(CreateForm)

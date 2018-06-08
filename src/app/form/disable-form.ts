@@ -5,9 +5,9 @@ import { Operation } from "../operation";
 export class DisableForm extends Operation {
   private formRepository: FormRepository;
 
-  constructor(formRepo: FormRepository) {
+  constructor(formRepository: FormRepository) {
     super();
-    this.formRepository = formRepo;
+    this.formRepository = formRepository;
   }
 
   async execute(command: {form: string, user: LoggedInUser}) {
@@ -15,12 +15,12 @@ export class DisableForm extends Operation {
 
     try {
       await this.formRepository.disable(command.form, command.user);
-      this.emit(SUCCESS, { disabled: true });
+      return this.emit(SUCCESS, { disabled: true });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

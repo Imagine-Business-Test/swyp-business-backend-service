@@ -15,10 +15,10 @@ export const MongoFormMapper = {
 
   toDatabase(form: Form) {
     return {
-      lastUpdatedBy: form.getLastModifier(),
-      workStation  : form.getWorkstationId(),
+      lastModifier: form.getLastModifier(),
+      workstation  : form.getWorkstationId(),
       updateAt     : form.getLastUpdateDate(),
-      createdBy    : form.getCreator(),
+      creator    : form.getCreator(),
       createdAt    : form.getCreationDate(),
       content      : form.getContent(),
       deleted      : form.isDeleted(),

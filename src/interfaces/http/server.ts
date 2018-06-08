@@ -20,6 +20,7 @@ export class HttpServer implements Server {
   }
 
   start() {
+
     return new Promise(resolve => {
       const http = this.express
         .listen(this.config.process.port, () => {

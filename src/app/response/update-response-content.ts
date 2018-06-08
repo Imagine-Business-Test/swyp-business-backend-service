@@ -4,9 +4,9 @@ import { ResponseRepository } from "../../contracts/repositories";
 export class UpdateResponseContent extends Operation {
   private responseRepository: ResponseRepository;
 
-  constructor(responseRepo: ResponseRepository) {
+  constructor(responseRepository: ResponseRepository) {
     super();
-    this.responseRepository = responseRepo;
+    this.responseRepository = responseRepository;
   }
 
   async execute(command: {response: string, content: string }) {
@@ -15,12 +15,12 @@ export class UpdateResponseContent extends Operation {
     try {
       const { response, content } = command;
       await this.responseRepository.updateContent(response, content);
-      this.emit(SUCCESS, { updated: true });
+      return this.emit(SUCCESS, { updated: true });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

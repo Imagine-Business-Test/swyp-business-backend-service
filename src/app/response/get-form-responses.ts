@@ -5,9 +5,9 @@ import { Operation } from "../operation";
 export class GetFormResponses extends Operation {
   private responseRepository: ResponseRepository;
 
-  constructor(responseRepo: ResponseRepository) {
+  constructor(responseRepository: ResponseRepository) {
     super();
-    this.responseRepository = responseRepo;
+    this.responseRepository = responseRepository;
   }
 
 
@@ -16,9 +16,9 @@ export class GetFormResponses extends Operation {
 
     try {
       const responses = await this.responseRepository.getByForm(command.form);
-      this.emit(SUCCESS, responses);
+      return this.emit(SUCCESS, responses);
     } catch (ex) {
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

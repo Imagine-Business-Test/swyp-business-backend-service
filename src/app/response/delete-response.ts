@@ -4,9 +4,9 @@ import { Operation } from "../operation";
 export class DeleteResponse extends Operation {
   private responseRepository: ResponseRepository;
 
-  constructor(responseRepo: ResponseRepository) {
+  constructor(responseRepository: ResponseRepository) {
     super();
-    this.responseRepository = responseRepo;
+    this.responseRepository = responseRepository;
   }
 
   async execute(command: { response: string }) {
@@ -14,12 +14,12 @@ export class DeleteResponse extends Operation {
 
     try {
       await this.responseRepository.delete(command.response);
-      this.emit(SUCCESS, { deleted: true });
+      return this.emit(SUCCESS, { deleted: true });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

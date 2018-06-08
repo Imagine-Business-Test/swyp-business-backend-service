@@ -9,6 +9,7 @@ export const ResponseRule = {
       email: joi.string().email().required(),
       firstname: joi.string().required(),
       lastname: joi.string().required(),
+      phone: joi.string().required(),
       middlename: joi.string()
     }).required(),
   }).required(),

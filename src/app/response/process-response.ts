@@ -5,23 +5,22 @@ import { Operation } from "../operation";
 export class ProcessResponse extends Operation {
   private responseRepository: ResponseRepository;
 
-  constructor(responseRepo: ResponseRepository) {
+  constructor(responseRepository: ResponseRepository) {
     super();
-    this.responseRepository = responseRepo;
+    this.responseRepository = responseRepository;
   }
 
   async execute(command: { response: string }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
-
     try {
       await this.responseRepository.makeAsprocessed(command.response);
-      this.emit(SUCCESS, { processed: true });
+      return this.emit(SUCCESS, { processed: true });
       // emit response processed event
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

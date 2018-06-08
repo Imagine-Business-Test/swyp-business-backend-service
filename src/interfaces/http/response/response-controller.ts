@@ -11,7 +11,7 @@ export const ResponseController = {
     router.post("/", auth, this.record)
       .get("/forms/:form", auth, this.getFormResponses)
       .put("/:response", auth, this.updateContent)
-      .put("/process/:form", auth, this.process)
+      .put("/process/:response", auth, this.process)
       .delete("/:response", auth, this.delete);
 
     return router;
@@ -40,7 +40,7 @@ export const ResponseController = {
 
   getFormResponses(req: any, res: Response, next: any) {
     req.validateParams(ResponseRule.getFormResponse);
-    const handler = <GetFormResponses>req.container.resolve("getFormResponse");
+    const handler = <GetFormResponses>req.container.resolve("getFormResponses");
     const serializer = req.container.resolve("responseSerializer");
     const { SUCCESS, ERROR } = handler.outputs;
 
@@ -87,8 +87,7 @@ export const ResponseController = {
       });
     })
     .on(ERROR, next);
-
-    handler.execute(req.params.response);
+    handler.execute(req.params);
   },
 
   delete(req: any, res: Response, next: any) {
@@ -107,6 +106,6 @@ export const ResponseController = {
     })
     .on(ERROR, next);
 
-    handler.execute(req.params.response);
+    handler.execute(req.params);
   }
 };

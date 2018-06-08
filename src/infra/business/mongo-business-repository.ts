@@ -91,8 +91,8 @@ export class MongoBusinessRepository implements BusinessRepository {
         },
         { arrayFilters: [ { "elem.email": email } ] }
       );
-      if (result.nModified !== 1 && result.nMatched === 1) {
-        throw  new Error(`Error updating account: ${result.nModified } affected `);
+      if (result.nModified !== 1 || result.nMatched === 1) {
+        throw  new Error(`Error updating account: ${result.nModified } updated `);
       }
     } catch (ex) {
       ex.details = ex.message;
@@ -112,8 +112,8 @@ export class MongoBusinessRepository implements BusinessRepository {
         } },
         { arrayFilters: [ { "elem.email": email } ] }
       );
-      if (result.nModified !== 1 && result.nMatched === 1) {
-        throw  new Error(`Error updating account: ${result.nModified } affected `);
+      if (result.nModified !== 1 || result.nMatched === 1) {
+        throw  new Error(`Error updating account: ${result.nModified } updated `);
       }
     } catch (ex) {
       ex.details = ex.message;
@@ -133,8 +133,8 @@ export class MongoBusinessRepository implements BusinessRepository {
         }},
         { arrayFilters: [ { "elem.email": email } ] }
       );
-      if (result.nModified !== 1 && result.nMatched === 1) {
-        throw  new Error(`Error deleting account: ${result.nModified } affected `);
+      if (result.nModified !== 1 || result.nMatched === 1) {
+        throw  new Error(`Error deleting account: ${result.nModified } deleted `);
       }
     } catch (ex) {
       ex.details = ex.message;

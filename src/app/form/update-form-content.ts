@@ -6,9 +6,9 @@ import { Operation } from "../operation";
 export class UpdateFormContent extends Operation {
   private formRepository: FormRepository;
 
-  constructor(formRepo: FormRepository) {
+  constructor(formRepository: FormRepository) {
     super();
-    this.formRepository = formRepo;
+    this.formRepository = formRepository;
   }
 
   async execute(command: {form: string, content: string, modifier: LoggedInUser}) {
@@ -18,12 +18,12 @@ export class UpdateFormContent extends Operation {
       const { form, content, modifier } = command;
 
       await this.formRepository.updateContent(form, content, modifier);
-      this.emit(SUCCESS, { updated: true });
+      return this.emit(SUCCESS, { updated: true });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABSE_ERROR, ex);
+        return this.emit(DATABSE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

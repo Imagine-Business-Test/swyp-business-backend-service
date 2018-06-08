@@ -12,7 +12,8 @@ export const FormSerializer = {
           creator: form.creator,
           lastModifier: form.lastModifier,
           createdAt: form.createdAt,
-          updatedAt: form.updateAt
+          updatedAt: form.updateAt,
+          _id: form._id
         };
       });
     }

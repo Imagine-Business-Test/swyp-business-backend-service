@@ -15,10 +15,10 @@ export class Application implements App {
 
   async start() {
     try {
+      await this.server.start();
       if (this.database) {
         await this.database.authenticate(this.logger);
       }
-      await this.server.start();
     } catch (ex) {
       this.logError(ex);
     }

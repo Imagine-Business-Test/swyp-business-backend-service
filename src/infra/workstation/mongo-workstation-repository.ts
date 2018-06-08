@@ -49,8 +49,8 @@ export class MongoWorkstationRepository implements WorkstationRepository {
     try {
       const result = await this.model.updateOne({ _id: id },
         { $set: { deleted: true, lastUpdatedBy: user }});
-        if (result.nModified !== 1 && result.nMatched === 1) {
-          throw  new Error(`Error deleting workstation: ${result.nModified } affected `);
+        if (result.nModified !== 1 || result.nMatched === 1) {
+          throw  new Error(`Error deleting workstation: ${result.nModified } deleted `);
         }
     } catch (ex) {
       ex.details = ex.message;

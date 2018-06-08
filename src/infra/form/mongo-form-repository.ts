@@ -8,8 +8,8 @@ import { Form } from "../../domain";
 export class MongoFormRepository implements FormRepository {
   private model: FormModel;
 
-  constructor(model: FormModel) {
-    this.model = model;
+  constructor(formModel: FormModel) {
+    this.model = formModel;
   }
 
   async add(form: Form) {
@@ -19,7 +19,7 @@ export class MongoFormRepository implements FormRepository {
       );
       return MongoFormMapper.toEntity(doc);
     } catch (ex) {
-      ex.detail = ex.message;
+      ex.details = ex.message;
       ex.message = "DatabaseError";
       throw ex;
     }
@@ -51,8 +51,8 @@ export class MongoFormRepository implements FormRepository {
         { _id: id },
         { $set: { content: content, lastModifier: modifier }}
       );
-      if (result.nModified !== 1 && result.nMatched === 1) {
-        throw  new Error(`Error updating content ${result.nModified} affected`);
+      if (result.nModified !== 1 || result.nMatched === 1) {
+        throw  new Error(`Error updating content ${result.nModified} updated`);
       }
     } catch (ex) {
       ex.details = ex.message;
@@ -67,7 +67,7 @@ export class MongoFormRepository implements FormRepository {
         { _id: id },
         { $set: { status: "disabled", lastUpdatedBy: modifier } }
       );
-      if (result.nModified !== 1 && result.nMatched === 1) {
+      if (result.nModified !== 1 || result.nMatched === 1) {
         throw  new Error(`Error disabling form: ${result.nModified } affected `);
       }
     } catch (ex) {
@@ -84,8 +84,8 @@ export class MongoFormRepository implements FormRepository {
         { _id: id },
         { $set: { deleted: true, lastUpdatedBy: user } }
       );
-      if (result.nModified !== 1 && result.nMatched === 1) {
-        throw  new Error(`Error deleting form: ${result.nModified } affected `);
+      if (result.nModified !== 1 || result.nMatched === 1) {
+        throw  new Error(`Error deleting form: ${result.nModified } deleted `);
       }
     } catch (ex) {
       ex.details = ex.message;

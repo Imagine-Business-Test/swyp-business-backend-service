@@ -6,31 +6,31 @@ export class CreateForm extends Operation {
   private formRepository: FormRepository;
   private workstationRepository: WorkstationRepository;
 
-  constructor(formRepo: FormRepository, workRepo: WorkstationRepository) {
+  constructor(formRepository: FormRepository, workstationRepository: WorkstationRepository) {
     super();
-    this.workstationRepository = workRepo;
-    this.formRepository        = formRepo;
+    this.workstationRepository = workstationRepository;
+    this.formRepository        = formRepository;
   }
 
   async execute(
-    command: { workstationId: string, name: string, content: string, user: LoggedInUser}
+    command: { workstation: string, name: string, content: string, user: LoggedInUser}
   ) {
 
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
-      const { workstationId, name, content, user } = command;
+      const { workstation, name, content, user } = command;
 
-      const workstation = await this.workstationRepository.find(workstationId);
+      const workstationRecord = await this.workstationRepository.find(workstation);
       const form        = await this.formRepository.add(
-        workstation.createForm(name, content, user)
+        workstationRecord.createForm(name, content, user)
       );
 
-      this.emit(SUCCESS, form);
+      return this.emit(SUCCESS, form);
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }
