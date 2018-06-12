@@ -10,7 +10,7 @@ import { ResponseSerializer } from "./response";
 import { BusinessSerializer } from "./business";
 import { Logger } from "../../infra/logging";
 import { HttpServer } from "./server";
-import { config }  from "../../config";
+import  config from "../../config";
 import { Mailer } from "../../services";
 import { FormSerializer } from "./form";
 

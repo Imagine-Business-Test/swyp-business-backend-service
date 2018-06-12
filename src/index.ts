@@ -1,4 +1,4 @@
-import { config } from "./config";
+import config from "./config";
 const pkg = require("../package.json");
 import semver from "semver";
 

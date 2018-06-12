@@ -6,7 +6,7 @@ import { mail } from "../components";
 import path from "path";
 const logPath = path.join(__dirname, "../../../logs/development.log");
 
-export const config: Interface = {
+const config: Interface = {
   ...commons,
   web,
   db,
@@ -22,4 +22,4 @@ export const config: Interface = {
   }
 };
 
-
+module.exports = config;
