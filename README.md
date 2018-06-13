@@ -1,6 +1,6 @@
 # Building and Testing Business Service
 
-This document describes how to set up your development environment to contribute to the business service.
+This document describes how to set up your development environment to contribute to the swyp business backend service.
 It also explains the basic mechanics of using `git`, `node`, and `npm`.
 
 * [Prerequisite Software](#prerequisite-software)
@@ -22,10 +22,6 @@ following products on your development machine:
 
 * [Yarn](https://yarnpkg.com) (version specified in the engines field of [`package.json`](../package.json)) which is used to install dependencies.
 
-* [Java Development Kit](http://www.oracle.com/technetwork/es/java/javase/downloads/index.html) which is used
-  to execute the selenium standalone server for e2e testing.
-
-* (Optional for now) [Bazel](https://bazel.build/), please follow instructions in [Bazel.md]
 
 ## Getting the Sources
 
@@ -33,33 +29,34 @@ Fork and clone the application repository:
 
 1. Login to your bitbucket account and fork the application
 3. Clone your fork of the application repository and define an `upstream` remote pointing back to
-   the application repository that you forked in the first place.
+   the application repository that you forked.
 
 ```shell
 # Clone your GitHub repository:
 git clone git@bitbucket.org:oracka/business-backend-service.git
 
 # Go to the appplication directory:
-cd business-frontend-service
+cd business-backend-service
 
 # Add the main  repository as an upstream remote to your repository:
 git remote add upstream git@bitbucket.org:oracka/business-backend-service.git
 ```
 ## Installing NPM Modules
 
-Next, install the JavaScript modules needed to build and test Angular:
+Next, install the JavaScript modules needed to build and test the application:
 
 ```shell
 # Install application project dependencies (package.json)
 yarn install
 ```
-## <a name="submit-pr"></a> Submitting a Pull Request (PR)
+## Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
 
 1. Make your changes in a new git branch:
 
      ```shell
-     git checkout -b new-feature master
+     git checkout develop
+     git checkout -b new-feature-name-goes-here develop
      ```
 
 2. Code the functionality or create your patch, **including appropriate test cases**.
@@ -73,20 +70,20 @@ Before you submit your Pull Request (PR) consider the following guidelines:
      npm run commit
      ```
 
-6. Push your branch to GitHub:
+6. Push your branch to Bitbucket:
 
     ```shell
-    git push origin 
+    git push origin new-geature-name-goes-here
     ```
 
-7. In GitHub, send a pull request to `angular:master`.
+7. In Bitbucket, send a pull request to `business-backend-service:develop`.
 * If we suggest changes then:
   * Make the required updates.
   * Re-run the whole test suites to ensure tests are still passing.
-  * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
+  * Rebase your branch and force push to your bitbucket repository (this will update your Pull Request):
 
     ```shell
-    git rebase master -i
+    git rebase develop -i
     git push -f
     ```
 
@@ -100,25 +97,25 @@ from the main (upstream) repository:
 * Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
 
     ```shell
-    git push origin --delete new-feature
+    git push origin --delete new-feature-name-goes-here
     ```
 
-* Check out the master branch:
+* Check out the develop branch:
 
     ```shell
-    git checkout master -f
+    git checkout develop -f
     ```
 
 * Delete the local branch:
 
     ```shell
-    git branch -D new-feature
+    git branch -D new-feature-name-goes-here
     ```
 
-* Update your master with the latest upstream version:
+* Update your develop with the latest upstream version:
 
     ```shell
-    git pull --ff upstream master
+    git pull --ff upstream develop
     ```
 
 ## Coding Rules
@@ -126,7 +123,7 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 
 * All features or bug fixes **must be tested** by one or more specs (unit-tests).
 * All public API methods **must be documented**. (Details TBC).
-* We follow [AirBnb][js-style-guide], but wrap all code at
+* We follow [AirBnb](https://github.com/airbnb/javascript), but wrap all code at
   **100 characters**. An automated formatter is available, see
   [DEVELOPER.md](docs/DEVELOPER.md#clang-format).
 
@@ -183,27 +180,8 @@ Must be one of the following:
 * **test**: Adding missing tests or correcting existing tests
 
 ### Scope
-The scope should be the name of the npm package affected (as perceived by the person reading the changelog generated from commit messages.
+The scope should be the name of the files/folders affected (as perceived by the person reading the changelog generated from commit messages.
 
-The following is the list of supported scopes:
-
-* **animations**
-* **common**
-* **compiler**
-* **compiler-cli**
-* **core**
-* **elements**
-* **forms**
-* **http**
-* **language-service**
-* **platform-browser**
-* **platform-browser-dynamic**
-* **platform-server**
-* **platform-webworker**
-* **platform-webworker-dynamic**
-* **router**
-* **service-worker**
-* **upgrade**
 
 There are currently a few exceptions to the rule:
 * **changelog**: used for updating the release notes in CHANGELOG.md
@@ -254,7 +232,6 @@ $ npm run watch-test         # Run test each time a file is updated
 
 You should execute the 3 test suites before submitting a PR to github.
 
-See [DEBUG.md](DEBUG.md) for information on debugging the code while running the unit tests.
 
 All the tests are executed on our Continuous Integration infrastructure and a PR could only be merged once the tests pass.
 
@@ -266,10 +243,10 @@ All the tests are executed on our Continuous Integration infrastructure and a PR
 The Application uses eslint to format the source code. If the source code
 is not properly formatted, the CI will fail and the PR can not be merged.
 
-You can automatically format your code by running:
+You can automatically check your code by for format error by running:
 
 ``` shell
-$ 
+$ npm run format
 ```
 
 ## Linting/verifying your source code
