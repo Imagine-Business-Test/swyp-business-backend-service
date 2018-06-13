@@ -84,7 +84,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
     ```shell
     git rebase develop -i
-    git push -f
+    git push -f origin new-feature-name
     ```
 
 That's it! Thank you for your contribution!
