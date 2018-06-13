@@ -73,10 +73,10 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 6. Push your branch to Bitbucket:
 
     ```shell
-    git push origin 
+    git push origin new-geature-name-goes-here
     ```
 
-7. In GitHub, send a pull request to `business-backend-service:develop`.
+7. In Bitbucket, send a pull request to `business-backend-service:develop`.
 * If we suggest changes then:
   * Make the required updates.
   * Re-run the whole test suites to ensure tests are still passing.
