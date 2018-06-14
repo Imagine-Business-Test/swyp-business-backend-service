@@ -47,7 +47,7 @@ Next, install the JavaScript modules needed to build and test the application:
 
 ```shell
 # Install application project dependencies (package.json)
-yarn install
+$ yarn install
 ```
 ## Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
