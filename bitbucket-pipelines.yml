@@ -3,6 +3,11 @@ image: node:9.11.2
 pipelines:
   branches:
     master:
+      environment:
+        MAILGUN_DOMAIN: $MAILGUN_DOMAIN
+        MAILGUN_SECRET: $MAILGUN_SECRET
+        JSON_SECRET: $JSON_SECRET
+        MONGO_URL: $MONGO_URL
       -step:
         script:
           - yarn
