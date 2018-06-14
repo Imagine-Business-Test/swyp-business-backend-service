@@ -1,17 +1,17 @@
+# This is a sample build configuration for Javascript (Node.js).
+# Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
 image: node:9.11.2
 
 pipelines:
-  branches:
-    master:
-      environment:
-        MAILGUN_DOMAIN: $MAILGUN_DOMAIN
-        MAILGUN_SECRET: $MAILGUN_SECRET
-        JSON_SECRET: $JSON_SECRET
-        MONGO_URL: $MONGO_URL
-      -step:
-        script:
-          - yarn
-          - yarn build
-          - rm -rf src
-          - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_STAGING.git master
+    branches:
+      master:
+        - step:
+            script: # Modify the commands below to build your repository.
+              - yarn
+              - yarn test
+              - rm -rf src
+              - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_STAGING.git master
 
