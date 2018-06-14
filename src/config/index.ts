@@ -2,7 +2,7 @@ import dotenv from  "dotenv";
 import { Config } from "../contracts/config";
 dotenv.load();
 
-const processType = process.env.PROCESS_TYPE || "web";
+const processType = process.env.PROCESS_TYPE || "test";
 let env: Config;
 try {
   env = require(`./${processType}`);
