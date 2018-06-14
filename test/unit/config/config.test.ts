@@ -1,3 +1,10 @@
+process.env.MAILGUN_DOMAIN = process.env.MAILGUN_DOMAIN || "something";
+process.env.MAILGUN_SECRET = process.env.MAILGUN_SECRET || "something";
+process.env.JSON_SECRET = process.env.JSON_SECRET || "something";
+process.env.MONGO_URL = process.env.MONGO_URL || "something";
+
+process.env.PORT = process.env.PORT || "2309";
+
 import config  from "../../../src/config";
 
 describe("Config :: process", () => {
@@ -6,7 +13,7 @@ describe("Config :: process", () => {
   });
 
   it("It has a port property", () => {
-    expect(typeof config.process.port).toBe("number");
+    expect(typeof Number(config.process.port)).toBe("number");
   });
 
   it("It has a type property", () => {
