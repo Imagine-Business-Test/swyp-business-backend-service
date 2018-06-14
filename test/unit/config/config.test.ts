@@ -1,4 +1,15 @@
+/* tslint: desable */
+
+
+
 import config  from "../../../src/config";
+beforeAll(() => {
+  process["MAILGUN_DOMAIN"] = process["MAILGUN_DOMAIN"] || "undefine";
+  process["MAILGUN_SECRET"] = process["MAILGUN_SECRET"] || "undefine";
+  process["JSON_SECRET"] = process["JSON_SECRET"] || "undefine";
+  process["MONGO_URL"] = process["MONGO_URL"] || "undefine";
+  process["PORT"] = process["PORT"] || 23;
+});
 
 describe("Config :: process", () => {
   test("Its an object", () => {
