@@ -47,17 +47,17 @@ Next, install the JavaScript modules needed to build and test the application:
 
 ```shell
 # Install application project dependencies (package.json)
-yarn install
+$ yarn install
 ```
 ## Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
 
 1. Make your changes in a new git branch:
 
-     ```shell
-     git checkout develop
-     git checkout -b new-feature-name-goes-here develop
-     ```
+  ```shell
+  $ git checkout develop
+  $ git checkout -b new-feature-name-goes-here develop
+  ```
 
 2. Code the functionality or create your patch, **including appropriate test cases**.
 3. Follow our [Coding Rules](#rules).
