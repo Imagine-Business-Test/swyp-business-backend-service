@@ -1,0 +1,1 @@
+{"version":3,"file":"log-stream-adapter.js","sourceRoot":"","sources":["../../../src/infra/logging/log-stream-adapter.ts"],"names":[],"mappings":";;AAEa,QAAA,SAAS,GAAG;IACvB,QAAQ,CAAC,MAAuB;QAC9B,OAAO;YACL,KAAK,CAAC,OAAe;gBACnB,MAAM,CAAC,IAAI,CAAC,OAAO,CAAC,KAAK,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC;YACpC,CAAC;SACF,CAAC;IACJ,CAAC;CACF,CAAC"}
