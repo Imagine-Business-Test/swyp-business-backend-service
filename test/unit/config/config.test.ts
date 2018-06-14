@@ -13,7 +13,7 @@ describe("Config :: process", () => {
   });
 
   it("It has a port property", () => {
-    expect(typeof Number(config.process.port)).toBe("string");
+    expect(typeof Number(config.process.port)).toBe("number");
   });
 
   it("It has a type property", () => {
