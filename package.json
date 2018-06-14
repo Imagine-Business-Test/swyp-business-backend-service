@@ -7,7 +7,7 @@
   "license": "None",
   "scripts": {
     "start": "npm run serve",
-    "build": "npm run build-ts && npm run tslint && npm run test",
+    "build": "npm run  format && npm run build-ts && npm run tslint && npm run test",
     "serve": "node dist/index.js",
     "commit": "git-cz",
     "watch-node": "nodemon dist/index.js",
@@ -16,6 +16,7 @@
     "watch-test": "npm run test -- --watchAll",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
+    "format": "tslint -c tslint.json -p tsconfig.json --fix",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
   },
