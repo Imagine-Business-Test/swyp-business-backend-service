@@ -1,3 +1,5 @@
+process.env.PORT = process.env.PORT || "2309";
+
 import { LogStream } from "../../../../src/infra/logging/log-stream-adapter";
 import config  from "../../../../src/config";
 import logger from "log4js";
