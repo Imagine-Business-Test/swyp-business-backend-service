@@ -32,8 +32,8 @@ Fork and clone the application repository:
    the application repository that you forked.
 
 ```shell
-# Clone your GitHub repository:
-git clone git@bitbucket.org:oracka/business-backend-service.git
+# Clone your bitbucket repository:
+git clone git@bitbucket.org:<your-bitbucket-username>/business-backend-service.git
 
 # Go to the appplication directory:
 cd business-backend-service
@@ -202,10 +202,6 @@ The body should include the motivation for the change and contrast this with pre
 The footer should contain any information about **Breaking Changes** and is also the place to
 reference GitHub issues that this commit **Closes**.
 
-**Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines. The rest of the commit message is then used for this.
-
-A detailed explanation can be found in this [document][commit-message-format].
-
 ## Editor Setup
 Before editing or adding new code to the code base ensure that your ide or editor of choose has the following installed and enabled.
 * tslint
@@ -215,7 +211,7 @@ Before editing or adding new code to the code base ensure that your ide or edito
 To build application run:
 
 ```shell
-$ npm run build
+$ yarn build
 ```
 
 * Results are put in the dist folder.
@@ -225,8 +221,8 @@ $ npm run build
 To run tests:
 
 ```shell
-$ npm run test or             # Run all application tests on node
-$ npm run watch-test         # Run test each time a file is updated
+$ yarn test or             # Run all application tests on node
+$ yarn watch-test         # Run test each time a file is updated
 
 ```
 
@@ -246,7 +242,7 @@ is not properly formatted, the CI will fail and the PR can not be merged.
 You can automatically check your code by for format error by running:
 
 ``` shell
-$ npm run format
+$ yarn format
 ```
 
 ## Linting/verifying your source code
@@ -254,7 +250,7 @@ $ npm run format
 You can check that your code is properly formatted and adheres to coding style by running:
 
 ``` shell
-$ npm run watch-debug
+$ yarn watch-debug
 ```
 
 
