@@ -4,8 +4,8 @@ import { User } from "../domain";
 export type ResponseInterface = mongoose.Document & {
   deleted: Boolean;
   respondant: User;
-  updatedAt?: Date;
-  createdAt?: Date;
+  updatedAt: Date;
+  createdAt: Date;
   content: string;
   status: string;
   form: string;
