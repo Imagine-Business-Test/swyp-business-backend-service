@@ -8,7 +8,7 @@ exports.BusinessRule = {
     createBusiness: joi_1.default.object().keys({
         name: joi_1.default.string().required(),
         logoUrl: joi_1.default.string().required(),
-        user: joi_1.default.object().keys({
+        account: joi_1.default.object().keys({
             email: joi_1.default.string().email().required(),
             password: joi_1.default.string().min(8).required(),
             name: joi_1.default.string().required(),
