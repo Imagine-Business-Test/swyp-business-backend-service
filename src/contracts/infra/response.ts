@@ -1,14 +1,18 @@
 import mongoose from "mongoose";
-import { User } from "../domain";
+import { User, Form } from "../domain";
+import { LoggedInUser } from "../interfaces";
 
 export type ResponseInterface = mongoose.Document & {
+  processor: LoggedInUser,
+  notedBy: LoggedInUser,
   deleted: Boolean;
   respondant: User;
   updatedAt: Date;
   createdAt: Date;
   content: string;
   status: string;
-  form: string;
+  note: string;
+  form: Form;
   _id: string;
 };
 

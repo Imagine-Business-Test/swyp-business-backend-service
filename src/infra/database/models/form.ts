@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const Schema = new mongoose.Schema({
   status: { type: String, enum: ["active", "disabled"], default: "active" },
   workstation: { type: mongoose.Schema.Types.ObjectId, required: true },
+  business: { type: mongoose.Schema.Types.ObjectId, required: true },
   createdAt: { type: Date, default: new Date() },
   updatedAt: { type: Date, default: new Date() },
   deleted: { type: Boolean, default: false },

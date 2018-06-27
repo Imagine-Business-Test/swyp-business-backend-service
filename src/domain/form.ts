@@ -6,6 +6,7 @@ export class Form {
   private lastModifier: LoggedInUser;
   private creator: LoggedInUser;
   private workstation: string;
+  private business: string;
   private updatedAt?: Date;
   private deleted: Boolean;
   private content: string;
@@ -14,16 +15,18 @@ export class Form {
   private name: string;
   private _id?: string;
 
+
   constructor(
-    name: string, workstation: string, content: string, status: string,
+    name: string, workstation: string, business: string, content: string, status: string,
     createdBy: LoggedInUser, modifier: LoggedInUser, deleted: Boolean,
     _id?: string, updatedAt?: Date, createdAt?: Date,
   ) {
     this.workstation  = workstation;
-    this.lastModifier = modifier;
-    this.creator    = createdBy;
+    this.creator      = createdBy;
     this.updatedAt    = updatedAt;
-    this.createdAt     = createdAt;
+    this.createdAt    = createdAt;
+    this.business     = business;
+    this.lastModifier = modifier;
     this.content      = content;
     this.deleted      = deleted;
     this.status       = status;
@@ -34,7 +37,12 @@ export class Form {
   createResponse(content: string, respondant: User): Response {
     const deleted = false;
     const status = "pending";
-    return new Response(respondant, <string>this._id, content, status, deleted);
+    const form = {
+      _id: this.getId(),
+      business: this.getBusiness(),
+      workspace: this.getWorkstationId()
+    };
+    return new Response(respondant, form, content, status, deleted);
   }
 
   getLastModifier(): LoggedInUser {
@@ -63,6 +71,10 @@ export class Form {
 
   getContent(): string {
     return this.content;
+  }
+
+  getBusiness(): string {
+    return this.business;
   }
 
   getStatus(): string {

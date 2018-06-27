@@ -33,39 +33,28 @@ class MongoResponseRepository {
     }
     updateContent(id, content) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield this.model.updateOne({ _id: id }, { $set: { content: content } });
-                if (result.nModified !== 1 || result.nMatched === 1) {
-                    throw new Error(`Error updating content: ${result.nModified} updated `);
-                }
-            }
-            catch (ex) {
-                ex.details = ex.message;
-                ex.message = "DatabaseError";
-                throw ex;
-            }
+            yield this.update({ _id: id }, { $set: { content: content } });
         });
     }
-    makeAsprocessed(id) {
+    makeAsprocessed(id, processor) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(id);
-            try {
-                const result = yield this.model.updateOne({ _id: id }, { $set: { status: "processed" } });
-                if (result.nModified !== 1 || result.nMatched === 1) {
-                    throw new Error(`Error marking response as processed: ${result.nModified} processed `);
-                }
-            }
-            catch (ex) {
-                ex.details = ex.message;
-                ex.message = "DatabaseError";
-                throw ex;
-            }
+            yield this.update({ _id: id }, { $set: { status: "processed", processor } });
         });
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.update({ _id: id }, { $set: { deleted: true } });
+        });
+    }
+    addNote(id, note, notedBy) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.update({ _id: id }, { $set: { note, notedBy, status: "noted" } });
+        });
+    }
+    update(condition, update) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.model.updateOne({ _id: id }, { $set: { deleted: true } });
+                const result = yield this.model.updateOne(condition, update);
                 if (result.nModified !== 1 || result.nMatched === 1) {
                     throw new Error(`Error deleting response: ${result.nModified} deleted `);
                 }

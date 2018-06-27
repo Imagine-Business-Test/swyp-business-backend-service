@@ -2,12 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = require("./response");
 class Form {
-    constructor(name, workstation, content, status, createdBy, modifier, deleted, _id, updatedAt, createdAt) {
+    constructor(name, workstation, business, content, status, createdBy, modifier, deleted, _id, updatedAt, createdAt) {
         this.workstation = workstation;
-        this.lastModifier = modifier;
         this.creator = createdBy;
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
+        this.business = business;
+        this.lastModifier = modifier;
         this.content = content;
         this.deleted = deleted;
         this.status = status;
@@ -17,7 +18,12 @@ class Form {
     createResponse(content, respondant) {
         const deleted = false;
         const status = "pending";
-        return new response_1.Response(respondant, this._id, content, status, deleted);
+        const form = {
+            _id: this.getId(),
+            business: this.getBusiness(),
+            workspace: this.getWorkstationId()
+        };
+        return new response_1.Response(respondant, form, content, status, deleted);
     }
     getLastModifier() {
         return this.lastModifier;
@@ -39,6 +45,9 @@ class Form {
     }
     getContent() {
         return this.content;
+    }
+    getBusiness() {
+        return this.business;
     }
     getStatus() {
         return this.status;

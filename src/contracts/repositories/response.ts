@@ -1,10 +1,12 @@
 import { ResponseInterface } from "../infra/response";
 import { Response } from "../../domain";
+import { LoggedInUser } from "../interfaces";
 
 export interface ResponseRepository {
-  add: (response: Response) => Promise<Response>;
+  makeAsprocessed: (id: string, processor: LoggedInUser) => void;
   getByForm: (form: string) => Promise<ResponseInterface[]>;
   updateContent: (id: string, content: string) => void;
-  makeAsprocessed: (id: string) => void;
+  add: (response: Response) => Promise<Response>;
+  addNote: ( id: string, note: string, notedBy: LoggedInUser) => void;
   delete: (id: string) => void;
 }

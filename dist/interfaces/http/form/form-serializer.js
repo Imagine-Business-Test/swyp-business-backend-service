@@ -7,6 +7,7 @@ exports.FormSerializer = {
                 return {
                     status: form.status,
                     workstation: form.workstation,
+                    business: form.business,
                     content: form.content,
                     creator: form.creator,
                     lastModifier: form.lastModifier,
@@ -21,6 +22,7 @@ exports.FormSerializer = {
             workstation: response.getWorkstationId(),
             updatedAt: response.getLastUpdateDate(),
             created: response.getCreationDate(),
+            business: response.getBusiness(),
             creator: response.getCreator(),
             content: response.getContent(),
             name: response.getName(),

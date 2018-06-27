@@ -5,6 +5,7 @@ export type FormInterface = mongoose.Document & {
   lastModifier: { email: string, name: string };
   creator: { email: string, name: string };
   deleted: Boolean;
+  business: string;
   content: string;
   updateAt: Date;
   createdAt: Date;

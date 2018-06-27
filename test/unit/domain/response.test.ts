@@ -7,8 +7,32 @@ const respondant = {
   phone: "08136868448",
   _id: "123456"
 };
+
+const loggedInUser = {
+  name: "Ossaija ThankGod",
+  email: "codebugsolved@gmail.com"
+};
+
+const form = {
+  _id: "13223i23",
+  business: "12345",
+workspace: "12346",
+};
+
 const date = new Date();
-const res =  new Response(respondant, "1234", content, "pending", false, "4321", date, date);
+const res =  new Response(
+  respondant,
+  form,
+  content,
+  "pending",
+  false,
+  "4321",
+  "new note",
+  loggedInUser,
+  loggedInUser,
+  date,
+  date
+);
 
 describe("Domain :: Response", () => {
   describe("#constructor", () => {
@@ -55,7 +79,7 @@ describe("Domain :: Response", () => {
 
   describe("#getFormId", () => {
     test("Return the form id the response belongs to", () => {
-      expect(res.getFormId()).toBe("1234");
+      expect(res.getForm()).toEqual(expect.objectContaining(form));
     });
   });
 

@@ -87,7 +87,11 @@ export const ResponseController = {
       });
     })
     .on(ERROR, next);
-    handler.execute(req.params);
+    const command = {
+      response: req.params.response,
+      processor: req.user
+    };
+    handler.execute(command);
   },
 
   delete(req: any, res: Response, next: any) {
@@ -105,7 +109,6 @@ export const ResponseController = {
       });
     })
     .on(ERROR, next);
-
     handler.execute(req.params);
   }
 };

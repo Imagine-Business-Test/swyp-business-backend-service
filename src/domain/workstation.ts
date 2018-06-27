@@ -28,7 +28,9 @@ export class Workstation {
 
   createForm(name: string, content: string, creator: LoggedInUser): Form {
     const deleted = false, status = "active";
-    return new Form(name, <string>this._id, content, status, creator, creator, deleted);
+    return new Form(
+      name, <string>this.getId(), this.getBusinessId(), content, status, creator, creator, deleted
+    );
   }
 
   getCreationDate(): Date {

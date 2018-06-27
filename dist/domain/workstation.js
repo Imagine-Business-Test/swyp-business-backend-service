@@ -14,7 +14,7 @@ class Workstation {
     }
     createForm(name, content, creator) {
         const deleted = false, status = "active";
-        return new form_1.Form(name, this._id, content, status, creator, creator, deleted);
+        return new form_1.Form(name, this.getId(), this.getBusinessId(), content, status, creator, creator, deleted);
     }
     getCreationDate() {
         return this.createdAt;

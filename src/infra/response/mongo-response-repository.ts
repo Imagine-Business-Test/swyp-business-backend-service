@@ -2,6 +2,7 @@ import { ResponseModel, ResponseInterface } from "../../contracts/infra/response
 import { ResponseRepository } from "../../contracts/repositories";
 import { MongoResponseMapper } from "./mongo-response-mapper";
 import { Response } from "../../domain";
+import { LoggedInUser } from "../../contracts/interfaces";
 
 export class MongoResponseRepository implements ResponseRepository {
   private model: ResponseModel;
@@ -28,46 +29,26 @@ export class MongoResponseRepository implements ResponseRepository {
   }
 
   async updateContent(id: string, content: string) {
-    try {
-      const result = await this.model.updateOne(
-        {_id: id},
-        { $set: { content: content }}
-      );
-      if (result.nModified !== 1 || result.nMatched === 1) {
-        throw  new Error(`Error updating content: ${result.nModified } updated `);
-      }
-    } catch (ex) {
-      ex.details = ex.message;
-      ex.message = "DatabaseError";
-      throw ex;
-    }
+    await this.update({_id: id}, { $set: { content: content } });
   }
 
-  async makeAsprocessed(id: string) {
-    console.log(id);
-    try {
-      const result = await this.model.updateOne(
-        {_id: id},
-        { $set: { status:  "processed"}}
-      );
-      if (result.nModified !== 1 || result.nMatched === 1) {
-        throw  new Error(
-          `Error marking response as processed: ${result.nModified } processed `
-        );
-      }
-    } catch (ex) {
-      ex.details = ex.message;
-      ex.message = "DatabaseError";
-      throw ex;
-    }
+  async makeAsprocessed(id: string, processor: LoggedInUser) {
+    await this.update({_id: id}, { $set: { status:  "processed", processor } });
   }
 
   async delete(id: string) {
+    await this.update( {_id: id}, { $set: { deleted:  true }});
+  }
+
+  async addNote(id: string, note: string, notedBy: LoggedInUser) {
+    await this.update({ _id: id }, { $set: { note, notedBy, status: "noted" } });
+  }
+
+  private async update(
+    condition: { [key: string]: any}, update: {[key: string]: { [key: string]: any } }
+  ) {
     try {
-      const result = await this.model.updateOne(
-        {_id: id},
-        { $set: { deleted:  true }}
-      );
+      const result = await this.model.updateOne(condition, update);
       if (result.nModified !== 1 || result.nMatched === 1) {
         throw  new Error(
           `Error deleting response: ${result.nModified } deleted `

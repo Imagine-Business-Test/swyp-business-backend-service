@@ -77,7 +77,11 @@ exports.ResponseController = {
             });
         })
             .on(ERROR, next);
-        handler.execute(req.params);
+        const command = {
+            response: req.params.response,
+            processor: req.user
+        };
+        handler.execute(command);
     },
     delete(req, res, next) {
         req.validateParams(validation_1.ResponseRule.processResponse);

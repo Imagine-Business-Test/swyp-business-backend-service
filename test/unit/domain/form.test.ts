@@ -1,11 +1,15 @@
 import { Response } from "../../../src/domain";
 import { Form } from "../../../src/domain";
 
-const loggedInUser = { name: "Ossaija ThankGod", email: "codebugsolved@gmail.com" };
+const loggedInUser = {
+  name: "Ossaija ThankGod",
+  email: "codebugsolved@gmail.com"
+};
+
 const content = "<h1>Hello world</h1>";
 const date = new Date();
 const form = new Form(
-  "Open Account", "1234", content, "active", loggedInUser, loggedInUser, false, "4321", date, date
+  "Open Account", "1234", "4444", content, "active", loggedInUser, loggedInUser, false, "4321", date, date
 );
 
 describe("Domain :: Form", () => {
@@ -32,7 +36,7 @@ describe("Domain :: Form", () => {
       expect(response).toEqual(expect.objectContaining({
         content,
         respondant,
-        form: "4321",
+        form: {_id: "4321", workspace: "1234", business: "4444" },
         status: "pending",
         deleted: false
       }));
