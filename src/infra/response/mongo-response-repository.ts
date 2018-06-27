@@ -44,6 +44,15 @@ export class MongoResponseRepository implements ResponseRepository {
     await this.update({ _id: id }, { $set: { note, notedBy, status: "noted" } });
   }
 
+  async find(page: number = 1, limit: number = 10) {
+    const skip = ( page * limit ) - limit;
+    const result = await this.model.find().skip(skip).limit(limit).sort({ createdAt: -1 });
+    const count = await this.model.count({});
+    const pages = Math.ceil(count / limit);
+
+    return { skip, result, count, pages };
+  }
+
   private async update(
     condition: { [key: string]: any}, update: {[key: string]: { [key: string]: any } }
   ) {

@@ -39,6 +39,12 @@ export class MongoFormRepository implements FormRepository {
     }
   }
 
+  async getByBusiness(business: string): Promise<FormInterface[]> {
+    return this.model.find(
+      { business, status: "active", deleted: false  }
+    ).limit(10);
+  }
+
   async getByWorkspace (workspace: string): Promise<FormInterface[]> {
     return this.model.find(
       { workspace: workspace, status: "active", deleted: false }

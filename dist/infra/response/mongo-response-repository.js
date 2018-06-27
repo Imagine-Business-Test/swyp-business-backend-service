@@ -51,6 +51,15 @@ class MongoResponseRepository {
             yield this.update({ _id: id }, { $set: { note, notedBy, status: "noted" } });
         });
     }
+    find(page = 1, limit = 10) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const skip = (page * limit) - limit;
+            const result = yield this.model.find().skip(skip).limit(limit).sort({ createdAt: -1 });
+            const count = yield this.model.count({});
+            const pages = Math.ceil(count / limit);
+            return { skip, result, count, pages };
+        });
+    }
     update(condition, update) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

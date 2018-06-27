@@ -42,6 +42,11 @@ class MongoFormRepository {
             }
         });
     }
+    getByBusiness(business) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.model.find({ business, status: "active", deleted: false }).limit(10);
+        });
+    }
     getByWorkspace(workspace) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.model.find({ workspace: workspace, status: "active", deleted: false });
