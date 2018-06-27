@@ -1,4 +1,4 @@
-import { CreateForm, GetWorkstationForms, UpdateFormContent, DisableForm, DeleteForm } from "../../../app/form";
+import { CreateForm, GetWorkspaceForms, UpdateFormContent, DisableForm, DeleteForm } from "../../../app/form";
 import { Router, Response } from "express";
 import { FormRules } from "../validation";
 import { auth } from "../middleware";
@@ -8,7 +8,7 @@ export const FormController = {
   get router() {
     const router = Router();
     router.post("/", auth, this.create)
-      .get("/workstations/:workstation", auth, this.getWorkStationForms)
+      .get("/workspaces/:workspace", auth, this.getWorkspaceForms)
       .put("/:form", auth, this.updateContent)
       .put("/disable/:form", auth, this.disable)
       .delete("/:form", auth, this.delete);
@@ -37,15 +37,15 @@ export const FormController = {
     handler.execute(command);
   },
 
-  getWorkStationForms(req: any, res: Response, next: any) {
-    req.validateParams(FormRules.getWorkstationForms);
+  getWorkspaceForms(req: any, res: Response, next: any) {
+    req.validateParams(FormRules.getWorkspaceForms);
 
-    const handler = <GetWorkstationForms>req.container.resolve("getWorkstationForms");
+    const handler = <GetWorkspaceForms>req.container.resolve("getWorkspaceForms");
     const serializer = req.container.resolve("formSerializer");
     const { SUCCESS, ERROR } = handler.outputs;
 
-    handler.on(SUCCESS, workstation => {
-      res.status(Status.OK).json(serializer.serialize(workstation));
+    handler.on(SUCCESS, workspace => {
+      res.status(Status.OK).json(serializer.serialize(workspace));
     })
     .on(ERROR, next);
 

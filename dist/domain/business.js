@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const workstation_1 = require("./workstation");
+const workspace_1 = require("./workspace");
 class Business {
     constructor(name, logoUrl, accounts, _id) {
         this.accounts = accounts;
@@ -8,14 +8,14 @@ class Business {
         this.name = name;
         this._id = _id;
     }
-    createWorkStation(name) {
+    createWorkspace(name) {
         const loggedinUser = {
             name: this.currentUser.name,
             email: this.currentUser.email
         };
         const business = this._id;
         const deleted = false;
-        return new workstation_1.Workstation(name, business, loggedinUser, loggedinUser, deleted);
+        return new workspace_1.Workspace(name, business, loggedinUser, loggedinUser, deleted);
     }
     setUser(user) {
         for (const entry of this.accounts) {

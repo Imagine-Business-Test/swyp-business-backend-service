@@ -11,7 +11,7 @@ exports.FormController = {
     get router() {
         const router = express_1.Router();
         router.post("/", middleware_1.auth, this.create)
-            .get("/workstations/:workstation", middleware_1.auth, this.getWorkStationForms)
+            .get("/workspaces/:workspace", middleware_1.auth, this.getWorkspaceForms)
             .put("/:form", middleware_1.auth, this.updateContent)
             .put("/disable/:form", middleware_1.auth, this.disable)
             .delete("/:form", middleware_1.auth, this.delete);
@@ -35,13 +35,13 @@ exports.FormController = {
         const command = Object.assign({}, req.body, { user: req.user });
         handler.execute(command);
     },
-    getWorkStationForms(req, res, next) {
-        req.validateParams(validation_1.FormRules.getWorkstationForms);
-        const handler = req.container.resolve("getWorkstationForms");
+    getWorkspaceForms(req, res, next) {
+        req.validateParams(validation_1.FormRules.getWorkspaceForms);
+        const handler = req.container.resolve("getWorkspaceForms");
         const serializer = req.container.resolve("formSerializer");
         const { SUCCESS, ERROR } = handler.outputs;
-        handler.on(SUCCESS, workstation => {
-            res.status(http_status_1.default.OK).json(serializer.serialize(workstation));
+        handler.on(SUCCESS, workspace => {
+            res.status(http_status_1.default.OK).json(serializer.serialize(workspace));
         })
             .on(ERROR, next);
         handler.execute(req.params);

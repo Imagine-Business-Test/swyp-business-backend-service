@@ -67,13 +67,13 @@ describe("Domain :: Business", () => {
     });
   });
 
-  describe("#createWorkStation", () => {
-    test("It creates a work station", () => {
+  describe("#createWorkspace", () => {
+    test("It creates a work space", () => {
       const business = new Business("First Bank", "http://ww.firstbank.ng", accounts, "1234");
       business.setUser(user);
-      const workstation = business.createWorkStation("Account Opening");
+      const workspace = business.createWorkspace("Account Opening");
 
-     expect(workstation).toEqual(expect.objectContaining({
+     expect(workspace).toEqual(expect.objectContaining({
        name: "Account Opening",
        lastModifier: { name: user.name, email: user.email },
        creator: { name: user.name, email: user.email },

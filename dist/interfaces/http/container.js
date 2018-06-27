@@ -3,11 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const workstation_1 = require("../../infra/workstation");
+const workspace_1 = require("../../infra/workspace");
 const response_1 = require("../../infra/response");
 const business_1 = require("../../infra/business");
 const form_1 = require("../../infra/form");
-const workstation_2 = require("./workstation");
+const workspace_2 = require("./workspace");
 const application_1 = require("../../app/application");
 const mongodb_1 = __importDefault(require("../../infra/database/mongodb"));
 const awilix_express_1 = require("awilix-express");
@@ -23,7 +23,7 @@ const models_1 = require("../../infra/database/models");
 const awilix_1 = require("awilix");
 const middleware_1 = require("./middleware");
 const business_3 = require("../../app/business");
-const workstation_3 = require("../../app/workstation");
+const workspace_3 = require("../../app/workspace");
 const response_3 = require("../../app/response");
 const form_3 = require("../../app/form");
 const container = awilix_1.createContainer({
@@ -40,13 +40,13 @@ container.register({
     config: awilix_1.asValue(config_1.default)
 });
 container.register({
-    workstationModel: awilix_1.asValue(models_1.WorkstationModel),
+    workspaceModel: awilix_1.asValue(models_1.WorkspaceModel),
     businessModel: awilix_1.asValue(models_1.BusinessModel),
     responseModel: awilix_1.asValue(models_1.ResponseModel),
     formModel: awilix_1.asValue(models_1.FormModel)
 });
 container.register({
-    workstationRepository: awilix_1.asClass(workstation_1.MongoWorkstationRepository).singleton(),
+    workspaceRepository: awilix_1.asClass(workspace_1.MongoWorkspaceRepository).singleton(),
     responseRepository: awilix_1.asClass(response_1.MongoResponseRepository).singleton(),
     businessRepository: awilix_1.asClass(business_1.MongoBusinessRepository).singleton(),
     formRepository: awilix_1.asClass(form_1.MongoFormRepository).singleton()
@@ -59,28 +59,28 @@ container.register({
     validator: awilix_1.asValue(middleware_1.validator),
 });
 container.register({
-    getBusinessWorkstations: awilix_1.asClass(workstation_3.GetBusinessWorkstations),
+    getBusinessWorkspaces: awilix_1.asClass(workspace_3.GetBusinessWorkspaces),
     requestPasswordReset: awilix_1.asClass(business_3.RequestPasswordReset),
     deleteBusinessUser: awilix_1.asClass(business_3.DeleteBusinessUser),
     loginBusinessUser: awilix_1.asClass(business_3.LoginBusinessUser),
     addBusinessUser: awilix_1.asClass(business_3.AddBusinessUser),
     createBusiness: awilix_1.asClass(business_3.CreateBusiness),
     resetPassword: awilix_1.asClass(business_3.ResetPassword),
-    createWorkstation: awilix_1.asClass(workstation_3.CreateWorkstation),
-    deleteWorkstation: awilix_1.asClass(workstation_3.DeleteWorkstation),
+    createWorkspace: awilix_1.asClass(workspace_3.CreateWorkspace),
+    deleteWorkspace: awilix_1.asClass(workspace_3.DeleteWorkspace),
     updateResponseContent: awilix_1.asClass(response_3.UpdateResponseContent),
     getFormResponses: awilix_1.asClass(response_3.GetFormResponses),
     processResponse: awilix_1.asClass(response_3.ProcessResponse),
     recordResponse: awilix_1.asClass(response_3.RecordResponse),
     deleteResponse: awilix_1.asClass(response_3.DeleteResponse),
-    getWorkstationForms: awilix_1.asClass(form_3.GetWorkstationForms),
+    getWorkspaceForms: awilix_1.asClass(form_3.GetWorkspaceForms),
     updateFormContent: awilix_1.asClass(form_3.UpdateFormContent),
     disableForm: awilix_1.asClass(form_3.DisableForm),
     deleteForm: awilix_1.asClass(form_3.DeleteForm),
     createForm: awilix_1.asClass(form_3.CreateForm)
 });
 container.register({
-    workstationSerializer: awilix_1.asValue(workstation_2.WorkStationSerializer),
+    workspaceSerializer: awilix_1.asValue(workspace_2.WorkspaceSerializer),
     responseSerializer: awilix_1.asValue(response_2.ResponseSerializer),
     businessSerializer: awilix_1.asValue(business_2.BusinessSerializer),
     formSerializer: awilix_1.asValue(form_2.FormSerializer),

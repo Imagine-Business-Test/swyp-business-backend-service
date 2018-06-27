@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const joi_1 = __importDefault(require("joi"));
 exports.FormRules = {
     createForm: joi_1.default.object().keys({
-        workstation: joi_1.default.string().required(),
+        workspace: joi_1.default.string().required(),
         content: joi_1.default.string().required(),
         name: joi_1.default.string().required()
     }).required(),
@@ -24,8 +24,8 @@ exports.FormRules = {
     disableForm: joi_1.default.object().keys({
         form: joi_1.default.string().required(),
     }).required(),
-    getWorkstationForms: joi_1.default.object().keys({
-        workstation: joi_1.default.string().required()
+    getWorkspaceForms: joi_1.default.object().keys({
+        workspace: joi_1.default.string().required()
     })
 };
 //# sourceMappingURL=form-validation.js.map

@@ -39,9 +39,9 @@ export class MongoFormRepository implements FormRepository {
     }
   }
 
-  async getByWorkstation (workstation: string): Promise<FormInterface[]> {
+  async getByWorkspace (workspace: string): Promise<FormInterface[]> {
     return this.model.find(
-      { workstation: workstation, status: "active", deleted: false }
+      { workspace: workspace, status: "active", deleted: false }
     );
   }
 

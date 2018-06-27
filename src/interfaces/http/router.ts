@@ -1,4 +1,4 @@
-import { WorkstationController } from "./workstation";
+import { WorkspaceController } from "./workspace";
 import { BusinessController } from "./business";
 import { ResponseController } from "./response";
 import { FormController } from "./form";
@@ -25,7 +25,7 @@ export default (logMiddleware: any, errorHandler: any, container: any, validator
     .get("/", (_req, res) => {
       res.send("Welcome to swyp business API");
     })
-    .use("/workstations", WorkstationController.router)
+    .use("/workspaces", WorkspaceController.router)
     .use("/businesses", BusinessController.router)
     .use("/responses", ResponseController.router)
     .use("/forms", FormController.router);

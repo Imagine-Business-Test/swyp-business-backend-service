@@ -1,8 +1,8 @@
-import { MongoWorkstationRepository } from "../../infra/workstation";
+import { MongoWorkspaceRepository } from "../../infra/workspace";
 import { MongoResponseRepository } from "../../infra/response";
 import { MongoBusinessRepository } from "../../infra/business";
 import { MongoFormRepository } from "../../infra/form";
-import { WorkStationSerializer } from "./workstation";
+import { WorkspaceSerializer } from "./workspace";
 import { Application } from "../../app/application";
 import mongoDB from "../../infra/database/mongodb";
 import { scopePerRequest } from  "awilix-express";
@@ -17,7 +17,7 @@ import { FormSerializer } from "./form";
 import router from "./router";
 
 import {
-  WorkstationModel,
+  WorkspaceModel,
   BusinessModel,
   ResponseModel,
   FormModel,
@@ -49,10 +49,10 @@ import {
 } from "../../app/business";
 
 import {
-  CreateWorkstation,
-  DeleteWorkstation,
-  GetBusinessWorkstations,
-} from "../../app/workstation";
+  CreateWorkspace,
+  DeleteWorkspace,
+  GetBusinessWorkspaces,
+} from "../../app/workspace";
 
 import {
   RecordResponse,
@@ -63,7 +63,7 @@ import {
 } from "../../app/response";
 
 import {
-  GetWorkstationForms,
+  GetWorkspaceForms,
   DisableForm,
   DeleteForm,
   CreateForm,
@@ -91,7 +91,7 @@ container.register({
 
 // Data Models
 container.register({
-  workstationModel: asValue(WorkstationModel),
+  workspaceModel: asValue(WorkspaceModel),
   businessModel: asValue(BusinessModel),
   responseModel: asValue(ResponseModel),
   formModel: asValue(FormModel)
@@ -99,7 +99,7 @@ container.register({
 
 // Repositories
 container.register({
-  workstationRepository: asClass(MongoWorkstationRepository).singleton(),
+  workspaceRepository: asClass(MongoWorkspaceRepository).singleton(),
   responseRepository: asClass(MongoResponseRepository).singleton(),
   businessRepository: asClass(MongoBusinessRepository).singleton(),
   formRepository: asClass(MongoFormRepository).singleton()
@@ -119,7 +119,7 @@ container.register({
 // Operations
 
 container.register({
-  getBusinessWorkstations: asClass(GetBusinessWorkstations),
+  getBusinessWorkspaces: asClass(GetBusinessWorkspaces),
   requestPasswordReset: asClass(RequestPasswordReset),
   deleteBusinessUser: asClass(DeleteBusinessUser),
   loginBusinessUser: asClass(LoginBusinessUser),
@@ -127,8 +127,8 @@ container.register({
   createBusiness: asClass(CreateBusiness),
   resetPassword: asClass(ResetPassword),
 
-  createWorkstation: asClass(CreateWorkstation),
-  deleteWorkstation: asClass(DeleteWorkstation),
+  createWorkspace: asClass(CreateWorkspace),
+  deleteWorkspace: asClass(DeleteWorkspace),
 
   updateResponseContent: asClass(UpdateResponseContent),
   getFormResponses: asClass(GetFormResponses),
@@ -136,7 +136,7 @@ container.register({
   recordResponse: asClass(RecordResponse),
   deleteResponse: asClass(DeleteResponse),
 
-  getWorkstationForms: asClass(GetWorkstationForms),
+  getWorkspaceForms: asClass(GetWorkspaceForms),
   updateFormContent: asClass(UpdateFormContent),
   disableForm: asClass(DisableForm),
   deleteForm: asClass(DeleteForm),
@@ -147,7 +147,7 @@ container.register({
  // Serializers
 
 container.register({
-  workstationSerializer: asValue(WorkStationSerializer),
+  workspaceSerializer: asValue(WorkspaceSerializer),
   responseSerializer: asValue(ResponseSerializer),
   businessSerializer: asValue(BusinessSerializer),
   formSerializer: asValue(FormSerializer),

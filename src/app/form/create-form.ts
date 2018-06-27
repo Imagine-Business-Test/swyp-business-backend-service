@@ -1,28 +1,28 @@
-import { FormRepository, WorkstationRepository } from "../../contracts/repositories";
+import { FormRepository, WorkspaceRepository } from "../../contracts/repositories";
 import { LoggedInUser } from "../../contracts/interfaces";
 import { Operation } from "../operation";
 
 export class CreateForm extends Operation {
   private formRepository: FormRepository;
-  private workstationRepository: WorkstationRepository;
+  private workspaceRepository: WorkspaceRepository;
 
-  constructor(formRepository: FormRepository, workstationRepository: WorkstationRepository) {
+  constructor(formRepository: FormRepository, workspaceRepository: WorkspaceRepository) {
     super();
-    this.workstationRepository = workstationRepository;
+    this.workspaceRepository = workspaceRepository;
     this.formRepository        = formRepository;
   }
 
   async execute(
-    command: { workstation: string, name: string, content: string, user: LoggedInUser}
+    command: { workspace: string, name: string, content: string, user: LoggedInUser}
   ) {
 
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
-      const { workstation, name, content, user } = command;
+      const { workspace, name, content, user } = command;
 
-      const workstationRecord = await this.workstationRepository.find(workstation);
+      const workspaceRecord = await this.workspaceRepository.find(workspace);
       const form        = await this.formRepository.add(
-        workstationRecord.createForm(name, content, user)
+        workspaceRecord.createForm(name, content, user)
       );
 
       return this.emit(SUCCESS, form);

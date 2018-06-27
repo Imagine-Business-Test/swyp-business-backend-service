@@ -10,18 +10,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const operation_1 = require("../operation");
 class CreateForm extends operation_1.Operation {
-    constructor(formRepository, workstationRepository) {
+    constructor(formRepository, workspaceRepository) {
         super();
-        this.workstationRepository = workstationRepository;
+        this.workspaceRepository = workspaceRepository;
         this.formRepository = formRepository;
     }
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             try {
-                const { workstation, name, content, user } = command;
-                const workstationRecord = yield this.workstationRepository.find(workstation);
-                const form = yield this.formRepository.add(workstationRecord.createForm(name, content, user));
+                const { workspace, name, content, user } = command;
+                const workspaceRecord = yield this.workspaceRepository.find(workspace);
+                const form = yield this.formRepository.add(workspaceRecord.createForm(name, content, user));
                 return this.emit(SUCCESS, form);
             }
             catch (ex) {

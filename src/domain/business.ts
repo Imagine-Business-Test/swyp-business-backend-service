@@ -1,4 +1,4 @@
-import { Workstation } from "./workstation";
+import { Workspace } from "./workspace";
 import { Account } from "../contracts/domain";
 
 
@@ -16,7 +16,7 @@ export class Business {
     this.name     = name;
     this._id      = _id;
   }
-  createWorkStation(name: string): Workstation {
+  createWorkspace(name: string): Workspace {
 
     const loggedinUser = {
       name: <string>this.currentUser!.name,
@@ -25,7 +25,7 @@ export class Business {
 
     const business = this._id!;
     const deleted = false;
-    return new Workstation(name, business, loggedinUser, loggedinUser, deleted);
+    return new Workspace(name, business, loggedinUser, loggedinUser, deleted);
   }
 
   setUser(user: Account): Boolean {

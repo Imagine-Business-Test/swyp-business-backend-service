@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const workstation_1 = require("./workstation");
+const workspace_1 = require("./workspace");
 const business_1 = require("./business");
 const response_1 = require("./response");
 const form_1 = require("./form");
@@ -24,7 +24,7 @@ exports.default = (logMiddleware, errorHandler, container, validator, configMidd
         .get("/", (_req, res) => {
         res.send("Welcome to swyp business API");
     })
-        .use("/workstations", workstation_1.WorkstationController.router)
+        .use("/workspaces", workspace_1.WorkspaceController.router)
         .use("/businesses", business_1.BusinessController.router)
         .use("/responses", response_1.ResponseController.router)
         .use("/forms", form_1.FormController.router);

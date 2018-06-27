@@ -4,7 +4,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./response"));
-__export(require("./workstation"));
+__export(require("./workspace"));
 __export(require("./business"));
 __export(require("./form"));
 //# sourceMappingURL=index.js.map

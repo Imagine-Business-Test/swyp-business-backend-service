@@ -1,24 +1,24 @@
-import { Workstation } from "../../../src/domain";
+import { Workspace } from "../../../src/domain";
 import { Form } from "../../../src/domain";
 
 const loggedInUser = { name: "Ossaija ThankGod", email: "codebugsolved@gmail.com" };
 const date = new Date();
 
-const workstation = new Workstation(
+const workstation = new Workspace(
   "Account Openning", "1234", loggedInUser, loggedInUser, false, "4321", date, date
 );
 
 describe("Domain :: Workstation", () => {
   describe("#constructor", () => {
     test("It is a constructor", () => {
-      expect(typeof Workstation).toBe("function");
+      expect(typeof Workspace).toBe("function");
     });
   });
 
   describe("#createForm", () => {
     test("It creates a new form", () => {
 
-      const workstation = new Workstation(
+      const workstation = new Workspace(
         "Account Openning", "1234", loggedInUser, loggedInUser, false, "4321"
       );
 

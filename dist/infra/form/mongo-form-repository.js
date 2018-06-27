@@ -42,9 +42,9 @@ class MongoFormRepository {
             }
         });
     }
-    getByWorkstation(workstation) {
+    getByWorkspace(workspace) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.find({ workstation: workstation, status: "active", deleted: false });
+            return this.model.find({ workspace: workspace, status: "active", deleted: false });
         });
     }
     updateContent(id, content, modifier) {
