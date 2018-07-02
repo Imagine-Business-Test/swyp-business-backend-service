@@ -60,13 +60,13 @@ class MongoResponseRepository {
             return { skip, result, count, pages };
         });
     }
-    getUserProcessingActivityStats() {
+    getProcessingActivityStats() {
         return __awaiter(this, void 0, void 0, function* () {
             const query = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
             return this.model.aggregate([query, { $sort: { count: -1 } }]);
         });
     }
-    getUserNotingActivityStats() {
+    getNotingActivityStats() {
         return __awaiter(this, void 0, void 0, function* () {
             const query = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
             return this.model.aggregate([query, { $sort: { count: -1 } }]);
