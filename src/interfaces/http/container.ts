@@ -66,7 +66,7 @@ import {
 
 import {
   GetWorkspaceForms,
-  GetSimilarForms,
+  GetABusinessForms,
   DisableForm,
   DeleteForm,
   CreateForm,
@@ -143,7 +143,7 @@ container.register({
 
   getWorkspaceForms: asClass(GetWorkspaceForms),
   updateFormContent: asClass(UpdateFormContent),
-  getSimilarForms: asClass(GetSimilarForms),
+  getABusinessForms: asClass(GetABusinessForms),
   disableForm: asClass(DisableForm),
   deleteForm: asClass(DeleteForm),
   createForm: asClass(CreateForm)

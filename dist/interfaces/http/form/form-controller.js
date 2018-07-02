@@ -10,11 +10,13 @@ const http_status_1 = __importDefault(require("http-status"));
 exports.FormController = {
     get router() {
         const router = express_1.Router();
-        router.post("/", middleware_1.auth, this.create)
+        router
+            .get("/by-same-business/:business", middleware_1.auth, this.getBySameBusiness)
             .get("/workspaces/:workspace", middleware_1.auth, this.getWorkspaceForms)
             .put("/:form", middleware_1.auth, this.updateContent)
             .put("/disable/:form", middleware_1.auth, this.disable)
-            .delete("/:form", middleware_1.auth, this.delete);
+            .delete("/:form", middleware_1.auth, this.delete)
+            .post("/", middleware_1.auth, this.create);
         return router;
     },
     create(req, res, next) {
@@ -42,6 +44,16 @@ exports.FormController = {
         const { SUCCESS, ERROR } = handler.outputs;
         handler.on(SUCCESS, workspace => {
             res.status(http_status_1.default.OK).json(serializer.serialize(workspace));
+        })
+            .on(ERROR, next);
+        handler.execute(req.params);
+    },
+    getBySameBusiness(req, res, next) {
+        req.validateParams(validation_1.FormRules.getABusinessForms);
+        const handler = req.container.resolve("getABusinessForms");
+        const { SUCCESS, ERROR } = handler.outputs;
+        handler.on(SUCCESS, data => {
+            res.status(http_status_1.default.OK).json(data);
         })
             .on(ERROR, next);
         handler.execute(req.params);

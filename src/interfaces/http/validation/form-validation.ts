@@ -24,7 +24,11 @@ export const FormRules = {
     form: joi.string().required(),
   }).required(),
 
+  getABusinessForms: joi.object().keys({
+    business: joi.string().required()
+  }).required(),
+
   getWorkspaceForms: joi.object().keys({
     workspace: joi.string().required()
-  })
+  }).required()
 };

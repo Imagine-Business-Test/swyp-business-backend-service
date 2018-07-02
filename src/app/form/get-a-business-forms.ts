@@ -1,7 +1,7 @@
 import { FormRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
-export class GetSimilarForms extends Operation {
+export class GetABusinessForms extends Operation {
   private formRepository: FormRepository;
 
   constructor(formRepository: FormRepository) {
@@ -21,4 +21,4 @@ export class GetSimilarForms extends Operation {
   }
 }
 
-GetSimilarForms.setOutputs(["SUCCESS", "ERROR"]);
+GetABusinessForms.setOutputs(["SUCCESS", "ERROR"]);

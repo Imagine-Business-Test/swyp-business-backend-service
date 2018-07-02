@@ -24,8 +24,11 @@ exports.FormRules = {
     disableForm: joi_1.default.object().keys({
         form: joi_1.default.string().required(),
     }).required(),
+    getABusinessForms: joi_1.default.object().keys({
+        business: joi_1.default.string().required()
+    }).required(),
     getWorkspaceForms: joi_1.default.object().keys({
         workspace: joi_1.default.string().required()
-    })
+    }).required()
 };
 //# sourceMappingURL=form-validation.js.map

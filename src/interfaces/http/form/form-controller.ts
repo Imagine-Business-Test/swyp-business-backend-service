@@ -1,4 +1,11 @@
-import { CreateForm, GetWorkspaceForms, UpdateFormContent, DisableForm, DeleteForm } from "../../../app/form";
+import {
+  GetWorkspaceForms,
+  UpdateFormContent,
+  DisableForm,
+  CreateForm,
+  DeleteForm,
+  GetABusinessForms
+} from "../../../app/form";
 import { Router, Response } from "express";
 import { FormRules } from "../validation";
 import { auth } from "../middleware";
@@ -7,11 +14,13 @@ import Status from "http-status";
 export const FormController = {
   get router() {
     const router = Router();
-    router.post("/", auth, this.create)
+    router
+      .get("/by-same-business/:business", auth, this.getBySameBusiness)
       .get("/workspaces/:workspace", auth, this.getWorkspaceForms)
       .put("/:form", auth, this.updateContent)
       .put("/disable/:form", auth, this.disable)
-      .delete("/:form", auth, this.delete);
+      .delete("/:form", auth, this.delete)
+      .post("/", auth, this.create);
 
     return router;
   },
@@ -46,6 +55,20 @@ export const FormController = {
 
     handler.on(SUCCESS, workspace => {
       res.status(Status.OK).json(serializer.serialize(workspace));
+    })
+    .on(ERROR, next);
+
+    handler.execute(req.params);
+  },
+
+  getBySameBusiness(req: any, res: Response, next: any) {
+    req.validateParams(FormRules.getABusinessForms);
+    const handler = <GetABusinessForms>req.container.resolve("getABusinessForms");
+
+    const { SUCCESS, ERROR } = handler.outputs;
+
+    handler.on(SUCCESS, data => {
+      res.status(Status.OK).json(data);
     })
     .on(ERROR, next);
 

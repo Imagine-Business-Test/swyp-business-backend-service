@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const operation_1 = require("../operation");
-class GetSimilarForms extends operation_1.Operation {
+class GetABusinessForms extends operation_1.Operation {
     constructor(formRepository) {
         super();
         this.formRepository = formRepository;
@@ -27,6 +27,6 @@ class GetSimilarForms extends operation_1.Operation {
         });
     }
 }
-exports.GetSimilarForms = GetSimilarForms;
-GetSimilarForms.setOutputs(["SUCCESS", "ERROR"]);
-//# sourceMappingURL=get-similar-forms.js.map
+exports.GetABusinessForms = GetABusinessForms;
+GetABusinessForms.setOutputs(["SUCCESS", "ERROR"]);
+//# sourceMappingURL=get-a-business-forms.js.map
