@@ -53,6 +53,16 @@ export class MongoResponseRepository implements ResponseRepository {
     return { skip, result, count, pages };
   }
 
+  async getUserProcessingActivityStats() {
+    const query = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
+    return this.model.aggregate([ query, { $sort: { count: -1 } } ]);
+  }
+
+  async getUserNotingActivityStats() {
+    const query = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
+    return this.model.aggregate([ query, { $sort: { count: -1 } } ] );
+  }
+
   private async update(
     condition: { [key: string]: any}, update: {[key: string]: { [key: string]: any } }
   ) {

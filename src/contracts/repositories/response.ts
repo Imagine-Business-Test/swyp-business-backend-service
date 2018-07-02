@@ -9,5 +9,7 @@ export interface ResponseRepository {
   add: (response: Response) => Promise<Response>;
   addNote: ( id: string, note: string, notedBy: LoggedInUser) => void;
   findBStatus: (status: string, page: number, limit: number) => any;
+  getUserProcessingActivityStats: () => any;
+  getUserNotingActivityStats: () => any;
   delete: (id: string) => void;
 }
