@@ -1,7 +1,7 @@
 import { Operation } from "../operation";
 import { ResponseRepository } from "../../contracts/repositories";
 
-export class GetResponse extends Operation {
+export class GetResponseByStatus extends Operation {
   private responseRepository: ResponseRepository;
 
   constructor(responseRepository: ResponseRepository) {
@@ -9,11 +9,11 @@ export class GetResponse extends Operation {
     this.responseRepository = responseRepository;
   }
 
-  async execute(command: { page: number, limit: number }) {
+  async execute(command: { status: string, page: number, limit: number }) {
     const { SUCCESS, ERROR } = this.outputs;
-
+    const { status, page, limit } = command;
     try {
-      const result = await this.responseRepository.find(command.page, command.limit);
+      const result = await this.responseRepository.findBStatus(status, page, limit);
       this.emit(SUCCESS, result);
     } catch (error) {
       this.emit(ERROR, error);
@@ -21,4 +21,4 @@ export class GetResponse extends Operation {
   }
 }
 
-GetResponse.setOutputs(["SUCCESS", "ERROR"]);
+GetResponseByStatus.setOutputs(["SUCCESS", "ERROR"]);

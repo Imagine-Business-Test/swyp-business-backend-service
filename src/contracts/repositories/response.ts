@@ -8,6 +8,6 @@ export interface ResponseRepository {
   updateContent: (id: string, content: string) => void;
   add: (response: Response) => Promise<Response>;
   addNote: ( id: string, note: string, notedBy: LoggedInUser) => void;
-  find: (page: number, limit: number) => any;
+  findBStatus: (status: string, page: number, limit: number) => any;
   delete: (id: string) => void;
 }
