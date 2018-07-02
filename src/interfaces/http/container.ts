@@ -55,15 +55,18 @@ import {
 } from "../../app/workspace";
 
 import {
-  RecordResponse,
-  GetFormResponses,
   UpdateResponseContent,
+  GetResponseByStatus,
+  AddNoteToResponse,
+  GetFormResponses,
   ProcessResponse,
+  RecordResponse,
   DeleteResponse,
 } from "../../app/response";
 
 import {
   GetWorkspaceForms,
+  GetSimilarForms,
   DisableForm,
   DeleteForm,
   CreateForm,
@@ -131,6 +134,8 @@ container.register({
   deleteWorkspace: asClass(DeleteWorkspace),
 
   updateResponseContent: asClass(UpdateResponseContent),
+  getResponseByStatus: asClass(GetResponseByStatus),
+  addNoteToResponse: asClass(AddNoteToResponse),
   getFormResponses: asClass(GetFormResponses),
   processResponse: asClass(ProcessResponse),
   recordResponse: asClass(RecordResponse),
@@ -138,6 +143,7 @@ container.register({
 
   getWorkspaceForms: asClass(GetWorkspaceForms),
   updateFormContent: asClass(UpdateFormContent),
+  getSimilarForms: asClass(GetSimilarForms),
   disableForm: asClass(DisableForm),
   deleteForm: asClass(DeleteForm),
   createForm: asClass(CreateForm)
