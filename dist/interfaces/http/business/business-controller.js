@@ -10,12 +10,14 @@ const http_status_1 = __importDefault(require("http-status"));
 exports.BusinessController = {
     get router() {
         const router = express_1.Router();
-        router.post("/", this.create)
+        router
+            .post("/requestpasswordrest", this.requestPasswordRest)
+            .post("/deleteuser", middleware_1.auth, this.deleteUser)
+            .post("/resetpassword", this.resetPassword)
             .post("/adduser", middleware_1.auth, this.addUser)
             .post("/loginuser", this.loginUser)
-            .post("/deleteuser", middleware_1.auth, this.deleteUser)
-            .post("/requestpasswordrest", this.requestPasswordRest)
-            .post("/resetpassword", this.resetPassword);
+            .get("/stats", middleware_1.auth, this.getStats)
+            .post("/", this.create);
         return router;
     },
     create(req, res, next) {
@@ -126,6 +128,15 @@ exports.BusinessController = {
         })
             .on(ERROR, next);
         handler.execute(req.body);
+    },
+    getStats(req, res, next) {
+        const handler = req.container.resolve("getBusinessUserActivityStats");
+        const { SUCCESS, ERROR } = handler.outputs;
+        handler.on(SUCCESS, data => {
+            res.status(http_status_1.default.OK).json(data);
+        })
+            .on(ERROR, next);
+        handler.execute();
     }
 };
 //# sourceMappingURL=business-controller.js.map

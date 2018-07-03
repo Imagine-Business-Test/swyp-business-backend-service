@@ -11,17 +11,20 @@ import {
   CreateBusiness,
   ResetPassword,
 } from "../../../app/business";
+import { GetBusinessUserActivityStats } from "../../../app/response/get-business-user-activity-stats";
 
 export const BusinessController = {
 
   get router() {
     const router = Router();
-    router.post("/", this.create)
+    router
+      .post("/requestpasswordrest", this.requestPasswordRest)
+      .post("/deleteuser", auth, this.deleteUser)
+      .post("/resetpassword", this.resetPassword)
       .post("/adduser", auth, this.addUser)
       .post("/loginuser", this.loginUser)
-      .post("/deleteuser", auth, this.deleteUser)
-      .post("/requestpasswordrest", this.requestPasswordRest)
-      .post("/resetpassword", this.resetPassword);
+      .get("/stats", auth, this.getStats)
+      .post("/", this.create);
 
     return router;
   },
@@ -151,6 +154,19 @@ export const BusinessController = {
     .on(ERROR, next);
 
     handler.execute(req.body);
+  },
+
+  getStats(req: any, res: Response, next: any) {
+    const handler = <GetBusinessUserActivityStats>
+                      req.container.resolve("getBusinessUserActivityStats");
+    const { SUCCESS, ERROR } = handler.outputs;
+
+    handler.on(SUCCESS, data => {
+      res.status(Status.OK).json(data);
+    })
+    .on(ERROR, next);
+
+    handler.execute();
   }
 };
 

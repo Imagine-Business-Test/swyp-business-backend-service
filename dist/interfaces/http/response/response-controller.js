@@ -14,6 +14,7 @@ exports.ResponseController = {
             .get("/bystatus/:status", middleware_1.auth, this.getByStatus)
             .get("/forms/:form", middleware_1.auth, this.getFormResponses)
             .put("/process/:response", middleware_1.auth, this.process)
+            .post("/addnote/:response", middleware_1.auth, this.addNote)
             .put("/:response", middleware_1.auth, this.updateContent)
             .delete("/:response", middleware_1.auth, this.delete)
             .post("/", middleware_1.auth, this.record);

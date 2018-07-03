@@ -12,6 +12,7 @@ export const ResponseController = {
       .get("/bystatus/:status", auth, this.getByStatus)
       .get("/forms/:form", auth, this.getFormResponses)
       .put("/process/:response", auth, this.process)
+      .post("/addnote/:response", auth, this.addNote)
       .put("/:response", auth, this.updateContent)
       .delete("/:response", auth, this.delete)
       .post("/", auth, this.record);
