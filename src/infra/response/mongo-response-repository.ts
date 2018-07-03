@@ -1,3 +1,6 @@
+
+
+
 import { ResponseModel, ResponseInterface } from "../../contracts/infra/response";
 import { ResponseRepository } from "../../contracts/repositories";
 import { MongoResponseMapper } from "./mongo-response-mapper";
@@ -25,7 +28,7 @@ export class MongoResponseRepository implements ResponseRepository {
   }
 
   async getByForm(form: string): Promise<ResponseInterface[]> {
-    return this.model.find({ form, deleted: false });
+    return this.model.find({ "form._id": form, deleted: false }).sort({ createdAt: -1 });
   }
 
   async updateContent(id: string, content: string) {
@@ -46,21 +49,25 @@ export class MongoResponseRepository implements ResponseRepository {
 
   async findBStatus(status: string, page: number = 1, limit: number = 10) {
     const skip = ( page * limit ) - limit;
-    const result = await this.model.find({ status }).skip(skip).limit(limit).sort({ createdAt: -1 });
-    const count = await this.model.count({});
+    const countPromise = this.model.count({ status });
+    const queryPromise = this.model.find({ status }).skip(skip).limit(limit).sort({ createdAt: -1 });
+    // @ts-ignore
+    const [result, count] = await Promise.all([ queryPromise, countPromise ]);
     const pages = Math.ceil(count / limit);
 
-    return { skip, result, count, pages };
+    return { result, count, pages };
   }
 
   async getProcessingActivityStats() {
-    const query = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
-    return this.model.aggregate([ query, { $sort: { count: -1 } } ]);
+    const match = { $match: { status: "processed" } };
+    const group = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
+    return this.model.aggregate([ match, group, { $sort: { count: -1 } } ]);
   }
 
   async getNotingActivityStats() {
-    const query = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
-    return this.model.aggregate([ query, { $sort: { count: -1 } } ] );
+    const match = { $match: { status: "noted" } };
+    const group = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
+    return this.model.aggregate([ match, group, { $sort: { count: -1 } } ] );
   }
 
   private async update(
@@ -70,7 +77,7 @@ export class MongoResponseRepository implements ResponseRepository {
       const result = await this.model.updateOne(condition, update);
       if (result.nModified !== 1 || result.nMatched === 1) {
         throw  new Error(
-          `Error deleting response: ${result.nModified } deleted `
+          `Error updating response: ${result.nModified } updated `
         );
       }
     } catch (ex) {

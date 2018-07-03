@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = new mongoose_1.default.Schema({
     status: { type: String, enum: ["active", "disabled"], default: "active" },
-    workstation: { type: mongoose_1.default.Schema.Types.ObjectId, required: true },
+    workspace: { type: mongoose_1.default.Schema.Types.ObjectId, required: true },
     business: { type: mongoose_1.default.Schema.Types.ObjectId, required: true },
     createdAt: { type: Date, default: new Date() },
     updatedAt: { type: Date, default: new Date() },

@@ -21,7 +21,7 @@ class Form {
         const form = {
             _id: this.getId(),
             business: this.getBusiness(),
-            workspace: this.getWorkstationId()
+            workspace: this.getWorkspace()
         };
         return new response_1.Response(respondant, form, content, status, deleted);
     }
@@ -37,7 +37,7 @@ class Form {
     getCreator() {
         return this.creator;
     }
-    getWorkstationId() {
+    getWorkspace() {
         return this.workstation;
     }
     isDeleted() {

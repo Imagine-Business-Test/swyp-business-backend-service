@@ -40,7 +40,7 @@ export class Form {
     const form = {
       _id: this.getId(),
       business: this.getBusiness(),
-      workspace: this.getWorkstationId()
+      workspace: this.getWorkspace()
     };
     return new Response(respondant, form, content, status, deleted);
   }
@@ -61,7 +61,7 @@ export class Form {
     return this.creator;
   }
 
-  getWorkstationId(): string {
+  getWorkspace(): string {
     return this.workstation;
   }
 

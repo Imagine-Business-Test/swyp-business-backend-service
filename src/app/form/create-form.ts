@@ -21,7 +21,7 @@ export class CreateForm extends Operation {
       const { workspace, name, content, user } = command;
 
       const workspaceRecord = await this.workspaceRepository.find(workspace);
-      const form        = await this.formRepository.add(
+      const form = await this.formRepository.add(
         workspaceRecord.createForm(name, content, user)
       );
 

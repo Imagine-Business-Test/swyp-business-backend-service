@@ -56,7 +56,7 @@ export const ResponseController = {
   },
 
   getByStatus(req: any, res: Response, next: any) {
-    req.validateBody(ResponseRule.byStatus.params);
+    req.validateParams(ResponseRule.byStatus.params);
     req.validateQuery(ResponseRule.byStatus.query);
     const handler = <GetResponseByStatus>req.container.resolve("getResponseByStatus");
     const { SUCCESS, ERROR } = handler.outputs;

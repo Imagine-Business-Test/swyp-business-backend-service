@@ -2,7 +2,11 @@ import joi from "joi";
 
 export const ResponseRule = {
   recordResponse: joi.object().keys({
-    form: joi.string().required(),
+    form: joi.object().keys({
+      _id: joi.string().required(),
+      workspace: joi.string().required(),
+      business: joi.string().required()
+    }).required(),
     content: joi.string().required(),
     user: joi.object().keys({
       _id: joi.string().required(),

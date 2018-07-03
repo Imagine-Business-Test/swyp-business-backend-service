@@ -6,7 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const joi_1 = __importDefault(require("joi"));
 exports.ResponseRule = {
     recordResponse: joi_1.default.object().keys({
-        form: joi_1.default.string().required(),
+        form: joi_1.default.object().keys({
+            _id: joi_1.default.string().required(),
+            workspace: joi_1.default.string().required(),
+            business: joi_1.default.string().required()
+        }).required(),
         content: joi_1.default.string().required(),
         user: joi_1.default.object().keys({
             _id: joi_1.default.string().required(),

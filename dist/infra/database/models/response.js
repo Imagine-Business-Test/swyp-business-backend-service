@@ -22,12 +22,12 @@ const Schema = new mongoose_1.default.Schema({
         phone: { type: String, required: true }
     },
     processor: {
-        email: { type: String, email: true, required: true },
-        name: { type: String, required: true }
+        email: { type: String, email: true },
+        name: String
     },
     notedBy: {
-        email: { type: String, email: true, required: true },
-        name: { type: String, required: true }
+        email: { type: String, email: true },
+        name: String
     },
     updatedAt: { type: Date, required: true, default: new Date() },
     deleted: { type: Boolean, default: false },

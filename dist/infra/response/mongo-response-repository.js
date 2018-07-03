@@ -28,7 +28,7 @@ class MongoResponseRepository {
     }
     getByForm(form) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.find({ form, deleted: false });
+            return this.model.find({ "form._id": form, deleted: false }).sort({ createdAt: -1 });
         });
     }
     updateContent(id, content) {
@@ -54,22 +54,25 @@ class MongoResponseRepository {
     findBStatus(status, page = 1, limit = 10) {
         return __awaiter(this, void 0, void 0, function* () {
             const skip = (page * limit) - limit;
-            const result = yield this.model.find({ status }).skip(skip).limit(limit).sort({ createdAt: -1 });
-            const count = yield this.model.count({});
+            const countPromise = this.model.count({ status });
+            const queryPromise = this.model.find({ status }).skip(skip).limit(limit).sort({ createdAt: -1 });
+            const [result, count] = yield Promise.all([queryPromise, countPromise]);
             const pages = Math.ceil(count / limit);
-            return { skip, result, count, pages };
+            return { result, count, pages };
         });
     }
     getProcessingActivityStats() {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
-            return this.model.aggregate([query, { $sort: { count: -1 } }]);
+            const match = { $match: { status: "processed" } };
+            const group = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
+            return this.model.aggregate([match, group, { $sort: { count: -1 } }]);
         });
     }
     getNotingActivityStats() {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
-            return this.model.aggregate([query, { $sort: { count: -1 } }]);
+            const match = { $match: { status: "noted" } };
+            const group = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
+            return this.model.aggregate([match, group, { $sort: { count: -1 } }]);
         });
     }
     update(condition, update) {
@@ -77,7 +80,7 @@ class MongoResponseRepository {
             try {
                 const result = yield this.model.updateOne(condition, update);
                 if (result.nModified !== 1 || result.nMatched === 1) {
-                    throw new Error(`Error deleting response: ${result.nModified} deleted `);
+                    throw new Error(`Error updating response: ${result.nModified} updated `);
                 }
             }
             catch (ex) {

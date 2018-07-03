@@ -9,30 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const operation_1 = require("../operation");
-class RecordResponse extends operation_1.Operation {
-    constructor(responseRepository, formRepository) {
+class GetBusinessUserActivityStats extends operation_1.Operation {
+    constructor(responseRepository) {
         super();
         this.responseRepository = responseRepository;
-        this.formResponse = formRepository;
     }
-    execute(command) {
+    execute() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
+            const { SUCCESS, ERROR } = this.outputs;
             try {
-                const { content, user } = command;
-                const form = yield this.formResponse.find(command.form._id);
-                const response = yield this.responseRepository.add(form.createResponse(content, user));
-                return this.emit(SUCCESS, response);
+                const [processActivity, notingActivity] = yield Promise.all([
+                    this.responseRepository.getProcessingActivityStats(),
+                    this.responseRepository.getNotingActivityStats()
+                ]);
+                this.emit(SUCCESS, { processActivity, notingActivity });
             }
-            catch (ex) {
-                if (ex.message === "DatabaseError") {
-                    return this.emit(DATABASE_ERROR, ex);
-                }
-                return this.emit(ERROR, ex);
+            catch (error) {
+                this.emit(ERROR, error);
             }
         });
     }
 }
-exports.RecordResponse = RecordResponse;
-RecordResponse.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
-//# sourceMappingURL=record-response.js.map
+exports.GetBusinessUserActivityStats = GetBusinessUserActivityStats;
+GetBusinessUserActivityStats.setOutputs(["SUCCESS", "ERROR"]);
+//# sourceMappingURL=get-business-user-activity-stats.js.map

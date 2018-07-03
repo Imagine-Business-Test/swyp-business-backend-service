@@ -49,7 +49,7 @@ exports.ResponseController = {
         handler.execute(req.params);
     },
     getByStatus(req, res, next) {
-        req.validateBody(validation_1.ResponseRule.byStatus.params);
+        req.validateParams(validation_1.ResponseRule.byStatus.params);
         req.validateQuery(validation_1.ResponseRule.byStatus.query);
         const handler = req.container.resolve("getResponseByStatus");
         const { SUCCESS, ERROR } = handler.outputs;

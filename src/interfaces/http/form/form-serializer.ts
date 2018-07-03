@@ -7,7 +7,7 @@ export const FormSerializer = {
       return response.map(form => {
         return {
           status: form.status,
-          workstation: form.workstation,
+          workspace: form.workspace,
           business: form.business,
           content: form.content,
           creator: form.creator,
@@ -20,7 +20,7 @@ export const FormSerializer = {
     }
     return {
       lastModifier: response.getLastModifier(),
-      workstation: response.getWorkstationId(),
+      workspace: response.getWorkspace(),
       updatedAt: response.getLastUpdateDate(),
       created: response.getCreationDate(),
       business: response.getBusiness(),

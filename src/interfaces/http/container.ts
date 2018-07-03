@@ -40,6 +40,7 @@ import {
 } from "./middleware";
 
 import {
+  GetBusinessUserActivityStats,
   RequestPasswordReset,
   DeleteBusinessUser,
   AddBusinessUser,
@@ -141,6 +142,7 @@ container.register({
   recordResponse: asClass(RecordResponse),
   deleteResponse: asClass(DeleteResponse),
 
+  getBusinessUserActivityStats: asClass(GetBusinessUserActivityStats),
   getWorkspaceForms: asClass(GetWorkspaceForms),
   updateFormContent: asClass(UpdateFormContent),
   getABusinessForms: asClass(GetABusinessForms),

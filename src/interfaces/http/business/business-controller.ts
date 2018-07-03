@@ -4,6 +4,7 @@ import { auth } from "../middleware";
 import  Status from "http-status";
 
 import {
+  GetBusinessUserActivityStats,
   RequestPasswordReset,
   DeleteBusinessUser,
   LoginBusinessUser,
@@ -11,7 +12,7 @@ import {
   CreateBusiness,
   ResetPassword,
 } from "../../../app/business";
-import { GetBusinessUserActivityStats } from "../../../app/response/get-business-user-activity-stats";
+
 
 export const BusinessController = {
 
