@@ -34,5 +34,22 @@ exports.ResponseRule = {
     deleteResponse: joi_1.default.object().keys({
         response: joi_1.default.string().required()
     }).required(),
+    byStatus: {
+        params: joi_1.default.object().keys({
+            status: joi_1.default.string().required()
+        }).required(),
+        query: joi_1.default.object().keys({
+            page: joi_1.default.number(),
+            limit: joi_1.default.number()
+        }).required()
+    },
+    addNotes: {
+        params: joi_1.default.object().keys({
+            response: joi_1.default.string().required()
+        }).required(),
+        body: joi_1.default.object().keys({
+            note: joi_1.default.string().required()
+        }).required()
+    }
 };
 //# sourceMappingURL=response-validation.js.map

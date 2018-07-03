@@ -17,9 +17,9 @@ class AddNoteToResponse extends operation_1.Operation {
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
-            const { responseId, note, user } = command;
+            const { response, note, user } = command;
             try {
-                yield this.responseRepository.addNote(responseId, note, user);
+                yield this.responseRepository.addNote(response, note, user);
                 return this.emit(SUCCESS, { updated: true });
             }
             catch (error) {

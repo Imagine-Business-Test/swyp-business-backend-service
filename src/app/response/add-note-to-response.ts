@@ -10,11 +10,11 @@ export class AddNoteToResponse extends Operation {
     this.responseRepository = responseRepository;
   }
 
-  async execute(command: { responseId: string, note: string, user: LoggedInUser }) {
+  async execute(command: { response: string, note: string, user: LoggedInUser }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
-    const { responseId, note, user } = command;
+    const { response, note, user } = command;
     try {
-      await this.responseRepository.addNote(responseId, note, user);
+      await this.responseRepository.addNote(response, note, user);
       return this.emit(SUCCESS, { updated: true });
     } catch (error) {
       if (error.message === "DatabaseError") {

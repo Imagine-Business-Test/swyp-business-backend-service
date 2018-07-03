@@ -35,4 +35,23 @@ export const ResponseRule = {
   deleteResponse: joi.object().keys({
     response: joi.string().required()
   }).required(),
+
+  byStatus: {
+    params: joi.object().keys({
+      status: joi.string().required()
+    }).required(),
+    query: joi.object().keys({
+      page: joi.number(),
+      limit: joi.number()
+    }).required()
+  },
+
+  addNotes: {
+    params: joi.object().keys({
+      response: joi.string().required()
+    }).required(),
+    body: joi.object().keys({
+      note: joi.string().required()
+    }).required()
+  }
 };
