@@ -69,7 +69,7 @@ describe("Domain :: Form", () => {
 
   describe("#getWorkstation", () => {
     test("It return the workstation of the form ", () => {
-      expect(form.getWorkstationId()).toBe("1234");
+      expect(form.getWorkspace()).toBe("1234");
     });
   });
 
