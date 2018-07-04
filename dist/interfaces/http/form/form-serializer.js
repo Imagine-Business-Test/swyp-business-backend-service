@@ -6,6 +6,7 @@ exports.FormSerializer = {
             return response.map(form => {
                 return {
                     status: form.status,
+                    name: form.name,
                     workspace: form.workspace,
                     business: form.business,
                     content: form.content,
