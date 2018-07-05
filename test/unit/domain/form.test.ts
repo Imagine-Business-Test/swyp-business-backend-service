@@ -36,7 +36,7 @@ describe("Domain :: Form", () => {
       expect(response).toEqual(expect.objectContaining({
         content,
         respondant,
-        form: {_id: "4321", workspace: "1234", business: "4444" },
+        form: {_id: "4321", workspace: "1234", business: "4444", name: "Open Account" },
         status: "pending",
         deleted: false
       }));
