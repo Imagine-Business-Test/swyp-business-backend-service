@@ -1,6 +1,3 @@
-
-
-
 import { ResponseModel, ResponseInterface } from "../../contracts/infra/response";
 import { ResponseRepository } from "../../contracts/repositories";
 import { MongoResponseMapper } from "./mongo-response-mapper";
@@ -47,6 +44,13 @@ export class MongoResponseRepository implements ResponseRepository {
     await this.update({ _id: id }, { $set: { note, notedBy, status: "noted" } });
   }
 
+  async count(field?: { [name: string]: string }) {
+    if (field) {
+      return this.model.count(field);
+    }
+    return this.model.count({});
+  }
+
   async findBStatus(status: string, page: number = 1, limit: number = 10) {
     const skip = ( page * limit ) - limit;
     const countPromise = this.model.count({ status });
@@ -61,13 +65,15 @@ export class MongoResponseRepository implements ResponseRepository {
   async getProcessingActivityStats() {
     const match = { $match: { status: "processed" } };
     const group = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
-    return this.model.aggregate([ match, group, { $sort: { count: -1 } } ]);
+    const total = { $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } } };
+    return this.model.aggregate([ match, group, total ]);
   }
 
   async getNotingActivityStats() {
     const match = { $match: { status: "noted" } };
     const group = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
-    return this.model.aggregate([ match, group, { $sort: { count: -1 } } ] );
+    const total = { $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } } };
+    return this.model.aggregate([ match, group, total ] );
   }
 
   private async update(

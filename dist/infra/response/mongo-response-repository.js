@@ -51,6 +51,14 @@ class MongoResponseRepository {
             yield this.update({ _id: id }, { $set: { note, notedBy, status: "noted" } });
         });
     }
+    count(field) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (field) {
+                return this.model.count(field);
+            }
+            return this.model.count({});
+        });
+    }
     findBStatus(status, page = 1, limit = 10) {
         return __awaiter(this, void 0, void 0, function* () {
             const skip = (page * limit) - limit;
@@ -65,14 +73,16 @@ class MongoResponseRepository {
         return __awaiter(this, void 0, void 0, function* () {
             const match = { $match: { status: "processed" } };
             const group = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
-            return this.model.aggregate([match, group, { $sort: { count: -1 } }]);
+            const total = { $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } } };
+            return this.model.aggregate([match, group, total]);
         });
     }
     getNotingActivityStats() {
         return __awaiter(this, void 0, void 0, function* () {
             const match = { $match: { status: "noted" } };
             const group = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
-            return this.model.aggregate([match, group, { $sort: { count: -1 } }]);
+            const total = { $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } } };
+            return this.model.aggregate([match, group, total]);
         });
     }
     update(condition, update) {

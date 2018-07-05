@@ -2,9 +2,10 @@ import mongoose from "mongoose";
 
 const Schema = new mongoose.Schema({
   form: {
-    _id: { type: mongoose.Schema.Types.ObjectId, required: true },
     workspace: { type: mongoose.Schema.Types.ObjectId, required: true },
-    business: { type: mongoose.Schema.Types.ObjectId, required: true }
+    _id: { type: mongoose.Schema.Types.ObjectId, required: true },
+    business: { type: mongoose.Schema.Types.ObjectId, required: true },
+    name: { type: String, required: true }
   },
   createdAt: { type: Date, required: true, default: new Date() },
   content: String,

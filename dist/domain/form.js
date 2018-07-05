@@ -20,6 +20,7 @@ class Form {
         const status = "pending";
         const form = {
             _id: this.getId(),
+            name: this.getName(),
             business: this.getBusiness(),
             workspace: this.getWorkspace()
         };

@@ -6,9 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = new mongoose_1.default.Schema({
     form: {
-        _id: { type: mongoose_1.default.Schema.Types.ObjectId, required: true },
         workspace: { type: mongoose_1.default.Schema.Types.ObjectId, required: true },
-        business: { type: mongoose_1.default.Schema.Types.ObjectId, required: true }
+        _id: { type: mongoose_1.default.Schema.Types.ObjectId, required: true },
+        business: { type: mongoose_1.default.Schema.Types.ObjectId, required: true },
+        name: { type: String, required: true }
     },
     createdAt: { type: Date, required: true, default: new Date() },
     content: String,
