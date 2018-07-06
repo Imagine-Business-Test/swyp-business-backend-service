@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Response {
-    constructor(respondant, form, content, status, deleted, _id, note, processor, notedBy, createdAt, updatedAt) {
+    constructor(respondant, form, content, status, deleted, id, note, processor, notedBy, createdAt, updatedAt) {
         this.processor = processor;
         this.respondant = respondant;
         this.createdAt = createdAt;
@@ -12,7 +12,7 @@ class Response {
         this.status = status;
         this.form = form;
         this.note = note;
-        this._id = _id;
+        this.id = id;
     }
     getLastMoficationDate() {
         return this.updatedAt;
@@ -45,7 +45,7 @@ class Response {
         return this.form;
     }
     getId() {
-        return this._id;
+        return this.id;
     }
 }
 exports.Response = Response;

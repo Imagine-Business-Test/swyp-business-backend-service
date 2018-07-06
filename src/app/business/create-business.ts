@@ -1,40 +1,49 @@
-import { BusinessRepository } from "../../contracts/repositories";
-import { Account } from "../../contracts/domain";
-import { Config } from "../../contracts/config";
-import { Operation } from "../operation";
-import { Business } from "../../domain";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-
+import jwt from "jsonwebtoken";
+import { IConfig } from "../../contracts/config";
+import { IAccount } from "../../contracts/domain";
+import { IBusinessRepository } from "../../contracts/repositories";
+import { Business } from "../../domain";
+import { Operation } from "../operation";
 
 export class CreateBusiness extends Operation {
-  private businessRepository: BusinessRepository;
-  private config: Config;
+  private businessRepository: IBusinessRepository;
+  private config: IConfig;
 
-  constructor(businessRepository: BusinessRepository, config: Config) {
+  constructor(businessRepository: IBusinessRepository, config: IConfig) {
     super();
     this.businessRepository = businessRepository;
-    this.config             = config;
+    this.config = config;
   }
 
-
-  async execute(command: {name: string, logoUrl: string, account: Account }) {
-
+  public async execute(command: {
+    name: string;
+    logoUrl: string;
+    account: IAccount;
+  }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
       const { name, logoUrl, account } = command;
 
-      const newBusiness    = new Business(name, logoUrl, []);
-      const savedBusiness  = await this.businessRepository.add(newBusiness);
-      account.password     = await bcrypt.hash(account.password, 10);
+      const newBusiness = new Business(name, logoUrl, []);
+      const savedBusiness = await this.businessRepository.add(newBusiness);
+      account.password = await bcrypt.hash(account.password, 10);
 
-      const business = await this.businessRepository.addAccount(savedBusiness.getId()!, account);
-      const user     = business.getUser();
-      const token    = jwt.sign({
-        email: user.email,
-        name: user.name,
-        isBusiness: true
-      }, this.config.web.json_secret, {expiresIn: "24h"});
+      const business = await this.businessRepository.addAccount(
+        savedBusiness.getId()!,
+        account
+      );
+      const user = business.getUser();
+      const token = jwt.sign(
+        {
+          email: user.email,
+          isBusiness: true,
+          name: user.name,
+          role: user.role
+        },
+        this.config.web.json_secret,
+        { expiresIn: "24h" }
+      );
 
       return this.emit(SUCCESS, { business, user, token });
     } catch (ex) {

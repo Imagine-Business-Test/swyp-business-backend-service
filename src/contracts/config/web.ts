@@ -1,3 +1,3 @@
-export interface Web {
+export interface IWeb {
   json_secret: string;
 }

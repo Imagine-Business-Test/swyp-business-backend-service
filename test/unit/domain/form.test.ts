@@ -1,5 +1,6 @@
-import { Response } from "../../../src/domain";
-import { Form } from "../../../src/domain";
+/* tslint:disable: no-shadowed-variable */
+
+import { Form, Response } from "../../../src/domain";
 
 const loggedInUser = {
   name: "Ossaija ThankGod",
@@ -9,13 +10,23 @@ const loggedInUser = {
 const content = "<h1>Hello world</h1>";
 const date = new Date();
 const form = new Form(
-  "Open Account", "1234", "4444", content, "active", loggedInUser, loggedInUser, false, "4321", date, date
+  "Open Account",
+  "1234",
+  "4444",
+  content,
+  "active",
+  loggedInUser,
+  loggedInUser,
+  false,
+  "4321",
+  date,
+  date
 );
 
 describe("Domain :: Form", () => {
   describe("#constructor", () => {
     test("It is a constructor function", () => {
-      expect( typeof Form).toBe("function");
+      expect(typeof Form).toBe("function");
     });
   });
 
@@ -27,25 +38,34 @@ describe("Domain :: Form", () => {
         lastname: "Ossaija",
         email: "codebugsolved@gmail.com",
         phone: "08136868448",
-        _id: "123456"
+        id: "123456"
       };
 
       const response = form.createResponse(content, respondant);
 
       expect(response instanceof Response).toBeTruthy();
-      expect(response).toEqual(expect.objectContaining({
-        content,
-        respondant,
-        form: {_id: "4321", workspace: "1234", business: "4444", name: "Open Account" },
-        status: "pending",
-        deleted: false
-      }));
+      expect(response).toEqual(
+        expect.objectContaining({
+          content,
+          respondant,
+          form: {
+            id: "4321",
+            workspace: "1234",
+            business: "4444",
+            name: "Open Account"
+          },
+          status: "pending",
+          deleted: false
+        })
+      );
     });
   });
 
   describe("#lastModifier", () => {
     test("It return the last user to modify a form", () => {
-      expect(form.getLastModifier()).toEqual(expect.objectContaining(loggedInUser));
+      expect(form.getLastModifier()).toEqual(
+        expect.objectContaining(loggedInUser)
+      );
     });
   });
 

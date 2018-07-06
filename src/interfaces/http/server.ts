@@ -1,15 +1,15 @@
-import { Server } from "../../contracts/interfaces";
-import { Config } from "../../contracts/config";
-import { Logger } from "../../contracts/infra";
 import express from "express";
+import { IConfig } from "../../contracts/config";
+import { Logger } from "../../contracts/infra";
+import { IServer } from "../../contracts/interfaces";
 
-export class HttpServer implements Server {
-  private config: Config;
+export class HttpServer implements IServer {
+  private config: IConfig;
   private logger: Logger;
   private express: any;
   private router: any;
 
-  constructor(config: Config, logger: Logger, router: any) {
+  constructor(config: IConfig, logger: Logger, router: any) {
     this.config = config;
     this.logger = logger;
     this.router = router;
@@ -19,15 +19,13 @@ export class HttpServer implements Server {
     this.express.use(this.router);
   }
 
-  start() {
-
+  public start() {
     return new Promise(resolve => {
-      const http = this.express
-        .listen(this.config.process.port, () => {
-          const { port } = http.address();
-          this.logger.info(`[P ${ process.pid }] Listening at port ${ port }`);
-          resolve();
-        });
+      const http = this.express.listen(this.config.process.port, () => {
+        const { port } = http.address();
+        this.logger.info(`[P ${process.pid}] Listening at port ${port}`);
+        resolve();
+      });
     });
   }
 }

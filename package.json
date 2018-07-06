@@ -6,17 +6,17 @@
   "author": "Ossaija ThankGod <tossaija@orecka.com>",
   "license": "None",
   "scripts": {
-    "start": "npm run serve",
-    "build": "npm run  format && npm run build-ts && npm run tslint && npm run test",
+    "start": "yarn serve",
+    "build": "yarn format && yarn build-ts && yarn test",
     "serve": "node dist/index.js",
     "commit": "git-cz",
     "watch-node": "nodemon dist/index.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "test": "jest --forceExit --coverage --verbose",
-    "watch-test": "npm run test -- --watchAll",
+    "watch-test": "yarn test -- --watchAll",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
-    "format": "tslint -c tslint.json -p tsconfig.json --fix",
+    "format": "lint-staged",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
   },
@@ -45,10 +45,13 @@
     "global": "^4.3.2",
     "husky": "^1.0.0-rc.6",
     "jest": "^22.4.3",
+    "lint-staged": "^7.2.0",
     "nodemon": "^1.17.4",
+    "prettier": "^1.13.7",
     "ts-jest": "^22.4.6",
     "ts-node": "^6.0.3",
     "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.13.0",
     "typescript": "^2.8.3"
   },
   "dependencies": {
@@ -82,5 +85,11 @@
       "pre-commit": "npm run build",
       "pre-push": "npm run build"
     }
+  },
+  "lint-staged": {
+    "src/**/*.{js,ts,json}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

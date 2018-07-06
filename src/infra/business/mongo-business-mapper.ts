@@ -1,9 +1,9 @@
-import { Business } from "../../domain";
+import { IAccount } from "../../contracts/domain";
 import { BusinessInterface } from "../../contracts/infra";
-import { Account } from "../../contracts/domain";
+import { Business } from "../../domain";
 
 export const MongoBusinessMapper = {
-  toEntity(dbRow: BusinessInterface, currentUser?: Account): Business {
+  toEntity(dbRow: BusinessInterface, currentUser?: IAccount): Business {
     const { _id, name, logoUrl, accounts } = dbRow;
     const business = new Business(name, logoUrl, accounts, _id);
 
@@ -15,9 +15,9 @@ export const MongoBusinessMapper = {
 
   toDatabase(business: Business) {
     return {
-      name: business.getName(),
+      accounts: business.getAccounts(),
       logoUrl: business.getLogo(),
-      accounts: business.getAccounts()
+      name: business.getName()
     };
   }
 };

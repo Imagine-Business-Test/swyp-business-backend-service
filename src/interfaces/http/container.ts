@@ -1,87 +1,86 @@
-import { MongoWorkspaceRepository } from "../../infra/workspace";
-import { MongoResponseRepository } from "../../infra/response";
-import { MongoBusinessRepository } from "../../infra/business";
-import { MongoFormRepository } from "../../infra/form";
-import { WorkspaceSerializer } from "./workspace";
+import { scopePerRequest } from "awilix-express";
 import { Application } from "../../app/application";
+import config from "../../config";
+import { MongoBusinessRepository } from "../../infra/business";
 import mongoDB from "../../infra/database/mongodb";
-import { scopePerRequest } from  "awilix-express";
-import { ResponseSerializer } from "./response";
-import { BusinessSerializer } from "./business";
+import { MongoFormRepository } from "../../infra/form";
 import { Logger } from "../../infra/logging";
-import { HttpServer } from "./server";
-import  config from "../../config";
+import { MongoResponseRepository } from "../../infra/response";
+import { MongoWorkspaceRepository } from "../../infra/workspace";
 import { Mailer } from "../../services";
+import { BusinessSerializer } from "./business";
 import { FormSerializer } from "./form";
+import { ResponseSerializer } from "./response";
+import { HttpServer } from "./server";
+import { WorkspaceSerializer } from "./workspace";
 
 import router from "./router";
 
 import {
-  WorkspaceModel,
   BusinessModel,
-  ResponseModel,
   FormModel,
+  ResponseModel,
+  WorkspaceModel
 } from "../../infra/database/models";
 
 import {
-  createContainer,
-  InjectionMode,
-  asFunction,
   asClass,
+  asFunction,
   asValue,
+  createContainer,
+  InjectionMode
 } from "awilix";
 
 import {
-  validator,
+  configMiddleware,
+  devErrorHandler,
   errorHandler,
   logMiddleware,
-  devErrorHandler,
-  configMiddleware,
+  validator
 } from "./middleware";
 
 import {
-  GetBusinessUserActivityStats,
-  RequestPasswordReset,
-  DeleteBusinessUser,
   AddBusinessUser,
-  LoginBusinessUser,
   CreateBusiness,
+  DeleteBusinessUser,
+  GetBusinessUserActivityStats,
+  LoginBusinessUser,
+  RequestPasswordReset,
   ResetPassword
 } from "../../app/business";
 
 import {
   CreateWorkspace,
   DeleteWorkspace,
-  GetBusinessWorkspaces,
+  GetBusinessWorkspaces
 } from "../../app/workspace";
 
 import {
-  UpdateResponseContent,
-  GetResponseByStatus,
   AddNoteToResponse,
+  DeleteResponse,
   GetFormResponses,
+  GetResponseByStatus,
   ProcessResponse,
   RecordResponse,
-  DeleteResponse,
+  UpdateResponseContent
 } from "../../app/response";
 
 import {
-  GetWorkspaceForms,
-  GetABusinessForms,
-  DisableForm,
-  DeleteForm,
   CreateForm,
+  DeleteForm,
+  DisableForm,
+  GetABusinessForms,
+  GetWorkspaceForms,
   UpdateFormContent
 } from "../../app/form";
-
-
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
 });
 
 let ErrorHandler: any;
-ErrorHandler = config.process.env === "production" ? errorHandler : devErrorHandler;
+ErrorHandler =
+  config.process.env === "production" ? errorHandler : devErrorHandler;
 
 // System
 container.register({
@@ -109,16 +108,14 @@ container.register({
   formRepository: asClass(MongoFormRepository).singleton()
 });
 
-
 // Middleware
 container.register({
   configMiddleware: asFunction(configMiddleware).singleton(),
   logMiddleware: asFunction(logMiddleware).singleton(),
   container: asValue(scopePerRequest(container)),
   errorHandler: asValue(ErrorHandler),
-  validator: asValue(validator),
+  validator: asValue(validator)
 });
-
 
 // Operations
 
@@ -151,14 +148,13 @@ container.register({
   createForm: asClass(CreateForm)
 });
 
-
- // Serializers
+// Serializers
 
 container.register({
   workspaceSerializer: asValue(WorkspaceSerializer),
   responseSerializer: asValue(ResponseSerializer),
   businessSerializer: asValue(BusinessSerializer),
-  formSerializer: asValue(FormSerializer),
+  formSerializer: asValue(FormSerializer)
 });
 
 // Services

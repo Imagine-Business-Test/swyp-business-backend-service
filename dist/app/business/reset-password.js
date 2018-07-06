@@ -11,8 +11,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const operation_1 = require("../operation");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const operation_1 = require("../operation");
 class ResetPassword extends operation_1.Operation {
     constructor(businessRepository, mailer) {
         super();

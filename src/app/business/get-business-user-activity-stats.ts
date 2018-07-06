@@ -1,21 +1,18 @@
+import { IResponseRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
-import { ResponseRepository } from "../../contracts/repositories";
 
 export class GetBusinessUserActivityStats extends Operation {
-  private responseRepository: ResponseRepository;
+  private responseRepository: IResponseRepository;
 
-  constructor(responseRepository: ResponseRepository) {
+  constructor(responseRepository: IResponseRepository) {
     super();
     this.responseRepository = responseRepository;
   }
 
-  async execute() {
-    const {SUCCESS, ERROR } = this.outputs;
+  public async execute() {
+    const { SUCCESS, ERROR } = this.outputs;
     try {
-      const [
-        processActivity,
-        notingActivity
-      ] = await Promise.all([
+      const [processActivity, notingActivity] = await Promise.all([
         this.responseRepository.getProcessingActivityStats(),
         this.responseRepository.getNotingActivityStats()
       ]);

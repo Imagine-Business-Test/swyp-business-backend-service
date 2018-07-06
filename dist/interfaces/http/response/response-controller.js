@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const validation_1 = require("../validation");
 const express_1 = require("express");
 const http_status_1 = __importDefault(require("http-status"));
 const middleware_1 = require("../middleware");
+const validation_1 = require("../validation");
 exports.ResponseController = {
     get router() {
         const router = express_1.Router();
@@ -25,13 +25,14 @@ exports.ResponseController = {
         const handler = req.container.resolve("recordResponse");
         const serializer = req.container.resolve("responseSerializer");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, response => {
+        handler
+            .on(SUCCESS, response => {
             res.status(http_status_1.default.CREATED).json(serializer.serialize(response));
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.BAD_REQUEST).json({
-                type: "DatabaseError",
-                details: error.details
+                details: error.details,
+                type: "DatabaseError"
             });
         })
             .on(ERROR, next);
@@ -42,7 +43,8 @@ exports.ResponseController = {
         const handler = req.container.resolve("getFormResponses");
         const serializer = req.container.resolve("responseSerializer");
         const { SUCCESS, ERROR } = handler.outputs;
-        handler.on(SUCCESS, response => {
+        handler
+            .on(SUCCESS, response => {
             res.status(http_status_1.default.CREATED).json(serializer.serialize(response));
         })
             .on(ERROR, next);
@@ -54,11 +56,12 @@ exports.ResponseController = {
         const handler = req.container.resolve("getResponseByStatus");
         const { SUCCESS, ERROR } = handler.outputs;
         const command = {
-            status: req.params.status,
-            page: (req.query.page || 1),
-            limit: (req.query.limit || 10)
+            limit: req.query.limit || 10,
+            page: req.query.page || 1,
+            status: req.params.status
         };
-        handler.on(SUCCESS, data => {
+        handler
+            .on(SUCCESS, data => {
             res.status(http_status_1.default.OK).json(data);
         })
             .on(ERROR, next);
@@ -70,17 +73,18 @@ exports.ResponseController = {
         const handler = req.container.resolve("addNoteToResponse");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
         const command = {
-            response: req.params.response,
             note: req.body.note,
+            response: req.params.response,
             user: req.user
         };
-        handler.on(SUCCESS, data => {
+        handler
+            .on(SUCCESS, data => {
             res.status(http_status_1.default.OK).json(data);
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.INTERNAL_SERVER_ERROR).json({
-                type: "DatabaseError",
-                details: error.details
+                details: error.details,
+                type: "DatabaseError"
             });
         })
             .on(ERROR, next);
@@ -91,36 +95,41 @@ exports.ResponseController = {
         req.validateBody(validation_1.ResponseRule.updateContent.content);
         const handler = req.container.resolve("updateResponseContent");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, () => {
+        handler
+            .on(SUCCESS, () => {
             res.status(http_status_1.default.OK).json({ updated: true });
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.BAD_REQUEST).json({
-                type: "DatabaseError",
-                details: error.details
+                details: error.details,
+                type: "DatabaseError"
             });
         })
             .on(ERROR, next);
-        const command = { response: req.params.response, content: req.body.content };
+        const command = {
+            content: req.body.content,
+            response: req.params.response
+        };
         handler.execute(command);
     },
     process(req, res, next) {
         req.validateParams(validation_1.ResponseRule.processResponse);
         const handler = req.container.resolve("processResponse");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, () => {
+        handler
+            .on(SUCCESS, () => {
             res.status(http_status_1.default.OK).json({ updated: true });
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.BAD_REQUEST).json({
-                type: "DatabaseError",
-                details: error.details
+                details: error.details,
+                type: "DatabaseError"
             });
         })
             .on(ERROR, next);
         const command = {
-            response: req.params.response,
-            processor: req.user
+            processor: req.user,
+            response: req.params.response
         };
         handler.execute(command);
     },
@@ -128,13 +137,14 @@ exports.ResponseController = {
         req.validateParams(validation_1.ResponseRule.processResponse);
         const handler = req.container.resolve("deleteResponse");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, () => {
+        handler
+            .on(SUCCESS, () => {
             res.status(http_status_1.default.OK).json({ deleted: true });
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.BAD_REQUEST).json({
-                type: "DatabaseError",
-                details: error.details
+                details: error.details,
+                type: "DatabaseError"
             });
         })
             .on(ERROR, next);

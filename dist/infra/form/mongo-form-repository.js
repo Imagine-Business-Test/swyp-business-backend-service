@@ -44,18 +44,20 @@ class MongoFormRepository {
     }
     getByBusiness(business) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.find({ business, status: "active", deleted: false }).limit(10);
+            return this.model
+                .find({ business, status: "active", deleted: false })
+                .limit(10);
         });
     }
     getByWorkspace(workspace) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.find({ workspace: workspace, status: "active", deleted: false });
+            return this.model.find({ workspace, status: "active", deleted: false });
         });
     }
     updateContent(id, content, modifier) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.model.updateOne({ _id: id }, { $set: { content: content, lastModifier: modifier } });
+                const result = yield this.model.updateOne({ _id: id }, { $set: { content, lastModifier: modifier } });
                 if (result.nModified !== 1 || result.nMatched === 1) {
                     throw new Error(`Error updating content ${result.nModified} updated`);
                 }

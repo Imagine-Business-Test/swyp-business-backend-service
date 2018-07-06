@@ -3,21 +3,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const workspace_1 = require("../../infra/workspace");
-const response_1 = require("../../infra/response");
-const business_1 = require("../../infra/business");
-const form_1 = require("../../infra/form");
-const workspace_2 = require("./workspace");
-const application_1 = require("../../app/application");
-const mongodb_1 = __importDefault(require("../../infra/database/mongodb"));
 const awilix_express_1 = require("awilix-express");
-const response_2 = require("./response");
-const business_2 = require("./business");
-const logging_1 = require("../../infra/logging");
-const server_1 = require("./server");
+const application_1 = require("../../app/application");
 const config_1 = __importDefault(require("../../config"));
+const business_1 = require("../../infra/business");
+const mongodb_1 = __importDefault(require("../../infra/database/mongodb"));
+const form_1 = require("../../infra/form");
+const logging_1 = require("../../infra/logging");
+const response_1 = require("../../infra/response");
+const workspace_1 = require("../../infra/workspace");
 const services_1 = require("../../services");
+const business_2 = require("./business");
 const form_2 = require("./form");
+const response_2 = require("./response");
+const server_1 = require("./server");
+const workspace_2 = require("./workspace");
 const router_1 = __importDefault(require("./router"));
 const models_1 = require("../../infra/database/models");
 const awilix_1 = require("awilix");
@@ -30,7 +30,8 @@ const container = awilix_1.createContainer({
     injectionMode: awilix_1.InjectionMode.CLASSIC
 });
 let ErrorHandler;
-ErrorHandler = config_1.default.process.env === "production" ? middleware_1.errorHandler : middleware_1.devErrorHandler;
+ErrorHandler =
+    config_1.default.process.env === "production" ? middleware_1.errorHandler : middleware_1.devErrorHandler;
 container.register({
     database: awilix_1.asFunction(mongodb_1.default).singleton(),
     server: awilix_1.asClass(server_1.HttpServer).singleton(),
@@ -56,7 +57,7 @@ container.register({
     logMiddleware: awilix_1.asFunction(middleware_1.logMiddleware).singleton(),
     container: awilix_1.asValue(awilix_express_1.scopePerRequest(container)),
     errorHandler: awilix_1.asValue(ErrorHandler),
-    validator: awilix_1.asValue(middleware_1.validator),
+    validator: awilix_1.asValue(middleware_1.validator)
 });
 container.register({
     getBusinessWorkspaces: awilix_1.asClass(workspace_3.GetBusinessWorkspaces),
@@ -87,7 +88,7 @@ container.register({
     workspaceSerializer: awilix_1.asValue(workspace_2.WorkspaceSerializer),
     responseSerializer: awilix_1.asValue(response_2.ResponseSerializer),
     businessSerializer: awilix_1.asValue(business_2.BusinessSerializer),
-    formSerializer: awilix_1.asValue(form_2.FormSerializer),
+    formSerializer: awilix_1.asValue(form_2.FormSerializer)
 });
 container.register({
     mailer: awilix_1.asClass(services_1.Mailer).singleton()

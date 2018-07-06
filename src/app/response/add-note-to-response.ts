@@ -1,16 +1,20 @@
+import { ILoggedInUser } from "../../contracts/interfaces";
+import { IResponseRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
-import { ResponseRepository } from "../../contracts/repositories";
-import { LoggedInUser } from "../../contracts/interfaces";
 
 export class AddNoteToResponse extends Operation {
-  private responseRepository: ResponseRepository;
+  private responseRepository: IResponseRepository;
 
-  constructor(responseRepository: ResponseRepository) {
+  constructor(responseRepository: IResponseRepository) {
     super();
     this.responseRepository = responseRepository;
   }
 
-  async execute(command: { response: string, note: string, user: LoggedInUser }) {
+  public async execute(command: {
+    response: string;
+    note: string;
+    user: ILoggedInUser;
+  }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     const { response, note, user } = command;
     try {
@@ -24,6 +28,5 @@ export class AddNoteToResponse extends Operation {
     }
   }
 }
-
 
 AddNoteToResponse.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);

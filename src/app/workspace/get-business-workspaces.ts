@@ -1,18 +1,20 @@
-import { WorkspaceRepository } from "../../contracts/repositories";
+import { IWorkspaceRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
 export class GetBusinessWorkspaces extends Operation {
-  private workspaceRepository: WorkspaceRepository;
+  private workspaceRepository: IWorkspaceRepository;
 
-  constructor(workspaceRepository: WorkspaceRepository) {
+  constructor(workspaceRepository: IWorkspaceRepository) {
     super();
     this.workspaceRepository = workspaceRepository;
   }
 
-  async execute(command: { business: string }) {
+  public async execute(command: { business: string }) {
     const { SUCCESS, ERROR } = this.outputs;
     try {
-      const workspaces = await this.workspaceRepository.findByBusiness(command.business);
+      const workspaces = await this.workspaceRepository.findByBusiness(
+        command.business
+      );
 
       this.emit(SUCCESS, workspaces);
     } catch (ex) {

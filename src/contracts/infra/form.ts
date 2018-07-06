@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 export type FormInterface = mongoose.Document & {
   workspace: string;
-  lastModifier: { email: string, name: string };
-  creator: { email: string, name: string };
-  deleted: Boolean;
+  lastModifier: { email: string; name: string };
+  creator: { email: string; name: string };
+  deleted: boolean;
   business: string;
   content: string;
   updateAt: Date;
@@ -14,7 +14,4 @@ export type FormInterface = mongoose.Document & {
   _id: string;
 };
 
-
 export type FormModel = mongoose.Model<FormInterface>;
-
-

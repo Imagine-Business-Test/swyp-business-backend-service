@@ -5,21 +5,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = new mongoose_1.default.Schema({
-    logoUrl: { type: String, required: true },
-    name: { type: String, required: true, unique: true },
-    accounts: [{
-            email: { type: String, required: true, email: true },
-            password: { type: String, required: true, min: 8 },
+    accounts: [
+        {
             created: { type: Date, default: new Date() },
-            updatedAt: { type: Date, default: new Date() },
-            phone: { type: String, required: true },
-            name: { type: String, required: true },
-            passwordResetExpires: { type: Date },
-            passwordResetToken: { type: String },
             deleted: { type: Boolean, default: false },
             deletedBy: { email: String, name: String },
-            lastLogIn: { type: Date, default: new Date() }
-        }]
+            email: { type: String, required: true, email: true },
+            lastLogIn: { type: Date, default: new Date() },
+            name: { type: String, required: true },
+            password: { type: String, min: 8 },
+            passwordResetExpires: { type: Date },
+            passwordResetToken: { type: String },
+            phone: { type: String, required: true },
+            role: { type: String, required: true },
+            updatedAt: { type: Date, default: new Date() }
+        }
+    ],
+    logoUrl: { type: String, required: true },
+    name: { type: String, required: true, unique: true }
 });
 exports.BusinessModel = mongoose_1.default.model("businesses", Schema);
 //# sourceMappingURL=business.js.map

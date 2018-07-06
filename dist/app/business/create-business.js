@@ -11,10 +11,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const operation_1 = require("../operation");
-const domain_1 = require("../../domain");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const domain_1 = require("../../domain");
+const operation_1 = require("../operation");
 class CreateBusiness extends operation_1.Operation {
     constructor(businessRepository, config) {
         super();
@@ -33,8 +33,9 @@ class CreateBusiness extends operation_1.Operation {
                 const user = business.getUser();
                 const token = jsonwebtoken_1.default.sign({
                     email: user.email,
+                    isBusiness: true,
                     name: user.name,
-                    isBusiness: true
+                    role: user.role
                 }, this.config.web.json_secret, { expiresIn: "24h" });
                 return this.emit(SUCCESS, { business, user, token });
             }

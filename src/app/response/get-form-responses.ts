@@ -1,17 +1,15 @@
-import { ResponseRepository } from "../../contracts/repositories";
+import { IResponseRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
-
 export class GetFormResponses extends Operation {
-  private responseRepository: ResponseRepository;
+  private responseRepository: IResponseRepository;
 
-  constructor(responseRepository: ResponseRepository) {
+  constructor(responseRepository: IResponseRepository) {
     super();
     this.responseRepository = responseRepository;
   }
 
-
-  async execute(command: { form: string }) {
+  public async execute(command: { form: string }) {
     const { SUCCESS, ERROR } = this.outputs;
 
     try {

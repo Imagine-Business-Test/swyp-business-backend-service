@@ -1,15 +1,15 @@
+import { Response, Router } from "express";
+import Status from "http-status";
 import {
-  GetWorkspaceForms,
-  UpdateFormContent,
-  DisableForm,
   CreateForm,
   DeleteForm,
-  GetABusinessForms
+  DisableForm,
+  GetABusinessForms,
+  GetWorkspaceForms,
+  UpdateFormContent
 } from "../../../app/form";
-import { Router, Response } from "express";
-import { FormRules } from "../validation";
 import { auth } from "../middleware";
-import Status from "http-status";
+import { FormRules } from "../validation";
 
 export const FormController = {
   get router() {
@@ -27,21 +27,22 @@ export const FormController = {
 
   create(req: any, res: Response, next: any) {
     req.validateBody(FormRules.createForm);
-    const handler = <CreateForm>req.container.resolve("createForm");
+    const handler = req.container.resolve("createForm") as CreateForm;
     const serializer = req.container.resolve("formSerializer");
 
     const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
 
-    handler.on(SUCCESS, form => {
-      res.status(Status.CREATED).json(serializer.serialize(form));
-    })
-    .on(DATABASE_ERROR, error => {
-      res.status(Status.BAD_GATEWAY).json({
-        type: "DatabaseErrorMe",
-        details: error.details
-      });
-    })
-    .on(ERROR, next);
+    handler
+      .on(SUCCESS, form => {
+        res.status(Status.CREATED).json(serializer.serialize(form));
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.BAD_GATEWAY).json({
+          type: "DatabaseErrorMe",
+          details: error.details
+        });
+      })
+      .on(ERROR, next);
     const command = { ...req.body, user: req.user };
     handler.execute(command);
   },
@@ -49,28 +50,34 @@ export const FormController = {
   getWorkspaceForms(req: any, res: Response, next: any) {
     req.validateParams(FormRules.getWorkspaceForms);
 
-    const handler = <GetWorkspaceForms>req.container.resolve("getWorkspaceForms");
+    const handler = req.container.resolve(
+      "getWorkspaceForms"
+    ) as GetWorkspaceForms;
     const serializer = req.container.resolve("formSerializer");
     const { SUCCESS, ERROR } = handler.outputs;
 
-    handler.on(SUCCESS, workspace => {
-      res.status(Status.OK).json(serializer.serialize(workspace));
-    })
-    .on(ERROR, next);
+    handler
+      .on(SUCCESS, workspace => {
+        res.status(Status.OK).json(serializer.serialize(workspace));
+      })
+      .on(ERROR, next);
 
     handler.execute(req.params);
   },
 
   getBySameBusiness(req: any, res: Response, next: any) {
     req.validateParams(FormRules.getABusinessForms);
-    const handler = <GetABusinessForms>req.container.resolve("getABusinessForms");
+    const handler = req.container.resolve(
+      "getABusinessForms"
+    ) as GetABusinessForms;
 
     const { SUCCESS, ERROR } = handler.outputs;
 
-    handler.on(SUCCESS, data => {
-      res.status(Status.OK).json(data);
-    })
-    .on(ERROR, next);
+    handler
+      .on(SUCCESS, data => {
+        res.status(Status.OK).json(data);
+      })
+      .on(ERROR, next);
 
     handler.execute(req.params);
   },
@@ -79,58 +86,67 @@ export const FormController = {
     req.validateBody(FormRules.updateContent.content);
     req.validateParams(FormRules.updateContent.form);
 
-    const handler = <UpdateFormContent>req.container.resolve("updateFormContent");
+    const handler = req.container.resolve(
+      "updateFormContent"
+    ) as UpdateFormContent;
     const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
 
-    handler.on(SUCCESS, () => {
-      res.status(Status.OK).json({ updated: true });
-    })
-    .on(DATABASE_ERROR, error => {
-      res.status(Status.BAD_GATEWAY).json({
-        type: "DatabaseError",
-        details: error.details
-      });
-    })
-    .on(ERROR, next);
+    handler
+      .on(SUCCESS, () => {
+        res.status(Status.OK).json({ updated: true });
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.BAD_GATEWAY).json({
+          type: "DatabaseError",
+          details: error.details
+        });
+      })
+      .on(ERROR, next);
 
-    const command = { form: req.params.form, content: req.body.content, modifier: req.user };
+    const command = {
+      form: req.params.form,
+      content: req.body.content,
+      modifier: req.user
+    };
     handler.execute(command);
   },
 
   disable(req: any, res: Response, next: any) {
     req.validateParams(FormRules.disableForm);
-    const handler = <DisableForm>req.container.resolve("disableForm");
+    const handler = req.container.resolve("disableForm") as DisableForm;
     const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
 
-    handler.on(SUCCESS, () => {
-      res.status(Status.OK).json({ updated: true });
-    })
-    .on(DATABASE_ERROR, error => {
-      res.status(Status.BAD_GATEWAY).json({
-        type: "DatabaseError",
-        details: error.details
-      });
-    })
-    .on(ERROR, next);
+    handler
+      .on(SUCCESS, () => {
+        res.status(Status.OK).json({ updated: true });
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.BAD_GATEWAY).json({
+          type: "DatabaseError",
+          details: error.details
+        });
+      })
+      .on(ERROR, next);
 
     handler.execute(req.params);
   },
 
   delete(req: any, res: Response, next: any) {
     req.validateParams(FormRules.disableForm);
-    const handler = <DeleteForm>req.container.resolve("deleteForm");
+    const handler = req.container.resolve("deleteForm") as DeleteForm;
     const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
 
-    handler.on(SUCCESS, () => {
-      res.status(Status.OK).json({ deleted: true });
-    })
-    .on(DATABASE_ERROR, error => {
-      res.status(Status.BAD_GATEWAY).json({
-        type: "DatabaseError",
-        details: error.details
-      });
-    })
-    .on(ERROR, next);
+    handler
+      .on(SUCCESS, () => {
+        res.status(Status.OK).json({ deleted: true });
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.BAD_GATEWAY).json({
+          type: "DatabaseError",
+          details: error.details
+        });
+      })
+      .on(ERROR, next);
 
     handler.execute(req.params);
   }

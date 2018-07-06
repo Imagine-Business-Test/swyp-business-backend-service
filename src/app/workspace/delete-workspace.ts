@@ -1,17 +1,16 @@
+import { ILoggedInUser } from "../../contracts/interfaces";
+import { IWorkspaceRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
-import { WorkspaceRepository } from "../../contracts/repositories";
-import { LoggedInUser } from "../../contracts/interfaces";
 
 export class DeleteWorkspace extends Operation {
-  private workspaceRepository: WorkspaceRepository;
+  private workspaceRepository: IWorkspaceRepository;
 
-  constructor(workspaceRepository: WorkspaceRepository) {
+  constructor(workspaceRepository: IWorkspaceRepository) {
     super();
     this.workspaceRepository = workspaceRepository;
   }
 
-
-  async execute(command: { workspace: string, user: LoggedInUser}) {
+  public async execute(command: { workspace: string; user: ILoggedInUser }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {

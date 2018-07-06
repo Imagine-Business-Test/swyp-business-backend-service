@@ -1,67 +1,84 @@
+import { ILoggedInUser } from "../contracts/interfaces";
 import { Form } from "./form";
-import { LoggedInUser } from "../contracts/interfaces";
-
 
 export class Workspace {
-  private lastModifier: LoggedInUser;
-  private deleted: Boolean;
+  private lastModifier: ILoggedInUser;
+  private deleted: boolean;
   private business: string;
   private createdAt?: Date;
   private updatedAt?: Date;
-  private creator: LoggedInUser;
+  private creator: ILoggedInUser;
   private name: string;
-  private _id?: string;
+  private id?: string;
 
   constructor(
-    name: string, business: string, creator: LoggedInUser, lastModifier: LoggedInUser,
-    deleted: Boolean, _id?: string, createdAt?: Date, updatedAt?: Date
+    name: string,
+    business: string,
+    creator: ILoggedInUser,
+    lastModifier: ILoggedInUser,
+    deleted: boolean,
+    id?: string,
+    createdAt?: Date,
+    updatedAt?: Date
   ) {
     this.lastModifier = lastModifier;
-    this.creator      = creator;
-    this.business     = business;
-    this.deleted      = deleted;
-    this.createdAt    = createdAt;
-    this.updatedAt    = updatedAt;
-    this.name         = name;
-    this._id          = _id;
+    this.creator = creator;
+    this.business = business;
+    this.deleted = deleted;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.name = name;
+    this.id = id;
   }
 
-  createForm(name: string, content: string, creator: LoggedInUser): Form {
-    const deleted = false, status = "active";
+  public createForm(
+    name: string,
+    content: string,
+    creator: ILoggedInUser
+  ): Form {
+    const deleted = false;
+    const status = "active";
     return new Form(
-      name, <string>this.getId(), this.getBusinessId(), content, status, creator, creator, deleted
+      name,
+      this.getId() as string,
+      this.getBusinessId(),
+      content,
+      status,
+      creator,
+      creator,
+      deleted
     );
   }
 
-  getCreationDate(): Date {
+  public getCreationDate(): Date {
     return this.createdAt!;
   }
 
-  getLastUpdateDate(): Date {
+  public getLastUpdateDate(): Date {
     return this.updatedAt!;
   }
 
-  getLastModifier(): LoggedInUser {
+  public getLastModifier(): ILoggedInUser {
     return this.lastModifier;
   }
 
-  getBusinessId(): string {
+  public getBusinessId(): string {
     return this.business;
   }
 
-  getCreator(): LoggedInUser {
+  public getCreator(): ILoggedInUser {
     return this.creator;
   }
 
-  isDeleted(): Boolean {
+  public isDeleted(): boolean {
     return this.deleted;
   }
 
-  getName(): string {
+  public getName(): string {
     return this.name;
   }
 
-  getId(): string {
-    return this._id!;
+  public getId(): string {
+    return this.id!;
   }
 }

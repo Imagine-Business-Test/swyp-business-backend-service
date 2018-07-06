@@ -1,80 +1,86 @@
-import { User, Form } from "../contracts/domain";
-import { LoggedInUser } from "../contracts/interfaces";
+import { IForm, IUser } from "../contracts/domain";
+import { ILoggedInUser } from "../contracts/interfaces";
 
 export class Response {
-  private processor?: LoggedInUser;
-  private notedBy?: LoggedInUser;
-  private deleted: Boolean;
-  private respondant: User;
+  private processor?: ILoggedInUser;
+  private notedBy?: ILoggedInUser;
+  private deleted: boolean;
+  private respondant: IUser;
   private updatedAt?: Date;
   private createdAt?: Date;
   private content: string;
   private status: string;
-  private _id?: string;
-  private form: Form;
+  private id?: string;
+  private form: IForm;
   private note?: string;
 
-
-
   constructor(
-    respondant: User, form: Form, content: string, status: string, deleted: Boolean, _id?: string,
-    note?: string, processor?: LoggedInUser, notedBy?: LoggedInUser, createdAt?: Date,
-    updatedAt?: Date,
+    respondant: IUser,
+    form: IForm,
+    content: string,
+    status: string,
+    deleted: boolean,
+    id?: string,
+    note?: string,
+    processor?: ILoggedInUser,
+    notedBy?: ILoggedInUser,
+    createdAt?: Date,
+    updatedAt?: Date
   ) {
-    this.processor  = processor;
+    this.processor = processor;
     this.respondant = respondant;
-    this.createdAt  = createdAt;
-    this.updatedAt  = updatedAt;
-    this.deleted    = deleted;
-    this.content    = content;
-    this.notedBy    = notedBy;
-    this.status     = status;
-    this.form       = form;
-    this.note       = note;
-    this._id        = _id;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.deleted = deleted;
+    this.content = content;
+    this.notedBy = notedBy;
+    this.status = status;
+    this.form = form;
+    this.note = note;
+    this.id = id;
   }
 
-  getLastMoficationDate(): Date {
+  public getLastMoficationDate(): Date {
     return this.updatedAt!;
   }
 
-  getProcessor(): LoggedInUser {
+  public getProcessor(): ILoggedInUser {
     return this.processor!;
   }
 
-  getNoter(): LoggedInUser {
+  public getNoter(): ILoggedInUser {
     return this.notedBy!;
   }
 
-  getNote(): string {
+  public getNote(): string {
     return this.note!;
   }
 
-  isDeleted(): Boolean {
+  public isDeleted(): boolean {
     return this.deleted;
   }
 
-  getRespondant(): User {
+  public getRespondant(): IUser {
     return this.respondant;
   }
 
-  getCreationDate(): Date {
+  public getCreationDate(): Date {
     return this.createdAt!;
   }
 
-  getContent(): string {
+  public getContent(): string {
     return this.content;
   }
 
-  getStatus(): string {
+  public getStatus(): string {
     return this.status;
   }
 
-  getForm(): Form {
+  public getForm(): IForm {
     return this.form;
   }
 
-  getId(): string {
-    return this._id!;
+  public getId(): string {
+    return this.id!;
   }
 }

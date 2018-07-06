@@ -1,25 +1,32 @@
-import { ResponseRepository, FormRepository } from "../../contracts/repositories";
-import { User, Form } from "../../contracts/domain";
+import { IForm, IUser } from "../../contracts/domain";
+import {
+  IFormRepository,
+  IResponseRepository
+} from "../../contracts/repositories";
 import { Operation } from "../operation";
 
-
 export class RecordResponse extends Operation {
-  private responseRepository: ResponseRepository;
-  private formResponse: FormRepository;
+  private responseRepository: IResponseRepository;
+  private formResponse: IFormRepository;
 
-  constructor(responseRepository: ResponseRepository, formRepository: FormRepository) {
+  constructor(
+    responseRepository: IResponseRepository,
+    formRepository: IFormRepository
+  ) {
     super();
     this.responseRepository = responseRepository;
-    this.formResponse       = formRepository;
+    this.formResponse = formRepository;
   }
 
-  async execute(command: { form: Form, content: string, user: User}) {
+  public async execute(command: { form: IForm; content: string; user: IUser }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {
       const { content, user } = command;
-      const form     = await this.formResponse.find(command.form._id);
-      const response = await this.responseRepository.add(form.createResponse(content, user));
+      const form = await this.formResponse.find(command.form.id);
+      const response = await this.responseRepository.add(
+        form.createResponse(content, user)
+      );
       return this.emit(SUCCESS, response);
     } catch (ex) {
       if (ex.message === "DatabaseError") {

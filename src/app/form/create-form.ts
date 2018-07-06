@@ -1,21 +1,29 @@
-import { FormRepository, WorkspaceRepository } from "../../contracts/repositories";
-import { LoggedInUser } from "../../contracts/interfaces";
+import { ILoggedInUser } from "../../contracts/interfaces";
+import {
+  IFormRepository,
+  IWorkspaceRepository
+} from "../../contracts/repositories";
 import { Operation } from "../operation";
 
 export class CreateForm extends Operation {
-  private formRepository: FormRepository;
-  private workspaceRepository: WorkspaceRepository;
+  private formRepository: IFormRepository;
+  private workspaceRepository: IWorkspaceRepository;
 
-  constructor(formRepository: FormRepository, workspaceRepository: WorkspaceRepository) {
+  constructor(
+    formRepository: IFormRepository,
+    workspaceRepository: IWorkspaceRepository
+  ) {
     super();
     this.workspaceRepository = workspaceRepository;
-    this.formRepository        = formRepository;
+    this.formRepository = formRepository;
   }
 
-  async execute(
-    command: { workspace: string, name: string, content: string, user: LoggedInUser}
-  ) {
-
+  public async execute(command: {
+    workspace: string;
+    name: string;
+    content: string;
+    user: ILoggedInUser;
+  }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
       const { workspace, name, content, user } = command;

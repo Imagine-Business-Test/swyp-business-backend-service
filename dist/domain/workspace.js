@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const form_1 = require("./form");
 class Workspace {
-    constructor(name, business, creator, lastModifier, deleted, _id, createdAt, updatedAt) {
+    constructor(name, business, creator, lastModifier, deleted, id, createdAt, updatedAt) {
         this.lastModifier = lastModifier;
         this.creator = creator;
         this.business = business;
@@ -10,10 +10,11 @@ class Workspace {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.name = name;
-        this._id = _id;
+        this.id = id;
     }
     createForm(name, content, creator) {
-        const deleted = false, status = "active";
+        const deleted = false;
+        const status = "active";
         return new form_1.Form(name, this.getId(), this.getBusinessId(), content, status, creator, creator, deleted);
     }
     getCreationDate() {
@@ -38,7 +39,7 @@ class Workspace {
         return this.name;
     }
     getId() {
-        return this._id;
+        return this.id;
     }
 }
 exports.Workspace = Workspace;

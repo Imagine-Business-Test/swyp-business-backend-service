@@ -1,65 +1,66 @@
+import { IAccount } from "../contracts/domain";
 import { Workspace } from "./workspace";
-import { Account } from "../contracts/domain";
-
 
 export class Business {
-  private currentUser?: Account;
-  private accounts: Account[];
+  private currentUser?: IAccount;
+  private accounts: IAccount[];
   private name: string;
-  logoUrl: string;
-  private _id?: string;
+  private logoUrl: string;
+  private id?: string;
 
-  constructor(name: string, logoUrl: string, accounts: Account[], _id?: string) {
-
+  constructor(
+    name: string,
+    logoUrl: string,
+    accounts: IAccount[],
+    id?: string
+  ) {
     this.accounts = accounts;
-    this.logoUrl  = logoUrl;
-    this.name     = name;
-    this._id      = _id;
+    this.logoUrl = logoUrl;
+    this.name = name;
+    this.id = id;
   }
-  createWorkspace(name: string): Workspace {
-
+  public createWorkspace(name: string): Workspace {
     const loggedinUser = {
-      name: <string>this.currentUser!.name,
-      email: <string>this.currentUser!.email
+      email: this.currentUser!.email as string,
+      name: this.currentUser!.name as string
     };
 
-    const business = this._id!;
+    const business = this.id!;
     const deleted = false;
     return new Workspace(name, business, loggedinUser, loggedinUser, deleted);
   }
 
-  setUser(user: Account): Boolean {
-
-    for (const entry of <Account[]>this.accounts) {
+  public setUser(user: IAccount): boolean {
+    for (const entry of this.accounts as IAccount[]) {
       if (entry.email === user.email) {
         this.currentUser = user;
         break;
       }
     }
-    if (!this.currentUser)
-      throw new Error(`${user.name} does not belong to ${(this.name)}`);
+    if (!this.currentUser) {
+      throw new Error(`${user.name} does not belong to ${this.name}`);
+    }
 
     return true;
   }
 
-  getId() {
-    return this._id;
+  public getId() {
+    return this.id;
   }
 
-  getAccounts() {
+  public getAccounts() {
     return this.accounts;
   }
 
-  getLogo() {
+  public getLogo() {
     return this.logoUrl;
   }
 
-  getName() {
+  public getName() {
     return this.name;
   }
 
-  getUser(): Account {
-
+  public getUser(): IAccount {
     return this.currentUser!;
   }
 }

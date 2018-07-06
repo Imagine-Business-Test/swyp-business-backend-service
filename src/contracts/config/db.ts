@@ -1,3 +1,3 @@
-export interface DB {
+export interface IDB {
   mongo_url: string;
 }

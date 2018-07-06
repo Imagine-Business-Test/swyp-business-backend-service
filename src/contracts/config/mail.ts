@@ -1,4 +1,4 @@
-export interface Mail {
+export interface IMail {
   secret: string;
   domain: string;
 }

@@ -1,15 +1,15 @@
+import { IFormRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
-import { FormRepository } from "../../contracts/repositories";
 
 export class GetWorkspaceForms extends Operation {
-  private formRepository: FormRepository;
+  private formRepository: IFormRepository;
 
-  constructor(formRepository: FormRepository) {
+  constructor(formRepository: IFormRepository) {
     super();
     this.formRepository = formRepository;
   }
 
-  async execute(command: { workspace: string }) {
+  public async execute(command: { workspace: string }) {
     const { SUCCESS, ERROR } = this.outputs;
     try {
       const forms = await this.formRepository.getByWorkspace(command.workspace);

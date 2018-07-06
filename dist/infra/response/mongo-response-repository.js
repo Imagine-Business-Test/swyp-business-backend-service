@@ -28,12 +28,14 @@ class MongoResponseRepository {
     }
     getByForm(form) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.find({ "form._id": form, deleted: false }).sort({ createdAt: -1 });
+            return this.model
+                .find({ "form._id": form, deleted: false })
+                .sort({ createdAt: -1 });
         });
     }
     updateContent(id, content) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.update({ _id: id }, { $set: { content: content } });
+            yield this.update({ _id: id }, { $set: { content } });
         });
     }
     makeAsprocessed(id, processor) {
@@ -61,9 +63,13 @@ class MongoResponseRepository {
     }
     findBStatus(status, page = 1, limit = 10) {
         return __awaiter(this, void 0, void 0, function* () {
-            const skip = (page * limit) - limit;
+            const skip = page * limit - limit;
             const countPromise = this.model.count({ status });
-            const queryPromise = this.model.find({ status }).skip(skip).limit(limit).sort({ createdAt: -1 });
+            const queryPromise = this.model
+                .find({ status })
+                .skip(skip)
+                .limit(limit)
+                .sort({ createdAt: -1 });
             const [result, count] = yield Promise.all([queryPromise, countPromise]);
             const pages = Math.ceil(count / limit);
             return { result, count, pages };
@@ -73,7 +79,9 @@ class MongoResponseRepository {
         return __awaiter(this, void 0, void 0, function* () {
             const match = { $match: { status: "processed" } };
             const group = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
-            const total = { $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } } };
+            const total = {
+                $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } }
+            };
             return this.model.aggregate([match, group, total]);
         });
     }
@@ -81,7 +89,9 @@ class MongoResponseRepository {
         return __awaiter(this, void 0, void 0, function* () {
             const match = { $match: { status: "noted" } };
             const group = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
-            const total = { $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } } };
+            const total = {
+                $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } }
+            };
             return this.model.aggregate([match, group, total]);
         });
     }

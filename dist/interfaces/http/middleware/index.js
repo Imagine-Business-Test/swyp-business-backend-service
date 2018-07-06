@@ -8,5 +8,7 @@ __export(require("./config-middleware"));
 __export(require("./log-middleware"));
 __export(require("./error-handler"));
 __export(require("./validator"));
+__export(require("./worker"));
+__export(require("./admin"));
 __export(require("./auth"));
 //# sourceMappingURL=index.js.map

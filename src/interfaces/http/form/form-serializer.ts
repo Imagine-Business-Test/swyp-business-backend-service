@@ -1,5 +1,5 @@
-import { Form } from "../../../domain";
 import { FormInterface } from "../../../contracts/infra";
+import { Form } from "../../../domain";
 
 export const FormSerializer = {
   serialize(response: FormInterface[] | Form) {

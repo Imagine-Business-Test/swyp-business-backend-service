@@ -1,9 +1,10 @@
-import dotenv from  "dotenv";
-import { Config } from "../contracts/config";
+/* tslint:disable: no-var-requires */
+import dotenv from "dotenv";
+import { IConfig } from "../contracts/config";
 dotenv.load();
 
 const processType = process.env.PROCESS_TYPE || "web";
-let env: Config;
+let env: IConfig;
 try {
   env = require(`./${processType}`);
 } catch (exception) {

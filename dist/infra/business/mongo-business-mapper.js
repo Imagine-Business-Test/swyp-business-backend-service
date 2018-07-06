@@ -12,9 +12,9 @@ exports.MongoBusinessMapper = {
     },
     toDatabase(business) {
         return {
-            name: business.getName(),
+            accounts: business.getAccounts(),
             logoUrl: business.getLogo(),
-            accounts: business.getAccounts()
+            name: business.getName()
         };
     }
 };

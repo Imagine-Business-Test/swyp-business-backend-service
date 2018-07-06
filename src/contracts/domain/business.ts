@@ -1,14 +1,13 @@
-export interface Account {
+export interface IAccount {
   passwordResetToken?: string;
   passwordResetExpires?: Date;
   lastLoginIn?: Date;
-  deleted?: Boolean;
-  password: string;
+  deleted?: boolean;
+  password?: string;
   updatedAt?: Date;
   created?: Date;
   phone: string;
   email: string;
   name: string;
+  role: string;
 }
-
-

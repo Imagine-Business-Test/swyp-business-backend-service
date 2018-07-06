@@ -1,18 +1,17 @@
-import { FormModel, FormInterface } from "../../contracts/infra";
-import { FormRepository } from "../../contracts/repositories";
-import { LoggedInUser } from "../../contracts/interfaces";
-import { MongoFormMapper } from "./mongo-form-mapper";
+import { FormInterface, FormModel } from "../../contracts/infra";
+import { ILoggedInUser } from "../../contracts/interfaces";
+import { IFormRepository } from "../../contracts/repositories";
 import { Form } from "../../domain";
+import { MongoFormMapper } from "./mongo-form-mapper";
 
-
-export class MongoFormRepository implements FormRepository {
+export class MongoFormRepository implements IFormRepository {
   private model: FormModel;
 
   constructor(formModel: FormModel) {
     this.model = formModel;
   }
 
-  async add(form: Form) {
+  public async add(form: Form) {
     try {
       const doc: FormInterface = await this.model.create(
         MongoFormMapper.toDatabase(form)
@@ -25,9 +24,9 @@ export class MongoFormRepository implements FormRepository {
     }
   }
 
-  async find(id: string): Promise<Form> {
+  public async find(id: string): Promise<Form> {
     try {
-      const doc = await this.model.findOne({ _id: id});
+      const doc = await this.model.findOne({ _id: id });
       if (!doc) {
         throw new Error("The specified form record is not found");
       }
@@ -39,26 +38,28 @@ export class MongoFormRepository implements FormRepository {
     }
   }
 
-  async getByBusiness(business: string): Promise<FormInterface[]> {
-    return this.model.find(
-      { business, status: "active", deleted: false  }
-    ).limit(10);
+  public async getByBusiness(business: string): Promise<FormInterface[]> {
+    return this.model
+      .find({ business, status: "active", deleted: false })
+      .limit(10);
   }
 
-  async getByWorkspace (workspace: string): Promise<FormInterface[]> {
-    return this.model.find(
-      { workspace: workspace, status: "active", deleted: false }
-    );
+  public async getByWorkspace(workspace: string): Promise<FormInterface[]> {
+    return this.model.find({ workspace, status: "active", deleted: false });
   }
 
-  async updateContent(id: string, content: string, modifier: LoggedInUser) {
+  public async updateContent(
+    id: string,
+    content: string,
+    modifier: ILoggedInUser
+  ) {
     try {
       const result = await this.model.updateOne(
         { _id: id },
-        { $set: { content: content, lastModifier: modifier }}
+        { $set: { content, lastModifier: modifier } }
       );
       if (result.nModified !== 1 || result.nMatched === 1) {
-        throw  new Error(`Error updating content ${result.nModified} updated`);
+        throw new Error(`Error updating content ${result.nModified} updated`);
       }
     } catch (ex) {
       ex.details = ex.message;
@@ -67,14 +68,14 @@ export class MongoFormRepository implements FormRepository {
     }
   }
 
-  async disable(id: string, modifier: LoggedInUser) {
+  public async disable(id: string, modifier: ILoggedInUser) {
     try {
       const result = await this.model.updateOne(
         { _id: id },
         { $set: { status: "disabled", lastUpdatedBy: modifier } }
       );
       if (result.nModified !== 1 || result.nMatched === 1) {
-        throw  new Error(`Error disabling form: ${result.nModified } affected `);
+        throw new Error(`Error disabling form: ${result.nModified} affected `);
       }
     } catch (ex) {
       ex.details = ex.message;
@@ -83,15 +84,14 @@ export class MongoFormRepository implements FormRepository {
     }
   }
 
-  async delete(id: string, user: LoggedInUser) {
-
+  public async delete(id: string, user: ILoggedInUser) {
     try {
       const result = await this.model.updateOne(
         { _id: id },
         { $set: { deleted: true, lastUpdatedBy: user } }
       );
       if (result.nModified !== 1 || result.nMatched === 1) {
-        throw  new Error(`Error deleting form: ${result.nModified } deleted `);
+        throw new Error(`Error deleting form: ${result.nModified} deleted `);
       }
     } catch (ex) {
       ex.details = ex.message;

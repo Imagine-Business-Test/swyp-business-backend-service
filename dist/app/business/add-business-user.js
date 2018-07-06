@@ -12,28 +12,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const operation_1 = require("../operation");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const v4_1 = __importDefault(require("uuid/v4"));
 class AddBusinessUser extends operation_1.Operation {
-    constructor(businessRepository, config) {
+    constructor(businessRepository, mailer) {
         super();
         this.businessRepository = businessRepository;
-        this.config = config;
+        this.mailer = mailer;
     }
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             try {
                 const { businessId, account } = command;
-                account.password = yield bcrypt_1.default.hash(account.password, 10);
+                const urlToken = v4_1.default();
                 const business = yield this.businessRepository.addAccount(businessId, account);
                 const user = business.getUser();
-                const token = jsonwebtoken_1.default.sign({
-                    email: user.email,
-                    name: user.name,
-                    isBusiness: true
-                }, this.config.web.json_secret, { expiresIn: "24h" });
-                return this.emit(SUCCESS, { business, user, token });
+                const link = command.origin + `?token=${urlToken}`;
+                this.mailer.welcome(user.name, command.user.name, business.getName(), user.email, link);
+                return this.emit(SUCCESS, { business });
             }
             catch (ex) {
                 if (ex.message === "DatabaseError") {

@@ -1,19 +1,21 @@
-import { FormRepository } from "../../contracts/repositories";
+import { IFormRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
 export class GetABusinessForms extends Operation {
-  private formRepository: FormRepository;
+  private formRepository: IFormRepository;
 
-  constructor(formRepository: FormRepository) {
+  constructor(formRepository: IFormRepository) {
     super();
     this.formRepository = formRepository;
   }
 
-  async execute(command: { business: string }) {
+  public async execute(command: { business: string }) {
     const { SUCCESS, ERROR } = this.outputs;
 
     try {
-      const formRecords = await this.formRepository.getByBusiness(command.business);
+      const formRecords = await this.formRepository.getByBusiness(
+        command.business
+      );
       this.emit(SUCCESS, formRecords);
     } catch (error) {
       this.emit(ERROR, error);

@@ -1,19 +1,27 @@
+import { IResponseRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
-import { ResponseRepository } from "../../contracts/repositories";
 
 export class GetResponseByStatus extends Operation {
-  private responseRepository: ResponseRepository;
+  private responseRepository: IResponseRepository;
 
-  constructor(responseRepository: ResponseRepository) {
+  constructor(responseRepository: IResponseRepository) {
     super();
     this.responseRepository = responseRepository;
   }
 
-  async execute(command: { status: string, page: number, limit: number }) {
+  public async execute(command: {
+    status: string;
+    page: number;
+    limit: number;
+  }) {
     const { SUCCESS, ERROR } = this.outputs;
     const { status, page, limit } = command;
     try {
-      const result = await this.responseRepository.findBStatus(status, page, limit);
+      const result = await this.responseRepository.findBStatus(
+        status,
+        page,
+        limit
+      );
       this.emit(SUCCESS, result);
     } catch (error) {
       this.emit(ERROR, error);

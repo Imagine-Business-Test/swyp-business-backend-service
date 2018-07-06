@@ -1,19 +1,15 @@
-import { Account } from "../../../contracts/domain";
+import { IAccount } from "../../../contracts/domain";
 
 export const BusinessSerializer = {
   serialize(response: any) {
-    let   { business }    = response;
+    let { business } = response;
     const { user, token } = response;
-
-    if (!business) {
-      business = response;
-    }
 
     business = {
       accounts: pruneSensitiveData(business.getAccounts()),
+      id: business.getId(),
       logoUrl: business.getLogo(),
-      name: business.getName(),
-      _id: business.getId()
+      name: business.getName()
     };
 
     if (!user) {
@@ -21,33 +17,32 @@ export const BusinessSerializer = {
     }
     return {
       business,
-      user: pruneSensitiveData(user),
-      token
+      token,
+      user: pruneSensitiveData(user)
     };
-  },
-
+  }
 };
 
-const pruneSensitiveData = (accounts: Account[] | Account ) => {
-  if ( Array.isArray(accounts) ) {
-
-    return accounts.filter((account: Account) => !account.deleted)
-      .map((account: Account ) => {
-      return {
-        lastLogIn: account.lastLoginIn,
-        created: account.created,
-        phone: account.phone,
-        email: account.email,
-        name: account.name
-      };
-    });
+const pruneSensitiveData = (accounts: IAccount[] | IAccount) => {
+  if (Array.isArray(accounts)) {
+    return accounts
+      .filter((account: IAccount) => !account.deleted)
+      .map((account: IAccount) => {
+        return {
+          created: account.created,
+          email: account.email,
+          lastLogIn: account.lastLoginIn,
+          name: account.name,
+          phone: account.phone
+        };
+      });
   }
 
   return {
-    lastLogIn: (<Account>accounts).lastLoginIn,
-    created: (<Account>accounts).created,
-    phone: (<Account>accounts).phone,
-    email: (<Account>accounts).email,
-    name: (<Account>accounts).name
+    created: (accounts as IAccount).created,
+    email: (accounts as IAccount).email,
+    lastLogIn: (accounts as IAccount).lastLoginIn,
+    name: (accounts as IAccount).name,
+    phone: (accounts as IAccount).phone
   };
 };

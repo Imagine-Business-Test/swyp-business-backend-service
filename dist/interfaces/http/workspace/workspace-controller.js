@@ -3,14 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const validation_1 = require("../validation");
 const express_1 = require("express");
-const middleware_1 = require("../middleware");
 const http_status_1 = __importDefault(require("http-status"));
+const middleware_1 = require("../middleware");
+const validation_1 = require("../validation");
 exports.WorkspaceController = {
     get router() {
         const router = express_1.Router();
-        router.post("/", middleware_1.auth, this.create)
+        router
+            .post("/", middleware_1.auth, this.create)
             .get("/getbybusiness/:business", middleware_1.auth, this.getBusinessWorkspaces)
             .delete("/:id", middleware_1.auth, this.delete);
         return router;
@@ -20,7 +21,8 @@ exports.WorkspaceController = {
         const handler = req.container.resolve("createWorkspace");
         const serializer = req.container.resolve("workspaceSerializer");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, workspace => {
+        handler
+            .on(SUCCESS, workspace => {
             res.status(http_status_1.default.CREATED).json(serializer.serialize(workspace));
         })
             .on(DATABASE_ERROR, error => {
@@ -42,7 +44,8 @@ exports.WorkspaceController = {
         const handler = req.container.resolve("getBusinessWorkspaces");
         const serializer = req.container.resolve("workspaceSerializer");
         const { SUCCESS, ERROR } = handler.outputs;
-        handler.on(SUCCESS, workspace => {
+        handler
+            .on(SUCCESS, workspace => {
             res.status(http_status_1.default.OK).json(serializer.serialize(workspace));
         })
             .on(ERROR, next);
@@ -52,7 +55,8 @@ exports.WorkspaceController = {
         req.validateParams(validation_1.WorkspaceRule.deleteWorkspace);
         const handler = req.container.resolve("deleteWorkspace");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, () => {
+        handler
+            .on(SUCCESS, () => {
             res.status(http_status_1.default.OK).json({ deleted: true });
         })
             .on(DATABASE_ERROR, error => {

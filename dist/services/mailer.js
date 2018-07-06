@@ -16,18 +16,15 @@ class Mailer {
             }
         }));
     }
-    configureMailOPtion() {
-        return {
-            from: "'Swyp 👻' <foo@example.com>",
-            to: "",
-            subject: "",
-            "h:Reply-To": "info@naijachamps.com",
-            text: ""
-        };
-    }
     sendPasswordChanged(name, email) {
         const text = `Hello ${name} . \n Your password on swyp app was changed.`;
         this.send(text, "Password Changed", email);
+    }
+    welcome(name, creator, businessName, email, link) {
+        const text = `Hello ${name[0].toUpperCase()}${name.slice(1)}. \n A business account for ${businessName} has been created on your behave by ${creator}. \n
+    Use the link below to change your update your password. \n
+    ${link}`;
+        this.send(text, "Password Reset", email);
     }
     sendPasswordRequest(name, email, resetUrl) {
         const text = `Hello ${name}. \n click on the link below to complete your password reset.
@@ -47,6 +44,15 @@ class Mailer {
                 this.logger.info(" Mail sent, Response: " + JSON.stringify(info, undefined, 2));
             }
         });
+    }
+    configureMailOPtion() {
+        return {
+            from: "'Swyp 👻' <foo@example.com>",
+            to: "",
+            subject: "",
+            "h:Reply-To": "info@naijachamps.com",
+            text: ""
+        };
     }
 }
 exports.Mailer = Mailer;

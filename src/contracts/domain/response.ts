@@ -1,6 +1,6 @@
-export type Form = {
-  _id: string;
-  name: string,
+export interface IForm {
+  id: string;
+  name: string;
   business: string;
   workspace: string;
-};
+}

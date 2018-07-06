@@ -31,11 +31,13 @@ class MongoBusinessRepository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let doc = yield this.model.findOne({ "accounts.email": account.email });
-                if (doc)
+                if (doc) {
                     throw new Error(`Account with the provided email already exist`);
+                }
                 doc = yield this.model.findByIdAndUpdate(businessId, { $addToSet: { accounts: account } }, { new: true });
-                if (!doc)
+                if (!doc) {
                     throw new Error(`Account not found`);
+                }
                 return mongo_business_mapper_1.MongoBusinessMapper.toEntity(doc, account);
             }
             catch (ex) {
@@ -79,9 +81,10 @@ class MongoBusinessRepository {
     requestPasswordReset(email, token, expires) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.model.updateOne({}, { $set: {
-                        "accounts.$[elem].passwordResetToken": token,
-                        "accounts.$[elem].passwordResetExpires": expires
+                const result = yield this.model.updateOne({}, {
+                    $set: {
+                        "accounts.$[elem].passwordResetExpires": expires,
+                        "accounts.$[elem].passwordResetToken": token
                     }
                 }, { arrayFilters: [{ "elem.email": email }] });
                 if (result.nModified !== 1 || result.nMatched === 1) {
@@ -98,11 +101,13 @@ class MongoBusinessRepository {
     updatePassword(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.model.updateOne({}, { $set: {
+                const result = yield this.model.updateOne({}, {
+                    $set: {
                         "accounts.$[elem].password": password,
-                        "accounts.$[elem].passwordResetToken": null,
-                        "accounts.$[elem].passwordResetExpires": null
-                    } }, { arrayFilters: [{ "elem.email": email }] });
+                        "accounts.$[elem].passwordResetExpires": null,
+                        "accounts.$[elem].passwordResetToken": null
+                    }
+                }, { arrayFilters: [{ "elem.email": email }] });
                 if (result.nModified !== 1 || result.nMatched === 1) {
                     throw new Error(`Error updating account: ${result.nModified} updated `);
                 }
@@ -117,10 +122,12 @@ class MongoBusinessRepository {
     deleteAccount(email, modifer) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.model.updateOne({}, { $set: {
+                const result = yield this.model.updateOne({}, {
+                    $set: {
                         "accounts.$[elem].deleted": true,
                         "accounts.$[elem].deletedBy": modifer
-                    } }, { arrayFilters: [{ "elem.email": email }] });
+                    }
+                }, { arrayFilters: [{ "elem.email": email }] });
                 if (result.nModified !== 1 || result.nMatched === 1) {
                     throw new Error(`Error deleting account: ${result.nModified} deleted `);
                 }

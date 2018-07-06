@@ -1,11 +1,10 @@
-import { Logging } from "./logging";
-import { Mail } from "./mail";
+import { ILogging } from "./logging";
+import { IMail } from "./mail";
 
-export interface Config {
-  process: { port: string, env: string, type: string };
+export interface IConfig {
+  process: { port: string; env: string; type: string };
   web: { json_secret: string };
   db: { mongo_url: string };
-  logging: Logging;
-  mail: Mail;
+  logging: ILogging;
+  mail: IMail;
 }
-

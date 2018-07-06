@@ -4,44 +4,42 @@ exports.BusinessSerializer = {
     serialize(response) {
         let { business } = response;
         const { user, token } = response;
-        if (!business) {
-            business = response;
-        }
         business = {
             accounts: pruneSensitiveData(business.getAccounts()),
+            id: business.getId(),
             logoUrl: business.getLogo(),
-            name: business.getName(),
-            _id: business.getId()
+            name: business.getName()
         };
         if (!user) {
             return business;
         }
         return {
             business,
-            user: pruneSensitiveData(user),
-            token
+            token,
+            user: pruneSensitiveData(user)
         };
-    },
+    }
 };
 const pruneSensitiveData = (accounts) => {
     if (Array.isArray(accounts)) {
-        return accounts.filter((account) => !account.deleted)
+        return accounts
+            .filter((account) => !account.deleted)
             .map((account) => {
             return {
-                lastLogIn: account.lastLoginIn,
                 created: account.created,
-                phone: account.phone,
                 email: account.email,
-                name: account.name
+                lastLogIn: account.lastLoginIn,
+                name: account.name,
+                phone: account.phone
             };
         });
     }
     return {
-        lastLogIn: accounts.lastLoginIn,
         created: accounts.created,
-        phone: accounts.phone,
         email: accounts.email,
-        name: accounts.name
+        lastLogIn: accounts.lastLoginIn,
+        name: accounts.name,
+        phone: accounts.phone
     };
 };
 //# sourceMappingURL=business-serializer.js.map

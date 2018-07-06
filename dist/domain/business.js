@@ -2,18 +2,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const workspace_1 = require("./workspace");
 class Business {
-    constructor(name, logoUrl, accounts, _id) {
+    constructor(name, logoUrl, accounts, id) {
         this.accounts = accounts;
         this.logoUrl = logoUrl;
         this.name = name;
-        this._id = _id;
+        this.id = id;
     }
     createWorkspace(name) {
         const loggedinUser = {
-            name: this.currentUser.name,
-            email: this.currentUser.email
+            email: this.currentUser.email,
+            name: this.currentUser.name
         };
-        const business = this._id;
+        const business = this.id;
         const deleted = false;
         return new workspace_1.Workspace(name, business, loggedinUser, loggedinUser, deleted);
     }
@@ -24,12 +24,13 @@ class Business {
                 break;
             }
         }
-        if (!this.currentUser)
-            throw new Error(`${user.name} does not belong to ${(this.name)}`);
+        if (!this.currentUser) {
+            throw new Error(`${user.name} does not belong to ${this.name}`);
+        }
         return true;
     }
     getId() {
-        return this._id;
+        return this.id;
     }
     getAccounts() {
         return this.accounts;

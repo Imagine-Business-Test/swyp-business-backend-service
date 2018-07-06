@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const validation_1 = require("../validation");
-const middleware_1 = require("../middleware");
 const http_status_1 = __importDefault(require("http-status"));
+const middleware_1 = require("../middleware");
+const validation_1 = require("../validation");
 exports.FormController = {
     get router() {
         const router = express_1.Router();
@@ -24,7 +24,8 @@ exports.FormController = {
         const handler = req.container.resolve("createForm");
         const serializer = req.container.resolve("formSerializer");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, form => {
+        handler
+            .on(SUCCESS, form => {
             res.status(http_status_1.default.CREATED).json(serializer.serialize(form));
         })
             .on(DATABASE_ERROR, error => {
@@ -42,7 +43,8 @@ exports.FormController = {
         const handler = req.container.resolve("getWorkspaceForms");
         const serializer = req.container.resolve("formSerializer");
         const { SUCCESS, ERROR } = handler.outputs;
-        handler.on(SUCCESS, workspace => {
+        handler
+            .on(SUCCESS, workspace => {
             res.status(http_status_1.default.OK).json(serializer.serialize(workspace));
         })
             .on(ERROR, next);
@@ -52,7 +54,8 @@ exports.FormController = {
         req.validateParams(validation_1.FormRules.getABusinessForms);
         const handler = req.container.resolve("getABusinessForms");
         const { SUCCESS, ERROR } = handler.outputs;
-        handler.on(SUCCESS, data => {
+        handler
+            .on(SUCCESS, data => {
             res.status(http_status_1.default.OK).json(data);
         })
             .on(ERROR, next);
@@ -63,7 +66,8 @@ exports.FormController = {
         req.validateParams(validation_1.FormRules.updateContent.form);
         const handler = req.container.resolve("updateFormContent");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, () => {
+        handler
+            .on(SUCCESS, () => {
             res.status(http_status_1.default.OK).json({ updated: true });
         })
             .on(DATABASE_ERROR, error => {
@@ -73,14 +77,19 @@ exports.FormController = {
             });
         })
             .on(ERROR, next);
-        const command = { form: req.params.form, content: req.body.content, modifier: req.user };
+        const command = {
+            form: req.params.form,
+            content: req.body.content,
+            modifier: req.user
+        };
         handler.execute(command);
     },
     disable(req, res, next) {
         req.validateParams(validation_1.FormRules.disableForm);
         const handler = req.container.resolve("disableForm");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, () => {
+        handler
+            .on(SUCCESS, () => {
             res.status(http_status_1.default.OK).json({ updated: true });
         })
             .on(DATABASE_ERROR, error => {
@@ -96,7 +105,8 @@ exports.FormController = {
         req.validateParams(validation_1.FormRules.disableForm);
         const handler = req.container.resolve("deleteForm");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, () => {
+        handler
+            .on(SUCCESS, () => {
             res.status(http_status_1.default.OK).json({ deleted: true });
         })
             .on(DATABASE_ERROR, error => {
