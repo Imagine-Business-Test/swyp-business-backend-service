@@ -11,8 +11,8 @@ exports.FormController = {
     get router() {
         const router = express_1.Router();
         router
-            .get("/by-same-business/:business", middleware_1.auth, this.getBySameBusiness)
             .get("/workspaces/:workspace", middleware_1.auth, this.getWorkspaceForms)
+            .get("/businesses/:business", this.getBusinessForms)
             .put("/:form", middleware_1.auth, this.updateContent)
             .put("/disable/:form", middleware_1.auth, this.disable)
             .delete("/:form", middleware_1.auth, this.delete)
@@ -50,9 +50,9 @@ exports.FormController = {
             .on(ERROR, next);
         handler.execute(req.params);
     },
-    getBySameBusiness(req, res, next) {
+    getBusinessForms(req, res, next) {
         req.validateParams(validation_1.FormRules.getABusinessForms);
-        const handler = req.container.resolve("getABusinessForms");
+        const handler = req.container.resolve("getBusinessForms");
         const { SUCCESS, ERROR } = handler.outputs;
         handler
             .on(SUCCESS, data => {

@@ -15,7 +15,7 @@ class Workspace {
     createForm(name, content, creator) {
         const deleted = false;
         const status = "active";
-        return new form_1.Form(name, this.getId(), this.getBusinessId(), content, status, creator, creator, deleted);
+        return new form_1.Form(name, this.getId(), this.getBusiness(), content, status, creator, creator, deleted);
     }
     getCreationDate() {
         return this.createdAt;
@@ -26,7 +26,7 @@ class Workspace {
     getLastModifier() {
         return this.lastModifier;
     }
-    getBusinessId() {
+    getBusiness() {
         return this.business;
     }
     getCreator() {

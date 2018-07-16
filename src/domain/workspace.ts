@@ -1,10 +1,11 @@
+import { IBusiness } from "../contracts/domain";
 import { ILoggedInUser } from "../contracts/interfaces";
 import { Form } from "./form";
 
 export class Workspace {
   private lastModifier: ILoggedInUser;
   private deleted: boolean;
-  private business: string;
+  private business: IBusiness;
   private createdAt?: Date;
   private updatedAt?: Date;
   private creator: ILoggedInUser;
@@ -13,7 +14,7 @@ export class Workspace {
 
   constructor(
     name: string,
-    business: string,
+    business: IBusiness,
     creator: ILoggedInUser,
     lastModifier: ILoggedInUser,
     deleted: boolean,
@@ -41,7 +42,7 @@ export class Workspace {
     return new Form(
       name,
       this.getId() as string,
-      this.getBusinessId(),
+      this.getBusiness(),
       content,
       status,
       creator,
@@ -62,7 +63,7 @@ export class Workspace {
     return this.lastModifier;
   }
 
-  public getBusinessId(): string {
+  public getBusiness(): IBusiness {
     return this.business;
   }
 

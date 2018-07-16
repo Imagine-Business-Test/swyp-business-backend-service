@@ -18,10 +18,11 @@ class Form {
     createResponse(content, respondant) {
         const deleted = false;
         const status = "pending";
+        const business = this.getBusiness();
         const form = {
             id: this.getId(),
             name: this.getName(),
-            business: this.getBusiness(),
+            business: business.id,
             workspace: this.getWorkspace()
         };
         return new response_1.Response(respondant, form, content, status, deleted);

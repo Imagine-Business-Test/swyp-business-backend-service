@@ -5,7 +5,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./get-workspace-forms"));
 __export(require("./update-form-content"));
-__export(require("./get-a-business-forms"));
+__export(require("./get-business-forms"));
 __export(require("./disable-form"));
 __export(require("./delete-form"));
 __export(require("./create-form"));

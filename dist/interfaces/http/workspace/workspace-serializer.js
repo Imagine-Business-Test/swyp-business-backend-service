@@ -11,7 +11,7 @@ exports.WorkspaceSerializer = {
                     business: workspace.business,
                     creator: workspace.creator,
                     name: workspace.name,
-                    _id: workspace._id
+                    id: workspace._id
                 };
             });
         }
@@ -19,10 +19,10 @@ exports.WorkspaceSerializer = {
             lastModifier: response.getLastModifier(),
             updatedAt: response.getLastUpdateDate(),
             createdAt: response.getCreationDate(),
-            business: response.getBusinessId(),
+            business: response.getBusiness(),
             creator: response.getCreator(),
             name: response.getName(),
-            _id: response.getId()
+            id: response.getId()
         };
     }
 };

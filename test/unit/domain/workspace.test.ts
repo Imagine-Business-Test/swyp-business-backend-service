@@ -1,11 +1,21 @@
-import { Workspace } from "../../../src/domain";
-import { Form } from "../../../src/domain";
+import { Form, Workspace } from "../../../src/domain";
 
-const loggedInUser = { name: "Ossaija ThankGod", email: "codebugsolved@gmail.com" };
+const loggedInUser = {
+  name: "Ossaija ThankGod",
+  email: "codebugsolved@gmail.com"
+};
 const date = new Date();
+const business = { id: "1234", name: "firstbank" };
 
 const workstation = new Workspace(
-  "Account Openning", "1234", loggedInUser, loggedInUser, false, "4321", date, date
+  "Account Openning",
+  business,
+  loggedInUser,
+  loggedInUser,
+  false,
+  "4321",
+  date,
+  date
 );
 
 describe("Domain :: Workstation", () => {
@@ -17,22 +27,23 @@ describe("Domain :: Workstation", () => {
 
   describe("#createForm", () => {
     test("It creates a new form", () => {
-
-      const workstation = new Workspace(
-        "Account Openning", "1234", loggedInUser, loggedInUser, false, "4321"
+      const content = "<h1>hello open account</h1>";
+      const form = workstation.createForm(
+        "open account",
+        content,
+        loggedInUser
       );
 
-      const content = "<h1>hello open account</h1>";
-      const form = workstation.createForm("open account", content, loggedInUser);
-
       expect(form instanceof Form).toBeTruthy();
-      expect(form).toEqual(expect.objectContaining({
-        name: "open account",
-        content,
-        status: "active",
-        deleted: false,
-        workstation: "4321"
-      }));
+      expect(form).toEqual(
+        expect.objectContaining({
+          name: "open account",
+          content,
+          status: "active",
+          deleted: false,
+          workstation: "4321"
+        })
+      );
     });
   });
 
@@ -62,7 +73,9 @@ describe("Domain :: Workstation", () => {
 
   describe("#getBusinessId", () => {
     test("It return deleted property of form", () => {
-      expect(workstation.getBusinessId()).toBe("1234");
+      expect(workstation.getBusiness()).toEqual(
+        expect.objectContaining(business)
+      );
     });
   });
 

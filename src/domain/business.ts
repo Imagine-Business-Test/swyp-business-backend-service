@@ -19,13 +19,17 @@ export class Business {
     this.name = name;
     this.id = id;
   }
+
   public createWorkspace(name: string): Workspace {
     const loggedinUser = {
       email: this.currentUser!.email as string,
       name: this.currentUser!.name as string
     };
 
-    const business = this.id!;
+    const business = {
+      id: this.getId(),
+      name: this.getName()
+    };
     const deleted = false;
     return new Workspace(name, business, loggedinUser, loggedinUser, deleted);
   }
@@ -44,19 +48,19 @@ export class Business {
     return true;
   }
 
-  public getId() {
-    return this.id;
+  public getId(): string {
+    return this.id!;
   }
 
-  public getAccounts() {
+  public getAccounts(): IAccount[] {
     return this.accounts;
   }
 
-  public getLogo() {
+  public getLogo(): string {
     return this.logoUrl;
   }
 
-  public getName() {
+  public getName(): string {
     return this.name;
   }
 

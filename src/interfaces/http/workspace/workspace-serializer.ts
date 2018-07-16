@@ -2,7 +2,7 @@ import { WorkspaceInterface } from "../../../contracts/infra";
 import { Workspace } from "../../../domain";
 
 export const WorkspaceSerializer = {
-  serialize(response: WorkspaceInterface[] | Workspace ) {
+  serialize(response: WorkspaceInterface[] | Workspace) {
     if (Array.isArray(response)) {
       return response.map(workspace => {
         return {
@@ -12,7 +12,7 @@ export const WorkspaceSerializer = {
           business: workspace.business,
           creator: workspace.creator,
           name: workspace.name,
-          _id: workspace._id
+          id: workspace._id
         };
       });
     }
@@ -20,10 +20,10 @@ export const WorkspaceSerializer = {
       lastModifier: response.getLastModifier(),
       updatedAt: response.getLastUpdateDate(),
       createdAt: response.getCreationDate(),
-      business: response.getBusinessId(),
+      business: response.getBusiness(),
       creator: response.getCreator(),
       name: response.getName(),
-      _id: response.getId()
+      id: response.getId()
     };
   }
 };

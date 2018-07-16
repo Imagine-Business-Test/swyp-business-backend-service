@@ -79,7 +79,7 @@ container.register({
     getBusinessUserActivityStats: awilix_1.asClass(business_3.GetBusinessUserActivityStats),
     getWorkspaceForms: awilix_1.asClass(form_3.GetWorkspaceForms),
     updateFormContent: awilix_1.asClass(form_3.UpdateFormContent),
-    getABusinessForms: awilix_1.asClass(form_3.GetABusinessForms),
+    getBusinessForms: awilix_1.asClass(form_3.GetBusinessForms),
     disableForm: awilix_1.asClass(form_3.DisableForm),
     deleteForm: awilix_1.asClass(form_3.DeleteForm),
     createForm: awilix_1.asClass(form_3.CreateForm)

@@ -4,7 +4,7 @@ import {
   CreateForm,
   DeleteForm,
   DisableForm,
-  GetABusinessForms,
+  GetBusinessForms,
   GetWorkspaceForms,
   UpdateFormContent
 } from "../../../app/form";
@@ -15,8 +15,9 @@ export const FormController = {
   get router() {
     const router = Router();
     router
-      .get("/by-same-business/:business", auth, this.getBySameBusiness)
+
       .get("/workspaces/:workspace", auth, this.getWorkspaceForms)
+      .get("/businesses/:business", this.getBusinessForms)
       .put("/:form", auth, this.updateContent)
       .put("/disable/:form", auth, this.disable)
       .delete("/:form", auth, this.delete)
@@ -65,11 +66,11 @@ export const FormController = {
     handler.execute(req.params);
   },
 
-  getBySameBusiness(req: any, res: Response, next: any) {
+  getBusinessForms(req: any, res: Response, next: any) {
     req.validateParams(FormRules.getABusinessForms);
     const handler = req.container.resolve(
-      "getABusinessForms"
-    ) as GetABusinessForms;
+      "getBusinessForms"
+    ) as GetBusinessForms;
 
     const { SUCCESS, ERROR } = handler.outputs;
 

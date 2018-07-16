@@ -45,7 +45,14 @@ class MongoFormRepository {
     getByBusiness(business) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.model
-                .find({ business, status: "active", deleted: false })
+                .find({
+                $or: [
+                    { "business.name": { $regex: new RegExp("^" + business, "i") } },
+                    { "business.id": business }
+                ],
+                status: "active",
+                deleted: false
+            })
                 .limit(10);
         });
     }

@@ -69,7 +69,7 @@ import {
   CreateForm,
   DeleteForm,
   DisableForm,
-  GetABusinessForms,
+  GetBusinessForms,
   GetWorkspaceForms,
   UpdateFormContent
 } from "../../app/form";
@@ -142,7 +142,7 @@ container.register({
   getBusinessUserActivityStats: asClass(GetBusinessUserActivityStats),
   getWorkspaceForms: asClass(GetWorkspaceForms),
   updateFormContent: asClass(UpdateFormContent),
-  getABusinessForms: asClass(GetABusinessForms),
+  getBusinessForms: asClass(GetBusinessForms),
   disableForm: asClass(DisableForm),
   deleteForm: asClass(DeleteForm),
   createForm: asClass(CreateForm)

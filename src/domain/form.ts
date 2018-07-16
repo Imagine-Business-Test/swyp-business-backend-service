@@ -1,4 +1,4 @@
-import { IUser } from "../contracts/domain";
+import { IBusiness, IUser } from "../contracts/domain";
 import { ILoggedInUser } from "../contracts/interfaces";
 import { Response } from "./response";
 
@@ -6,7 +6,7 @@ export class Form {
   private lastModifier: ILoggedInUser;
   private creator: ILoggedInUser;
   private workstation: string;
-  private business: string;
+  private business: IBusiness;
   private updatedAt?: Date;
   private deleted: boolean;
   private content: string;
@@ -18,7 +18,7 @@ export class Form {
   constructor(
     name: string,
     workstation: string,
-    business: string,
+    business: IBusiness,
     content: string,
     status: string,
     createdBy: ILoggedInUser,
@@ -44,10 +44,11 @@ export class Form {
   public createResponse(content: string, respondant: IUser): Response {
     const deleted = false;
     const status = "pending";
+    const business: IBusiness = this.getBusiness();
     const form = {
       id: this.getId(),
       name: this.getName(),
-      business: this.getBusiness(),
+      business: business.id,
       workspace: this.getWorkspace()
     };
     return new Response(respondant, form, content, status, deleted);
@@ -81,7 +82,7 @@ export class Form {
     return this.content;
   }
 
-  public getBusiness(): string {
+  public getBusiness(): IBusiness {
     return this.business;
   }
 

@@ -11,3 +11,8 @@ export interface IAccount {
   name: string;
   role: string;
 }
+
+export interface IBusiness {
+  id: string;
+  name: string;
+}

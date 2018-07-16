@@ -9,10 +9,11 @@ const loggedInUser = {
 
 const content = "<h1>Hello world</h1>";
 const date = new Date();
+const business = { id: "1234", name: "firstbank" };
 const form = new Form(
   "Open Account",
   "1234",
-  "4444",
+  business,
   content,
   "active",
   loggedInUser,
@@ -51,7 +52,7 @@ describe("Domain :: Form", () => {
           form: {
             id: "4321",
             workspace: "1234",
-            business: "4444",
+            business: business.id,
             name: "Open Account"
           },
           status: "pending",

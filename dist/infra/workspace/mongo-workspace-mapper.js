@@ -10,8 +10,8 @@ exports.MongoWorkspaceMapper = {
         return {
             lastModifier: workspace.getLastModifier(),
             creator: workspace.getCreator(),
-            business: workspace.getBusinessId(),
-            name: workspace.getName(),
+            business: workspace.getBusiness(),
+            name: workspace.getName()
         };
     }
 };

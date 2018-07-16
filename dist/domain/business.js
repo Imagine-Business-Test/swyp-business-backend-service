@@ -13,7 +13,10 @@ class Business {
             email: this.currentUser.email,
             name: this.currentUser.name
         };
-        const business = this.id;
+        const business = {
+            id: this.getId(),
+            name: this.getName()
+        };
         const deleted = false;
         return new workspace_1.Workspace(name, business, loggedinUser, loggedinUser, deleted);
     }

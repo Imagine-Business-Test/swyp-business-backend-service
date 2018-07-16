@@ -3,7 +3,10 @@ import mongoose from "mongoose";
 const Schema = new mongoose.Schema({
   status: { type: String, enum: ["active", "disabled"], default: "active" },
   workspace: { type: mongoose.Schema.Types.ObjectId, required: true },
-  business: { type: mongoose.Schema.Types.ObjectId, required: true },
+  business: {
+    id: { type: String, required: true },
+    name: { type: String, required: true }
+  },
   createdAt: { type: Date, default: new Date() },
   updatedAt: { type: Date, default: new Date() },
   deleted: { type: Boolean, default: false },
@@ -16,12 +19,11 @@ const Schema = new mongoose.Schema({
     email: { type: String, email: true, required: true },
     name: { type: String, required: true }
   },
-  name: { type: String, required: true },
+  name: { type: String, required: true }
 });
 
-
 Schema.pre("update", function update(next) {
-  this.update({}, {$set: { updatedAt: new Date() } });
+  this.update({}, { $set: { updatedAt: new Date() } });
   next();
 });
 
