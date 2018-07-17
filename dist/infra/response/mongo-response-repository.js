@@ -29,7 +29,7 @@ class MongoResponseRepository {
     getByForm(form) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.model
-                .find({ "form._id": form, deleted: false })
+                .find({ "form.id": form, deleted: false })
                 .sort({ createdAt: -1 });
         });
     }

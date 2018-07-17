@@ -14,7 +14,7 @@ exports.FormSerializer = {
                     lastModifier: form.lastModifier,
                     createdAt: form.createdAt,
                     updatedAt: form.updateAt,
-                    _id: form._id
+                    id: form._id
                 };
             });
         }
@@ -27,7 +27,7 @@ exports.FormSerializer = {
             creator: response.getCreator(),
             content: response.getContent(),
             name: response.getName(),
-            _id: response.getId()
+            id: response.getId()
         };
     }
 };

@@ -29,7 +29,7 @@ export class MongoResponseRepository implements IResponseRepository {
 
   public async getByForm(form: string): Promise<ResponseInterface[]> {
     return this.model
-      .find({ "form._id": form, deleted: false })
+      .find({ "form.id": form, deleted: false })
       .sort({ createdAt: -1 });
   }
 

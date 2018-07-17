@@ -20,7 +20,7 @@ class RecordResponse extends operation_1.Operation {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             try {
                 const { content, user } = command;
-                const form = yield this.formResponse.find(command.form.id);
+                const form = yield this.formResponse.find(command.form);
                 const response = yield this.responseRepository.add(form.createResponse(content, user));
                 return this.emit(SUCCESS, response);
             }

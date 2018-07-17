@@ -1,4 +1,4 @@
-import { IForm, IUser } from "../../contracts/domain";
+import { IUser } from "../../contracts/domain";
 import {
   IFormRepository,
   IResponseRepository
@@ -18,12 +18,16 @@ export class RecordResponse extends Operation {
     this.formResponse = formRepository;
   }
 
-  public async execute(command: { form: IForm; content: string; user: IUser }) {
+  public async execute(command: {
+    form: string;
+    content: string;
+    user: IUser;
+  }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {
       const { content, user } = command;
-      const form = await this.formResponse.find(command.form.id);
+      const form = await this.formResponse.find(command.form);
       const response = await this.responseRepository.add(
         form.createResponse(content, user)
       );

@@ -44,8 +44,8 @@ exports.FormController = {
         const serializer = req.container.resolve("formSerializer");
         const { SUCCESS, ERROR } = handler.outputs;
         handler
-            .on(SUCCESS, workspace => {
-            res.status(http_status_1.default.OK).json(serializer.serialize(workspace));
+            .on(SUCCESS, forms => {
+            res.status(http_status_1.default.OK).json(serializer.serialize(forms));
         })
             .on(ERROR, next);
         handler.execute(req.params);
@@ -53,10 +53,11 @@ exports.FormController = {
     getBusinessForms(req, res, next) {
         req.validateParams(validation_1.FormRules.getABusinessForms);
         const handler = req.container.resolve("getBusinessForms");
+        const serializer = req.container.resolve("formSerializer");
         const { SUCCESS, ERROR } = handler.outputs;
         handler
-            .on(SUCCESS, data => {
-            res.status(http_status_1.default.OK).json(data);
+            .on(SUCCESS, forms => {
+            res.status(http_status_1.default.OK).json(serializer.serialize(forms));
         })
             .on(ERROR, next);
         handler.execute(req.params);

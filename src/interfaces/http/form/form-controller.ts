@@ -58,8 +58,8 @@ export const FormController = {
     const { SUCCESS, ERROR } = handler.outputs;
 
     handler
-      .on(SUCCESS, workspace => {
-        res.status(Status.OK).json(serializer.serialize(workspace));
+      .on(SUCCESS, forms => {
+        res.status(Status.OK).json(serializer.serialize(forms));
       })
       .on(ERROR, next);
 
@@ -71,12 +71,13 @@ export const FormController = {
     const handler = req.container.resolve(
       "getBusinessForms"
     ) as GetBusinessForms;
+    const serializer = req.container.resolve("formSerializer");
 
     const { SUCCESS, ERROR } = handler.outputs;
 
     handler
-      .on(SUCCESS, data => {
-        res.status(Status.OK).json(data);
+      .on(SUCCESS, forms => {
+        res.status(Status.OK).json(serializer.serialize(forms));
       })
       .on(ERROR, next);
 
