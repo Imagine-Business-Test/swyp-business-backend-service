@@ -57,7 +57,7 @@ exports.FormController = {
         const { SUCCESS, ERROR } = handler.outputs;
         handler
             .on(SUCCESS, forms => {
-            res.status(http_status_1.default.OK).json(serializer.serialize(forms));
+            res.status(http_status_1.default.OK).json(serializer.forBusiness(forms));
         })
             .on(ERROR, next);
         handler.execute(req.params);

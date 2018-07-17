@@ -12,7 +12,7 @@ exports.WorkspaceController = {
         const router = express_1.Router();
         router
             .post("/", middleware_1.auth, this.create)
-            .get("/getbybusiness/:business", middleware_1.auth, this.getBusinessWorkspaces)
+            .get("/businesses/:business", middleware_1.auth, this.getBusinessWorkspaces)
             .delete("/:id", middleware_1.auth, this.delete);
         return router;
     },

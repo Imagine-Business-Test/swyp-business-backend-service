@@ -53,7 +53,8 @@ class MongoFormRepository {
                 status: "active",
                 deleted: false
             })
-                .limit(10);
+                .limit(10)
+                .select("name slug _id");
         });
     }
     getByWorkspace(workspace) {

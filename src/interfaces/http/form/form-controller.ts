@@ -77,7 +77,7 @@ export const FormController = {
 
     handler
       .on(SUCCESS, forms => {
-        res.status(Status.OK).json(serializer.serialize(forms));
+        res.status(Status.OK).json(serializer.forBusiness(forms));
       })
       .on(ERROR, next);
 

@@ -12,6 +12,7 @@ const date = new Date();
 const business = { id: "1234", name: "firstbank" };
 const form = new Form(
   "Open Account",
+  "Open-Account",
   "1234",
   business,
   content,

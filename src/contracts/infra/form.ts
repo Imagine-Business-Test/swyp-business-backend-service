@@ -12,6 +12,7 @@ export type FormInterface = mongoose.Document & {
   createdAt: Date;
   status: string;
   name: string;
+  slug: string;
   _id: string;
 };
 

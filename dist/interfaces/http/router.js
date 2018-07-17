@@ -23,7 +23,7 @@ exports.default = (logMiddleware, errorHandler, container, validator, configMidd
         .use(validator)
         .use(configMiddleware)
         .get("/", (_req, res) => {
-        res.send("Welcome to swyp business API");
+        res.send("Welcome to swyp business service API");
     })
         .use("/workspaces", workspace_1.WorkspaceController.router)
         .use("/businesses", business_1.BusinessController.router)

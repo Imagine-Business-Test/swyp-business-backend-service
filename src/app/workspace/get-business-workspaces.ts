@@ -8,7 +8,6 @@ export class GetBusinessWorkspaces extends Operation {
     super();
     this.workspaceRepository = workspaceRepository;
   }
-
   public async execute(command: { business: string }) {
     const { SUCCESS, ERROR } = this.outputs;
     try {

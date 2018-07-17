@@ -19,7 +19,8 @@ const Schema = new mongoose.Schema({
     email: { type: String, email: true, required: true },
     name: { type: String, required: true }
   },
-  name: { type: String, required: true }
+  name: { type: String, required: true },
+  slug: { type: String, required: true }
 });
 
 Schema.pre("update", function update(next) {

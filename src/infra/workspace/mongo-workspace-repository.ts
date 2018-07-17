@@ -41,7 +41,7 @@ export class MongoWorkspaceRepository implements IWorkspaceRepository {
   public async findByBusiness(
     businessId: string
   ): Promise<WorkspaceInterface[]> {
-    return this.model.find({ business: businessId, deleted: false });
+    return this.model.find({ "business.id": businessId, deleted: false });
   }
 
   public async delete(id: string, user: ILoggedInUser) {

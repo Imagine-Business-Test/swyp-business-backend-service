@@ -6,7 +6,6 @@ export const FormSerializer = {
     if (Array.isArray(response)) {
       return response.map(form => {
         return {
-          status: form.status,
           name: form.name,
           workspace: form.workspace,
           business: form.business,
@@ -15,10 +14,12 @@ export const FormSerializer = {
           lastModifier: form.lastModifier,
           createdAt: form.createdAt,
           updatedAt: form.updateAt,
-          id: form._id
+          id: form._id,
+          slug: form.slug
         };
       });
     }
+
     return {
       lastModifier: response.getLastModifier(),
       workspace: response.getWorkspace(),
@@ -28,7 +29,18 @@ export const FormSerializer = {
       creator: response.getCreator(),
       content: response.getContent(),
       name: response.getName(),
+      slug: response.getSlug(),
       id: response.getId()
     };
+  },
+
+  forBusiness(response: FormInterface[]) {
+    return response.map(form => {
+      return {
+        name: form.name,
+        id: form._id,
+        slug: form.slug
+      };
+    });
   }
 };

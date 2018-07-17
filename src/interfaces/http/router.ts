@@ -28,7 +28,7 @@ export default (
     .use(validator)
     .use(configMiddleware)
     .get("/", (_req, res) => {
-      res.send("Welcome to swyp business API");
+      res.send("Welcome to swyp business service API");
     })
     .use("/workspaces", WorkspaceController.router)
     .use("/businesses", BusinessController.router)

@@ -13,10 +13,12 @@ export class Form {
   private createdAt?: Date;
   private status: string;
   private name: string;
+  private slug: string;
   private id?: string;
 
   constructor(
     name: string,
+    slug: string,
     workstation: string,
     business: IBusiness,
     content: string,
@@ -39,6 +41,7 @@ export class Form {
     this.status = status;
     this.name = name;
     this.id = id;
+    this.slug = slug;
   }
 
   public createResponse(content: string, respondant: IUser): Response {
@@ -96,5 +99,9 @@ export class Form {
 
   public getName(): string {
     return this.name;
+  }
+
+  public getSlug(): string {
+    return this.slug;
   }
 }

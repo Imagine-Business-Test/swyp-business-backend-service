@@ -44,7 +44,7 @@ class MongoWorkspaceRepository {
     }
     findByBusiness(businessId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.find({ business: businessId, deleted: false });
+            return this.model.find({ "business.id": businessId, deleted: false });
         });
     }
     delete(id, user) {

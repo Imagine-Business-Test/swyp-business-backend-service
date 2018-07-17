@@ -1,3 +1,5 @@
+// @ts-ignore
+import slug from "slug";
 import { IBusiness } from "../contracts/domain";
 import { ILoggedInUser } from "../contracts/interfaces";
 import { Form } from "./form";
@@ -39,8 +41,10 @@ export class Workspace {
   ): Form {
     const deleted = false;
     const status = "active";
+    const sluggedName: string = slug(name);
     return new Form(
       name,
+      sluggedName,
       this.getId() as string,
       this.getBusiness(),
       content,

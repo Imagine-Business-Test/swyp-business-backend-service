@@ -13,7 +13,7 @@ export const WorkspaceController = {
     const router = Router();
     router
       .post("/", auth, this.create)
-      .get("/getbybusiness/:business", auth, this.getBusinessWorkspaces)
+      .get("/businesses/:business", auth, this.getBusinessWorkspaces)
       .delete("/:id", auth, this.delete);
 
     return router;

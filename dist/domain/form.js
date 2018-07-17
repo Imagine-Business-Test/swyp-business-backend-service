@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = require("./response");
 class Form {
-    constructor(name, workstation, business, content, status, createdBy, modifier, deleted, id, updatedAt, createdAt) {
+    constructor(name, slug, workstation, business, content, status, createdBy, modifier, deleted, id, updatedAt, createdAt) {
         this.workstation = workstation;
         this.creator = createdBy;
         this.updatedAt = updatedAt;
@@ -14,6 +14,7 @@ class Form {
         this.status = status;
         this.name = name;
         this.id = id;
+        this.slug = slug;
     }
     createResponse(content, respondant) {
         const deleted = false;
@@ -59,6 +60,9 @@ class Form {
     }
     getName() {
         return this.name;
+    }
+    getSlug() {
+        return this.slug;
     }
 }
 exports.Form = Form;

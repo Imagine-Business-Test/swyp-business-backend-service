@@ -37,7 +37,6 @@ export class MongoFormRepository implements IFormRepository {
       throw ex;
     }
   }
-
   public async getByBusiness(business: string): Promise<FormInterface[]> {
     return this.model
       .find({
@@ -48,7 +47,8 @@ export class MongoFormRepository implements IFormRepository {
         status: "active",
         deleted: false
       })
-      .limit(10);
+      .limit(10)
+      .select("name slug _id");
   }
 
   public async getByWorkspace(workspace: string): Promise<FormInterface[]> {

@@ -5,7 +5,6 @@ exports.FormSerializer = {
         if (Array.isArray(response)) {
             return response.map(form => {
                 return {
-                    status: form.status,
                     name: form.name,
                     workspace: form.workspace,
                     business: form.business,
@@ -14,7 +13,8 @@ exports.FormSerializer = {
                     lastModifier: form.lastModifier,
                     createdAt: form.createdAt,
                     updatedAt: form.updateAt,
-                    id: form._id
+                    id: form._id,
+                    slug: form.slug
                 };
             });
         }
@@ -27,8 +27,18 @@ exports.FormSerializer = {
             creator: response.getCreator(),
             content: response.getContent(),
             name: response.getName(),
+            slug: response.getSlug(),
             id: response.getId()
         };
+    },
+    forBusiness(response) {
+        return response.map(form => {
+            return {
+                name: form.name,
+                id: form._id,
+                slug: form.slug
+            };
+        });
     }
 };
 //# sourceMappingURL=form-serializer.js.map
