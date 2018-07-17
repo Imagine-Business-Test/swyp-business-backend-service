@@ -5,6 +5,7 @@ import {
   DeleteForm,
   DisableForm,
   GetBusinessForms,
+  GetFormContent,
   GetWorkspaceForms,
   UpdateFormContent
 } from "../../../app/form";
@@ -19,6 +20,7 @@ export const FormController = {
       .get("/workspaces/:workspace", auth, this.getWorkspaceForms)
       .get("/businesses/:business", this.getBusinessForms)
       .put("/:form", auth, this.updateContent)
+      .get("/:slug", this.getFormContent)
       .put("/disable/:form", auth, this.disable)
       .delete("/:form", auth, this.delete)
       .post("/", auth, this.create);
@@ -77,7 +79,21 @@ export const FormController = {
 
     handler
       .on(SUCCESS, forms => {
-        res.status(Status.OK).json(serializer.forBusiness(forms));
+        res.status(Status.OK).json(serializer.serialize(forms));
+      })
+      .on(ERROR, next);
+
+    handler.execute(req.params);
+  },
+
+  getFormContent(req: any, res: Response, next: any) {
+    const handler: GetFormContent = req.container.resolve("getFormContent");
+    const serializer = req.container.resolve("formSerializer");
+    const { SUCCESS, ERROR } = handler.outputs;
+
+    handler
+      .on(SUCCESS, form => {
+        res.status(Status.OK).json(serializer.serialize(form));
       })
       .on(ERROR, next);
 

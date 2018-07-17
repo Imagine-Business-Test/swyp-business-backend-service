@@ -51,6 +51,12 @@ export class MongoFormRepository implements IFormRepository {
       .select("name slug _id");
   }
 
+  public async getBySlug(slug: string): Promise<FormInterface[]> {
+    return this.model
+      .find({ slug, status: "active", deleted: false })
+      .select("content business _id");
+  }
+
   public async getByWorkspace(workspace: string): Promise<FormInterface[]> {
     return this.model.find({ workspace, status: "active", deleted: false });
   }

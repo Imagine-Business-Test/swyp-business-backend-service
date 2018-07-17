@@ -75,6 +75,7 @@ container.register({
     getFormResponses: awilix_1.asClass(response_3.GetFormResponses),
     processResponse: awilix_1.asClass(response_3.ProcessResponse),
     recordResponse: awilix_1.asClass(response_3.RecordResponse),
+    getFormContent: awilix_1.asClass(form_3.GetFormContent),
     deleteResponse: awilix_1.asClass(response_3.DeleteResponse),
     getBusinessUserActivityStats: awilix_1.asClass(business_3.GetBusinessUserActivityStats),
     getWorkspaceForms: awilix_1.asClass(form_3.GetWorkspaceForms),

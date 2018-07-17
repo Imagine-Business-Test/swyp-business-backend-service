@@ -70,6 +70,7 @@ import {
   DeleteForm,
   DisableForm,
   GetBusinessForms,
+  GetFormContent,
   GetWorkspaceForms,
   UpdateFormContent
 } from "../../app/form";
@@ -137,6 +138,7 @@ container.register({
   getFormResponses: asClass(GetFormResponses),
   processResponse: asClass(ProcessResponse),
   recordResponse: asClass(RecordResponse),
+  getFormContent: asClass(GetFormContent),
   deleteResponse: asClass(DeleteResponse),
 
   getBusinessUserActivityStats: asClass(GetBusinessUserActivityStats),

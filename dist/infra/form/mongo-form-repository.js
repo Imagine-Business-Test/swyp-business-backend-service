@@ -57,6 +57,13 @@ class MongoFormRepository {
                 .select("name slug _id");
         });
     }
+    getBySlug(slug) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.model
+                .find({ slug, status: "active", deleted: false })
+                .select("content business _id");
+        });
+    }
     getByWorkspace(workspace) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.model.find({ workspace, status: "active", deleted: false });

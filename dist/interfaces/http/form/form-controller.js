@@ -14,6 +14,7 @@ exports.FormController = {
             .get("/workspaces/:workspace", middleware_1.auth, this.getWorkspaceForms)
             .get("/businesses/:business", this.getBusinessForms)
             .put("/:form", middleware_1.auth, this.updateContent)
+            .get("/:slug", this.getFormContent)
             .put("/disable/:form", middleware_1.auth, this.disable)
             .delete("/:form", middleware_1.auth, this.delete)
             .post("/", middleware_1.auth, this.create);
@@ -57,7 +58,18 @@ exports.FormController = {
         const { SUCCESS, ERROR } = handler.outputs;
         handler
             .on(SUCCESS, forms => {
-            res.status(http_status_1.default.OK).json(serializer.forBusiness(forms));
+            res.status(http_status_1.default.OK).json(serializer.serialize(forms));
+        })
+            .on(ERROR, next);
+        handler.execute(req.params);
+    },
+    getFormContent(req, res, next) {
+        const handler = req.container.resolve("getFormContent");
+        const serializer = req.container.resolve("formSerializer");
+        const { SUCCESS, ERROR } = handler.outputs;
+        handler
+            .on(SUCCESS, form => {
+            res.status(http_status_1.default.OK).json(serializer.serialize(form));
         })
             .on(ERROR, next);
         handler.execute(req.params);
