@@ -60,7 +60,7 @@ class MongoFormRepository {
     getBySlug(slug) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.model
-                .find({ slug, status: "active", deleted: false })
+                .findOne({ slug, status: "active", deleted: false })
                 .select("content business _id");
         });
     }

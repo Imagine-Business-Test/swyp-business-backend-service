@@ -34,13 +34,21 @@ export const FormSerializer = {
     };
   },
 
-  forBusiness(response: FormInterface[]) {
-    return response.map(form => {
-      return {
-        name: form.name,
-        id: form._id,
-        slug: form.slug
-      };
-    });
+  forBusiness(response: FormInterface[] | FormInterface) {
+    if (Array.isArray(response)) {
+      return response.map(form => {
+        return {
+          name: form.name,
+          id: form._id,
+          slug: form.slug
+        };
+      });
+    }
+
+    return {
+      content: response.content,
+      id: response._id,
+      business: response.business
+    };
   }
 };

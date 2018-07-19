@@ -93,7 +93,7 @@ export const FormController = {
 
     handler
       .on(SUCCESS, form => {
-        res.status(Status.OK).json(serializer.serialize(form));
+        res.status(Status.OK).json(serializer.forBusiness(form));
       })
       .on(ERROR, next);
 

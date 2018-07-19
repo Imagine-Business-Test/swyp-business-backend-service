@@ -33,10 +33,10 @@ export class Mailer {
     email: string,
     link: string
   ) {
-    const text = `Hello ${name[0].toUpperCase()}${name.slice(
-      1
-    )}. \n A business account for ${businessName} has been created on your behave by ${creator}. \n
-    Use the link below to change your update your password. \n
+    const text = `Hello ${name[0].toUpperCase()}${name.slice(1)}.
+    \n A Swyp business account has been created on your behalf by ${creator}
+    for ${businessName}. \n\n
+    Use the link below to update your password and start using your account. \n
     ${link}`;
     this.send(text, "Password Reset", email);
   }

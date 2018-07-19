@@ -8,7 +8,7 @@ interface IUser {
 }
 
 export const admin = (req: any, res: Response, next: any) => {
-  const user = req.user() as IUser;
+  const user = req.user as IUser;
   if (user.role !== "admin") {
     return res.status(Status.BAD_REQUEST).json({
       details: "Access Denied",

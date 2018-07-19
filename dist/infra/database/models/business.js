@@ -17,7 +17,7 @@ const Schema = new mongoose_1.default.Schema({
             passwordResetExpires: { type: Date },
             passwordResetToken: { type: String },
             phone: { type: String, required: true },
-            role: { type: String, required: true },
+            role: { type: String, required: true, enum: ["admin", "worker"] },
             updatedAt: { type: Date, default: new Date() }
         }
     ],

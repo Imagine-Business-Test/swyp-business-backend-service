@@ -32,6 +32,11 @@ export const BusinessRule = {
     .object()
     .keys({
       business: joi.string().required(),
+      role: joi
+        .string()
+        .required()
+        .allow(["admin", "worker"])
+        .label("User role"),
       email: joi
         .string()
         .email()
@@ -39,7 +44,7 @@ export const BusinessRule = {
       origin: joi
         .string()
         .required()
-        .label("Origin to redirect user is missing"),
+        .label("Url to redirect user"),
       name: joi.string().required(),
       phone: joi.string().required()
     })
