@@ -1,4 +1,5 @@
 import { IAccount } from "../../../contracts/domain";
+import { IBusinessInterface } from "../../../contracts/infra";
 
 export const BusinessSerializer = {
   serialize(response: any) {
@@ -20,6 +21,15 @@ export const BusinessSerializer = {
       token,
       user: pruneSensitiveData(user)
     };
+  },
+
+  lean(responses: IBusinessInterface[]) {
+    return responses.map(res => {
+      return {
+        name: res.name,
+        logo: res.logoUrl
+      };
+    });
   }
 };
 

@@ -7,6 +7,7 @@ import {
   AddBusinessUser,
   CreateBusiness,
   DeleteBusinessUser,
+  GetBusinesses,
   GetBusinessUserActivityStats,
   LoginBusinessUser,
   RequestPasswordReset,
@@ -17,6 +18,7 @@ export const BusinessController = {
   get router() {
     const router = Router();
     router
+      .get("/", this.all)
       .post("/requestpasswordrest", this.requestPasswordRest)
       .post("/deleteuser", auth, admin, this.deleteUser)
       .post("/resetpassword", this.resetPassword)
@@ -26,6 +28,19 @@ export const BusinessController = {
       .post("/", this.create);
 
     return router;
+  },
+
+  all(req: any, res: Response, next: any) {
+    const handler: GetBusinesses = req.container.resolve("getBusinesses");
+    const serializer = req.container.resolve("businessSerializer");
+    const { SUCCESS, ERROR } = handler.outputs;
+    handler
+      .on(SUCCESS, data => {
+        res.status(Status.OK).json(serializer.lean(data));
+      })
+      .on(ERROR, next);
+
+    handler.execute();
   },
 
   create(req: any, res: Response, next: any) {

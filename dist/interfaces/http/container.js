@@ -67,6 +67,7 @@ container.register({
     addBusinessUser: awilix_1.asClass(business_3.AddBusinessUser),
     createBusiness: awilix_1.asClass(business_3.CreateBusiness),
     resetPassword: awilix_1.asClass(business_3.ResetPassword),
+    getBusinesses: awilix_1.asClass(business_3.GetBusinesses),
     createWorkspace: awilix_1.asClass(workspace_3.CreateWorkspace),
     deleteWorkspace: awilix_1.asClass(workspace_3.DeleteWorkspace),
     updateResponseContent: awilix_1.asClass(response_3.UpdateResponseContent),

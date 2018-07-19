@@ -1,5 +1,5 @@
 import { IAccount } from "../../contracts/domain";
-import { BusinessInterface, BusinessModel } from "../../contracts/infra";
+import { BusinessModel, IBusinessInterface } from "../../contracts/infra";
 import { ILoggedInUser } from "../../contracts/interfaces";
 import { IBusinessRepository } from "../../contracts/repositories";
 import { Business } from "../../domain";
@@ -15,13 +15,17 @@ export class MongoBusinessRepository implements IBusinessRepository {
   public async add(business: Business): Promise<Business> {
     try {
       const data = MongoBusinessMapper.toDatabase(business);
-      const doc: BusinessInterface = await this.model.create(data);
+      const doc: IBusinessInterface = await this.model.create(data);
       return MongoBusinessMapper.toEntity(doc, doc.accounts[0]);
     } catch (ex) {
       ex.details = ex.message;
       ex.message = "DatabaseError";
       throw ex;
     }
+  }
+
+  public fetchAll() {
+    return this.model.find({});
   }
 
   public async addAccount(

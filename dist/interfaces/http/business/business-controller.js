@@ -11,6 +11,7 @@ exports.BusinessController = {
     get router() {
         const router = express_1.Router();
         router
+            .get("/", this.all)
             .post("/requestpasswordrest", this.requestPasswordRest)
             .post("/deleteuser", middleware_1.auth, middleware_1.admin, this.deleteUser)
             .post("/resetpassword", this.resetPassword)
@@ -19,6 +20,17 @@ exports.BusinessController = {
             .get("/stats", middleware_1.auth, this.getStats)
             .post("/", this.create);
         return router;
+    },
+    all(req, res, next) {
+        const handler = req.container.resolve("getBusinesses");
+        const serializer = req.container.resolve("businessSerializer");
+        const { SUCCESS, ERROR } = handler.outputs;
+        handler
+            .on(SUCCESS, data => {
+            res.status(http_status_1.default.OK).json(serializer.lean(data));
+        })
+            .on(ERROR, next);
+        handler.execute();
     },
     create(req, res, next) {
         req.validateBody(validation_1.BusinessRule.createBusiness);

@@ -5,3 +5,4 @@ export * from "./login-business-user";
 export * from "./add-business-user";
 export * from "./create-business";
 export * from "./reset-password";
+export * from "./get-businesses";

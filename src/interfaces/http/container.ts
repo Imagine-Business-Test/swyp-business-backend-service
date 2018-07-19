@@ -43,6 +43,7 @@ import {
   AddBusinessUser,
   CreateBusiness,
   DeleteBusinessUser,
+  GetBusinesses,
   GetBusinessUserActivityStats,
   LoginBusinessUser,
   RequestPasswordReset,
@@ -128,6 +129,7 @@ container.register({
   addBusinessUser: asClass(AddBusinessUser),
   createBusiness: asClass(CreateBusiness),
   resetPassword: asClass(ResetPassword),
+  getBusinesses: asClass(GetBusinesses),
 
   createWorkspace: asClass(CreateWorkspace),
   deleteWorkspace: asClass(DeleteWorkspace),

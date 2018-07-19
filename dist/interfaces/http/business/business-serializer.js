@@ -18,6 +18,14 @@ exports.BusinessSerializer = {
             token,
             user: pruneSensitiveData(user)
         };
+    },
+    lean(responses) {
+        return responses.map(res => {
+            return {
+                name: res.name,
+                logo: res.logoUrl
+            };
+        });
     }
 };
 const pruneSensitiveData = (accounts) => {

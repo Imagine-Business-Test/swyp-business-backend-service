@@ -27,6 +27,9 @@ class MongoBusinessRepository {
             }
         });
     }
+    fetchAll() {
+        return this.model.find({});
+    }
     addAccount(businessId, account) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

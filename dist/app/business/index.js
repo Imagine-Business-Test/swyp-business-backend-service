@@ -10,4 +10,5 @@ __export(require("./login-business-user"));
 __export(require("./add-business-user"));
 __export(require("./create-business"));
 __export(require("./reset-password"));
+__export(require("./get-businesses"));
 //# sourceMappingURL=index.js.map
