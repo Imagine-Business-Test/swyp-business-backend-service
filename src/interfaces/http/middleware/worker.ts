@@ -12,7 +12,7 @@ export const worker = (req: any, res: Response, next: any) => {
   if (user.role === "worker" || user.role === "admin") {
     return next();
   }
-  return res.status(Status.BAD_REQUEST).json({
+  return res.status(Status.UNAUTHORIZED).json({
     details: "Access Denied",
     type: "AuthorizationError"
   });

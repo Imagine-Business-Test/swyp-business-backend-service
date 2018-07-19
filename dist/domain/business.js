@@ -2,9 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const workspace_1 = require("./workspace");
 class Business {
-    constructor(name, logoUrl, accounts, id) {
+    constructor(name, slug, approved, deleted, accounts, logoUrl, id) {
         this.accounts = accounts;
+        this.approved = approved;
+        this.deleted = deleted;
         this.logoUrl = logoUrl;
+        this.slug = slug;
         this.name = name;
         this.id = id;
     }
@@ -15,7 +18,7 @@ class Business {
         };
         const business = {
             id: this.getId(),
-            name: this.getName()
+            name: this.getSlug()
         };
         const deleted = false;
         return new workspace_1.Workspace(name, business, loggedinUser, loggedinUser, deleted);
@@ -38,6 +41,9 @@ class Business {
     getAccounts() {
         return this.accounts;
     }
+    getSlug() {
+        return this.slug;
+    }
     getLogo() {
         return this.logoUrl;
     }
@@ -46,6 +52,12 @@ class Business {
     }
     getUser() {
         return this.currentUser;
+    }
+    isApproved() {
+        return this.approved;
+    }
+    isDeleted() {
+        return this.deleted;
     }
 }
 exports.Business = Business;

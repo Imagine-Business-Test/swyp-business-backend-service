@@ -24,8 +24,17 @@ export class CreateBusiness extends Operation {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
       const { name, logoUrl, account } = command;
-
-      const newBusiness = new Business(name, logoUrl, []);
+      const slug = name.toLowerCase().replace(" ", "");
+      const deleted = false;
+      const approved = true;
+      const newBusiness = new Business(
+        name,
+        slug,
+        approved,
+        deleted,
+        [],
+        logoUrl
+      );
       const savedBusiness = await this.businessRepository.add(newBusiness);
       account.password = await bcrypt.hash(account.password, 10);
 
@@ -34,6 +43,9 @@ export class CreateBusiness extends Operation {
         account
       );
       const user = business.getUser();
+
+      // send welcome email
+
       const token = jwt.sign(
         {
           email: user.email,

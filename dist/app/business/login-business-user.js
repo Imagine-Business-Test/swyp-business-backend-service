@@ -22,10 +22,13 @@ class LoginBusinessUser extends operation_1.Operation {
     }
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
+            const { SUCCESS, ERROR, DATABASE_ERROR, AUTHENTICATION_ERROR, INCOMPLETE_SETUP } = this.outputs;
             try {
                 const business = yield this.businessRepository.findByAccountEmail(command.email);
                 const user = business.getUser();
+                if (!user.password) {
+                    throw new Error("IncompleteSetup");
+                }
                 const result = yield bcrypt_1.default.compare(command.password, user.password);
                 if (!result) {
                     throw new Error("AuthenticationError");
@@ -42,11 +45,23 @@ class LoginBusinessUser extends operation_1.Operation {
                 if (ex.message === "DatabaseError") {
                     return this.emit(DATABASE_ERROR, ex);
                 }
+                if (ex.message === "AuthenticationError") {
+                    return this.emit(AUTHENTICATION_ERROR, ex);
+                }
+                if (ex.message === "IncompleteSetup") {
+                    return this.emit(INCOMPLETE_SETUP, ex);
+                }
                 return this.emit(ERROR, ex);
             }
         });
     }
 }
 exports.LoginBusinessUser = LoginBusinessUser;
-LoginBusinessUser.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
+LoginBusinessUser.setOutputs([
+    "SUCCESS",
+    "ERROR",
+    "DATABASE_ERROR",
+    "AUTHENTICATION_ERROR",
+    "INCOMPLETE_SETUP"
+]);
 //# sourceMappingURL=login-business-user.js.map

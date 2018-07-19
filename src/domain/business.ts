@@ -4,18 +4,27 @@ import { Workspace } from "./workspace";
 export class Business {
   private currentUser?: IAccount;
   private accounts: IAccount[];
+  private approved: boolean;
+  private deleted: boolean;
+  private logoUrl?: string;
   private name: string;
-  private logoUrl: string;
+  private slug: string;
   private id?: string;
 
   constructor(
     name: string,
-    logoUrl: string,
+    slug: string,
+    approved: boolean,
+    deleted: boolean,
     accounts: IAccount[],
+    logoUrl?: string,
     id?: string
   ) {
     this.accounts = accounts;
+    this.approved = approved;
+    this.deleted = deleted;
     this.logoUrl = logoUrl;
+    this.slug = slug;
     this.name = name;
     this.id = id;
   }
@@ -28,7 +37,7 @@ export class Business {
 
     const business = {
       id: this.getId(),
-      name: this.getName()
+      name: this.getSlug()
     };
     const deleted = false;
     return new Workspace(name, business, loggedinUser, loggedinUser, deleted);
@@ -56,8 +65,12 @@ export class Business {
     return this.accounts;
   }
 
+  public getSlug(): string {
+    return this.slug;
+  }
+
   public getLogo(): string {
-    return this.logoUrl;
+    return this.logoUrl!;
   }
 
   public getName(): string {
@@ -66,5 +79,13 @@ export class Business {
 
   public getUser(): IAccount {
     return this.currentUser!;
+  }
+
+  public isApproved(): boolean {
+    return this.approved;
+  }
+
+  public isDeleted(): boolean {
+    return this.deleted;
   }
 }

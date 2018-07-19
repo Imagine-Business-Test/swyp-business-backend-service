@@ -9,7 +9,7 @@ exports.worker = (req, res, next) => {
     if (user.role === "worker" || user.role === "admin") {
         return next();
     }
-    return res.status(http_status_1.default.BAD_REQUEST).json({
+    return res.status(http_status_1.default.UNAUTHORIZED).json({
         details: "Access Denied",
         type: "AuthorizationError"
     });

@@ -4,8 +4,16 @@ import { Business } from "../../domain";
 
 export const MongoBusinessMapper = {
   toEntity(dbRow: IBusinessInterface, currentUser?: IAccount): Business {
-    const { _id, name, logoUrl, accounts } = dbRow;
-    const business = new Business(name, logoUrl, accounts, _id);
+    const { _id, name, slug, logoUrl, approved, deleted, accounts } = dbRow;
+    const business = new Business(
+      name,
+      slug,
+      approved,
+      deleted,
+      accounts,
+      logoUrl,
+      _id
+    );
 
     if (currentUser) {
       business.setUser(currentUser);
@@ -17,7 +25,8 @@ export const MongoBusinessMapper = {
     return {
       accounts: business.getAccounts(),
       logoUrl: business.getLogo(),
-      name: business.getName()
+      name: business.getName(),
+      slug: business.getSlug()
     };
   }
 };

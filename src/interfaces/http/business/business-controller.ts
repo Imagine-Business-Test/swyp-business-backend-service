@@ -69,11 +69,29 @@ export const BusinessController = {
     const handler = req.container.resolve("addBusinessUser") as AddBusinessUser;
     const serializer = req.container.resolve("businessSerializer");
 
-    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+    const {
+      SUCCESS,
+      ERROR,
+      DATABASE_ERROR,
+      INCOMPLETE_SETUP,
+      AUTHENTICATION_ERROR
+    } = handler.outputs;
 
     handler
       .on(SUCCESS, response => {
         res.status(Status.CREATED).json(serializer.serialize(response));
+      })
+      .on(AUTHENTICATION_ERROR, () => {
+        res.status(Status.UNAUTHORIZED).json({
+          type: "AuthorizationError",
+          details: "Access Denied"
+        });
+      })
+      .on(INCOMPLETE_SETUP, () => {
+        res.status(Status.UNAUTHORIZED).json({
+          type: "AuthorizationError",
+          details: "This account is not fully setup!"
+        });
       })
       .on(DATABASE_ERROR, error => {
         res.status(Status.BAD_REQUEST).json({

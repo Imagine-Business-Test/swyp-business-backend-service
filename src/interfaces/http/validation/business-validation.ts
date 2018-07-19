@@ -23,7 +23,6 @@ export const BusinessRule = {
             .required()
         })
         .required(),
-      logoUrl: joi.string().required(),
       name: joi.string().required()
     })
     .required(),

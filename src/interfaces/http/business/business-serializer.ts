@@ -8,9 +8,10 @@ export const BusinessSerializer = {
 
     business = {
       accounts: pruneSensitiveData(business.getAccounts()),
-      id: business.getId(),
       logoUrl: business.getLogo(),
-      name: business.getName()
+      name: business.getName(),
+      slug: business.getSlug(),
+      id: business.getId()
     };
 
     if (!user) {
@@ -26,8 +27,9 @@ export const BusinessSerializer = {
   lean(responses: IBusinessInterface[]) {
     return responses.map(res => {
       return {
+        logo: res.logoUrl,
         name: res.name,
-        logo: res.logoUrl
+        slug: res.slug
       };
     });
   }

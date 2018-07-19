@@ -21,8 +21,11 @@ const Schema = new mongoose_1.default.Schema({
             updatedAt: { type: Date, default: new Date() }
         }
     ],
-    logoUrl: { type: String, required: true },
-    name: { type: String, required: true, unique: true }
+    name: { type: String, required: true, unique: true },
+    slug: { type: String, required: true, unique: true },
+    approved: { type: Boolean, default: false },
+    deleted: { type: Boolean, default: false },
+    logoUrl: String
 });
 exports.BusinessModel = mongoose_1.default.model("businesses", Schema);
 //# sourceMappingURL=business.js.map

@@ -27,7 +27,6 @@ exports.BusinessRule = {
                 .required()
         })
             .required(),
-        logoUrl: joi_1.default.string().required(),
         name: joi_1.default.string().required()
     })
         .required(),

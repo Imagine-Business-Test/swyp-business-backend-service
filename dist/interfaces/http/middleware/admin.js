@@ -7,7 +7,7 @@ const http_status_1 = __importDefault(require("http-status"));
 exports.admin = (req, res, next) => {
     const user = req.user;
     if (user.role !== "admin") {
-        return res.status(http_status_1.default.BAD_REQUEST).json({
+        return res.status(http_status_1.default.UNAUTHORIZED).json({
             details: "Access Denied",
             type: "AuthorizationError"
         });

@@ -15,13 +15,22 @@ export class LoginBusinessUser extends Operation {
   }
 
   public async execute(command: { email: string; password: string }) {
-    const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
+    const {
+      SUCCESS,
+      ERROR,
+      DATABASE_ERROR,
+      AUTHENTICATION_ERROR,
+      INCOMPLETE_SETUP
+    } = this.outputs;
 
     try {
       const business = await this.businessRepository.findByAccountEmail(
         command.email
       );
       const user = business.getUser();
+      if (!user.password) {
+        throw new Error("IncompleteSetup");
+      }
       const result = await bycrpt.compare(command.password, user.password!);
 
       if (!result) {
@@ -44,9 +53,21 @@ export class LoginBusinessUser extends Operation {
       if (ex.message === "DatabaseError") {
         return this.emit(DATABASE_ERROR, ex);
       }
+      if (ex.message === "AuthenticationError") {
+        return this.emit(AUTHENTICATION_ERROR, ex);
+      }
+      if (ex.message === "IncompleteSetup") {
+        return this.emit(INCOMPLETE_SETUP, ex);
+      }
       return this.emit(ERROR, ex);
     }
   }
 }
 
-LoginBusinessUser.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
+LoginBusinessUser.setOutputs([
+  "SUCCESS",
+  "ERROR",
+  "DATABASE_ERROR",
+  "AUTHENTICATION_ERROR",
+  "INCOMPLETE_SETUP"
+]);
