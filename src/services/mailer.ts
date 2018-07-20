@@ -38,7 +38,16 @@ export class Mailer {
     for ${businessName}. \n\n
     Use the link below to update your password and start using your account. \n
     ${link}`;
-    this.send(text, "Password Reset", email);
+    this.send(text, "Welcome To Swyp", email);
+  }
+
+  public welcomeAdmin(businessName: string, userName: string, email: string) {
+    const text = `Dear ${userName[0].toUpperCase()}${userName.slice(1)}.
+    \n Welcome to swyp, you and ${businessName} have just began a journey of endless possibilities.
+    \nPlease take a little time to setup your account fully.\n
+     Our statistics show that businesses with good logo art work, clean forms, quick form processing time recieves more user interactions than those with poor art work, confusing forms, and long form processing time.\n You can add more users to your team to help you get your create beautiful forms for your users.\n\n
+     Happy Swyping!!`;
+    this.send(text, "Welcome To Swyp", email);
   }
 
   public sendPasswordRequest(name: string, email: string, resetUrl: string) {

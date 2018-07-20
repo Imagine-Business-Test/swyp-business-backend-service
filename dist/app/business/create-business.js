@@ -16,10 +16,11 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const domain_1 = require("../../domain");
 const operation_1 = require("../operation");
 class CreateBusiness extends operation_1.Operation {
-    constructor(businessRepository, config) {
+    constructor(businessRepository, config, mailer) {
         super();
         this.businessRepository = businessRepository;
         this.config = config;
+        this.mailer = mailer;
     }
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -34,6 +35,7 @@ class CreateBusiness extends operation_1.Operation {
                 account.password = yield bcrypt_1.default.hash(account.password, 10);
                 const business = yield this.businessRepository.addAccount(savedBusiness.getId(), account);
                 const user = business.getUser();
+                this.mailer.welcomeAdmin(business.getName(), user.name, user.email);
                 const token = jsonwebtoken_1.default.sign({
                     email: user.email,
                     isBusiness: true,

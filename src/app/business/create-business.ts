@@ -4,16 +4,23 @@ import { IConfig } from "../../contracts/config";
 import { IAccount } from "../../contracts/domain";
 import { IBusinessRepository } from "../../contracts/repositories";
 import { Business } from "../../domain";
+import { Mailer } from "../../services";
 import { Operation } from "../operation";
 
 export class CreateBusiness extends Operation {
   private businessRepository: IBusinessRepository;
   private config: IConfig;
+  private mailer: Mailer;
 
-  constructor(businessRepository: IBusinessRepository, config: IConfig) {
+  constructor(
+    businessRepository: IBusinessRepository,
+    config: IConfig,
+    mailer: Mailer
+  ) {
     super();
     this.businessRepository = businessRepository;
     this.config = config;
+    this.mailer = mailer;
   }
 
   public async execute(command: {
@@ -45,7 +52,7 @@ export class CreateBusiness extends Operation {
       const user = business.getUser();
 
       // send welcome email
-
+      this.mailer.welcomeAdmin(business.getName(), user.name, user.email);
       const token = jwt.sign(
         {
           email: user.email,
