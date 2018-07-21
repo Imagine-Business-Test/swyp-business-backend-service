@@ -8,7 +8,12 @@ export interface IResponseRepository {
   updateContent: (id: string, content: string) => void;
   add: (response: Response) => Promise<Response>;
   addNote: (id: string, note: string, notedBy: ILoggedInUser) => void;
-  findBStatus: (status: string, page: number, limit: number) => any;
+  findByStatus: (
+    business: string,
+    status: string,
+    page: number,
+    limit: number
+  ) => any;
   getProcessingActivityStats: () => any;
   getNotingActivityStats: () => any;
   delete: (id: string) => void;

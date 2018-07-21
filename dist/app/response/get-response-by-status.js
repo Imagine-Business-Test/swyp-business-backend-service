@@ -17,9 +17,9 @@ class GetResponseByStatus extends operation_1.Operation {
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR } = this.outputs;
-            const { status, page, limit } = command;
+            const { business, status, page, limit } = command;
             try {
-                const result = yield this.responseRepository.findBStatus(status, page, limit);
+                const result = yield this.responseRepository.findByStatus(business, status, page, limit);
                 this.emit(SUCCESS, result);
             }
             catch (error) {

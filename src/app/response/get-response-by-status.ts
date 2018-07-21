@@ -10,14 +10,16 @@ export class GetResponseByStatus extends Operation {
   }
 
   public async execute(command: {
+    business: string;
     status: string;
     page: number;
     limit: number;
   }) {
     const { SUCCESS, ERROR } = this.outputs;
-    const { status, page, limit } = command;
+    const { business, status, page, limit } = command;
     try {
-      const result = await this.responseRepository.findBStatus(
+      const result = await this.responseRepository.findByStatus(
+        business,
         status,
         page,
         limit

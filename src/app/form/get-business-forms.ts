@@ -13,7 +13,7 @@ export class GetBusinessForms extends Operation {
     const { SUCCESS, ERROR } = this.outputs;
 
     try {
-      const formRecords = await this.formRepository.getByBusiness(
+      const formRecords = await this.formRepository.fetchByBusiness(
         command.business
       );
       this.emit(SUCCESS, formRecords);

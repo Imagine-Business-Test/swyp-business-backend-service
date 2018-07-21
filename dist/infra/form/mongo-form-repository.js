@@ -26,10 +26,10 @@ class MongoFormRepository {
             }
         });
     }
-    find(id) {
+    findBySlug(slug) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const doc = yield this.model.findOne({ _id: id });
+                const doc = yield this.model.findOne({ slug });
                 if (!doc) {
                     throw new Error("The specified form record is not found");
                 }
@@ -42,7 +42,7 @@ class MongoFormRepository {
             }
         });
     }
-    getByBusiness(business) {
+    fetchByBusiness(business) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.model
                 .find({
@@ -57,14 +57,7 @@ class MongoFormRepository {
                 .select("name slug _id");
         });
     }
-    getBySlug(slug) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.model
-                .findOne({ slug, status: "active", deleted: false })
-                .select("content business _id");
-        });
-    }
-    getByWorkspace(workspace) {
+    fetchByWorkspace(workspace) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.model.find({ workspace, status: "active", deleted: false });
         });

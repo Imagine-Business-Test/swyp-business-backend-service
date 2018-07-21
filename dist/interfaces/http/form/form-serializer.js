@@ -42,9 +42,9 @@ exports.FormSerializer = {
             });
         }
         return {
-            content: response.content,
-            id: response._id,
-            business: response.business
+            content: response.getContent(),
+            id: response.getId(),
+            business: response.getBusiness()
         };
     }
 };

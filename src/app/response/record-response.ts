@@ -27,11 +27,9 @@ export class RecordResponse extends Operation {
 
     try {
       const { content, user } = command;
-      const form = await this.formResponse.find(command.form);
-      const response = await this.responseRepository.add(
-        form.createResponse(content, user)
-      );
-      return this.emit(SUCCESS, response);
+      const form = await this.formResponse.findBySlug(command.form);
+      await this.responseRepository.add(form.createResponse(content, user));
+      return this.emit(SUCCESS, {});
     } catch (ex) {
       if (ex.message === "DatabaseError") {
         return this.emit(DATABASE_ERROR, ex);

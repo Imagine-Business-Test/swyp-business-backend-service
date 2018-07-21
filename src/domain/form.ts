@@ -44,7 +44,7 @@ export class Form {
     this.slug = slug;
   }
 
-  public createResponse(content: string, respondant: IUser): Response {
+  public createResponse(content: any, respondant: IUser): Response {
     const deleted = false;
     const status = "pending";
     const business: IBusiness = this.getBusiness();

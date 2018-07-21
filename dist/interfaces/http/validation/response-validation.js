@@ -8,16 +8,13 @@ exports.ResponseRule = {
     recordResponse: joi_1.default
         .object()
         .keys({
-        content: joi_1.default.string().required(),
+        content: joi_1.default.object().required(),
         form: joi_1.default.string().required(),
         user: joi_1.default
             .object()
             .keys({
             id: joi_1.default.string().required(),
-            email: joi_1.default
-                .string()
-                .email()
-                .required(),
+            email: joi_1.default.string().email(),
             firstname: joi_1.default.string().required(),
             lastname: joi_1.default.string().required(),
             middlename: joi_1.default.string(),
@@ -68,6 +65,7 @@ exports.ResponseRule = {
         query: joi_1.default
             .object()
             .keys({
+            business: joi_1.default.string().required(),
             limit: joi_1.default.number(),
             page: joi_1.default.number()
         })

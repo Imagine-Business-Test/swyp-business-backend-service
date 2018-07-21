@@ -12,15 +12,15 @@ const Schema = new mongoose_1.default.Schema({
         name: { type: String, required: true }
     },
     createdAt: { type: Date, required: true, default: new Date() },
-    content: String,
+    content: {},
     note: String,
     respondant: {
         id: { type: mongoose_1.default.Schema.Types.ObjectId, required: true },
-        email: { type: String, email: true, required: true },
+        email: { type: String, email: true },
         firstname: { type: String, required: true },
         lastname: { type: String, required: true },
         middlename: { type: String },
-        phone: { type: String, required: true }
+        phone: { type: String }
     },
     processor: {
         email: { type: String, email: true },

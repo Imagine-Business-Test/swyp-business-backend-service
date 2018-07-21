@@ -62,7 +62,8 @@ export class MongoResponseRepository implements IResponseRepository {
     return this.model.count({});
   }
 
-  public async findBStatus(
+  public async findByStatus(
+    business: string,
     status: string,
     page: number = 1,
     limit: number = 10
@@ -70,7 +71,7 @@ export class MongoResponseRepository implements IResponseRepository {
     const skip = page * limit - limit;
     const countPromise = this.model.count({ status });
     const queryPromise = this.model
-      .find({ status })
+      .find({ "form.business": business, status })
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });

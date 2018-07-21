@@ -4,16 +4,13 @@ export const ResponseRule = {
   recordResponse: joi
     .object()
     .keys({
-      content: joi.string().required(),
+      content: joi.object().required(),
       form: joi.string().required(),
       user: joi
         .object()
         .keys({
           id: joi.string().required(),
-          email: joi
-            .string()
-            .email()
-            .required(),
+          email: joi.string().email(),
           firstname: joi.string().required(),
           lastname: joi.string().required(),
           middlename: joi.string(),
@@ -70,6 +67,7 @@ export const ResponseRule = {
     query: joi
       .object()
       .keys({
+        business: joi.string().required(),
         limit: joi.number(),
         page: joi.number()
       })

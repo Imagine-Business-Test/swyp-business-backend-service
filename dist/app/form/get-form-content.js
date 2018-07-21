@@ -18,7 +18,7 @@ class GetFormContent extends operation_1.Operation {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR } = this.outputs;
             try {
-                const form = yield this.formRepository.getBySlug(command.slug);
+                const form = yield this.formRepository.findBySlug(command.slug);
                 this.emit(SUCCESS, form);
             }
             catch (error) {

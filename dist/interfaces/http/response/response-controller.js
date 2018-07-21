@@ -17,17 +17,16 @@ exports.ResponseController = {
             .post("/addnote/:response", middleware_1.auth, this.addNote)
             .put("/:response", middleware_1.auth, this.updateContent)
             .delete("/:response", middleware_1.auth, this.delete)
-            .post("/", middleware_1.auth, this.record);
+            .post("/", this.record);
         return router;
     },
     record(req, res, next) {
         req.validateBody(validation_1.ResponseRule.recordResponse);
         const handler = req.container.resolve("recordResponse");
-        const serializer = req.container.resolve("responseSerializer");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
         handler
-            .on(SUCCESS, response => {
-            res.status(http_status_1.default.CREATED).json(serializer.serialize(response));
+            .on(SUCCESS, () => {
+            res.status(http_status_1.default.CREATED).json({ success: true });
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.BAD_REQUEST).json({
@@ -58,7 +57,8 @@ exports.ResponseController = {
         const command = {
             limit: req.query.limit || 10,
             page: req.query.page || 1,
-            status: req.params.status
+            status: req.params.status,
+            business: req.query.business
         };
         handler
             .on(SUCCESS, data => {

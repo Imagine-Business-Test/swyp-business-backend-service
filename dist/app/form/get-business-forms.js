@@ -18,7 +18,7 @@ class GetBusinessForms extends operation_1.Operation {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR } = this.outputs;
             try {
-                const formRecords = yield this.formRepository.getByBusiness(command.business);
+                const formRecords = yield this.formRepository.fetchByBusiness(command.business);
                 this.emit(SUCCESS, formRecords);
             }
             catch (error) {

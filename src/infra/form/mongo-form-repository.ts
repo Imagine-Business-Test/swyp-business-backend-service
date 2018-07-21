@@ -24,9 +24,9 @@ export class MongoFormRepository implements IFormRepository {
     }
   }
 
-  public async find(id: string): Promise<Form> {
+  public async findBySlug(slug: string): Promise<Form> {
     try {
-      const doc = await this.model.findOne({ _id: id });
+      const doc = await this.model.findOne({ slug });
       if (!doc) {
         throw new Error("The specified form record is not found");
       }
@@ -37,7 +37,7 @@ export class MongoFormRepository implements IFormRepository {
       throw ex;
     }
   }
-  public async getByBusiness(business: string): Promise<FormInterface[]> {
+  public async fetchByBusiness(business: string): Promise<FormInterface[]> {
     return this.model
       .find({
         $or: [
@@ -51,13 +51,7 @@ export class MongoFormRepository implements IFormRepository {
       .select("name slug _id");
   }
 
-  public async getBySlug(slug: string): Promise<FormInterface | null> {
-    return this.model
-      .findOne({ slug, status: "active", deleted: false })
-      .select("content business _id");
-  }
-
-  public async getByWorkspace(workspace: string): Promise<FormInterface[]> {
+  public async fetchByWorkspace(workspace: string): Promise<FormInterface[]> {
     return this.model.find({ workspace, status: "active", deleted: false });
   }
 

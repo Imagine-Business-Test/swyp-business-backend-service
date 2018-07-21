@@ -8,7 +8,7 @@ export class Response {
   private respondant: IUser;
   private updatedAt?: Date;
   private createdAt?: Date;
-  private content: string;
+  private content: any;
   private status: string;
   private id?: string;
   private form: IForm;
@@ -68,7 +68,7 @@ export class Response {
     return this.createdAt!;
   }
 
-  public getContent(): string {
+  public getContent(): any {
     return this.content;
   }
 

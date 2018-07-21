@@ -34,7 +34,7 @@ export const FormSerializer = {
     };
   },
 
-  forBusiness(response: FormInterface[] | FormInterface) {
+  forBusiness(response: FormInterface[] | Form) {
     if (Array.isArray(response)) {
       return response.map(form => {
         return {
@@ -46,9 +46,9 @@ export const FormSerializer = {
     }
 
     return {
-      content: response.content,
-      id: response._id,
-      business: response.business
+      content: response.getContent(),
+      id: response.getId(),
+      business: response.getBusiness()
     };
   }
 };

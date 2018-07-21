@@ -12,7 +12,7 @@ export class GetFormContent extends Operation {
     const { SUCCESS, ERROR } = this.outputs;
 
     try {
-      const form = await this.formRepository.getBySlug(command.slug);
+      const form = await this.formRepository.findBySlug(command.slug);
       this.emit(SUCCESS, form);
     } catch (error) {
       this.emit(ERROR, error);
