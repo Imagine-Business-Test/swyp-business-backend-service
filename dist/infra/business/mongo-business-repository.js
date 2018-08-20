@@ -37,7 +37,9 @@ class MongoBusinessRepository {
                 if (doc) {
                     throw new Error(`Account with the provided email already exist`);
                 }
-                doc = yield this.model.findByIdAndUpdate(businessId, { $addToSet: { accounts: account } }, { new: true });
+                doc = yield this.model.findByIdAndUpdate(businessId, {
+                    $addToSet: { accounts: account }
+                });
                 if (!doc) {
                     throw new Error(`Account not found`);
                 }

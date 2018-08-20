@@ -11,7 +11,7 @@ export type ResponseInterface = mongoose.Document & {
   createdAt: Date;
   content: string;
   status: string;
-  note: string;
+  notes: [string];
   form: IForm;
   _id: string;
 };

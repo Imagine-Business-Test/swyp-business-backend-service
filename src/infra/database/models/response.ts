@@ -10,6 +10,15 @@ const Schema = new mongoose.Schema({
   createdAt: { type: Date, required: true, default: new Date() },
   content: {},
   note: String,
+  notes: [
+    {
+      notedBy: {
+        email: { type: String, email: true },
+        name: String
+      },
+      note: String
+    }
+  ],
   respondant: {
     id: { type: mongoose.Schema.Types.ObjectId, required: true },
     email: { type: String, email: true },
@@ -23,11 +32,6 @@ const Schema = new mongoose.Schema({
     email: { type: String, email: true },
     name: String
   },
-
-  notedBy: {
-    email: { type: String, email: true },
-    name: String
-  },
   updatedAt: { type: Date, required: true, default: new Date() },
   deleted: { type: Boolean, default: false },
   status: {
@@ -35,11 +39,6 @@ const Schema = new mongoose.Schema({
     enum: ["pending", "processed", "noted"],
     default: "pending"
   }
-});
-
-Schema.pre("update", function(next) {
-  this.update({}, { $set: { updatedAt: new Date() } });
-  next();
 });
 
 export const ResponseModel = mongoose.model("responses", Schema);

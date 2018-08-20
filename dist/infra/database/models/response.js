@@ -14,6 +14,15 @@ const Schema = new mongoose_1.default.Schema({
     createdAt: { type: Date, required: true, default: new Date() },
     content: {},
     note: String,
+    notes: [
+        {
+            notedBy: {
+                email: { type: String, email: true },
+                name: String
+            },
+            note: String
+        }
+    ],
     respondant: {
         id: { type: mongoose_1.default.Schema.Types.ObjectId, required: true },
         email: { type: String, email: true },
@@ -26,10 +35,6 @@ const Schema = new mongoose_1.default.Schema({
         email: { type: String, email: true },
         name: String
     },
-    notedBy: {
-        email: { type: String, email: true },
-        name: String
-    },
     updatedAt: { type: Date, required: true, default: new Date() },
     deleted: { type: Boolean, default: false },
     status: {
@@ -37,10 +42,6 @@ const Schema = new mongoose_1.default.Schema({
         enum: ["pending", "processed", "noted"],
         default: "pending"
     }
-});
-Schema.pre("update", function (next) {
-    this.update({}, { $set: { updatedAt: new Date() } });
-    next();
 });
 exports.ResponseModel = mongoose_1.default.model("responses", Schema);
 //# sourceMappingURL=response.js.map

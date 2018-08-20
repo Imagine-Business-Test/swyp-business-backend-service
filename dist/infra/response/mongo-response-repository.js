@@ -40,17 +40,30 @@ class MongoResponseRepository {
     }
     makeAsprocessed(id, processor) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.update({ _id: id }, { $set: { status: "processed", processor } });
+            yield this.update({ _id: id }, { $set: { status: "processed", processor, updatedAt: new Date() } });
         });
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.update({ _id: id }, { $set: { deleted: true } });
+            yield this.update({ _id: id }, { $set: { deleted: true, updatedAt: new Date() } });
         });
     }
     addNote(id, note, notedBy) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.update({ _id: id }, { $set: { note, notedBy, status: "noted" } });
+            try {
+                const result = yield this.model.updateOne({ _id: id }, {
+                    $addToSet: { notes: { note, notedBy } },
+                    $set: { status: "noted", updatedAt: new Date() }
+                });
+                if (result.nModified !== 1 || result.nMatched === 1) {
+                    throw new Error(`Error updating response: ${result.nModified} updated `);
+                }
+            }
+            catch (ex) {
+                ex.details = ex.message;
+                ex.message = "DatabaseError";
+                throw ex;
+            }
         });
     }
     count(field) {

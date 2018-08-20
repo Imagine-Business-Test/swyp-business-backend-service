@@ -12,7 +12,7 @@ export class Response {
   private status: string;
   private id?: string;
   private form: IForm;
-  private note?: string;
+  private notes?: [string];
 
   constructor(
     respondant: IUser,
@@ -21,7 +21,7 @@ export class Response {
     status: string,
     deleted: boolean,
     id?: string,
-    note?: string,
+    notes?: [string],
     processor?: ILoggedInUser,
     notedBy?: ILoggedInUser,
     createdAt?: Date,
@@ -36,7 +36,7 @@ export class Response {
     this.notedBy = notedBy;
     this.status = status;
     this.form = form;
-    this.note = note;
+    this.notes = notes;
     this.id = id;
   }
 
@@ -52,8 +52,8 @@ export class Response {
     return this.notedBy!;
   }
 
-  public getNote(): string {
-    return this.note!;
+  public getNote(): [string] {
+    return this.notes!;
   }
 
   public isDeleted(): boolean {

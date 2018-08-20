@@ -40,19 +40,36 @@ export class MongoResponseRepository implements IResponseRepository {
   public async makeAsprocessed(id: string, processor: ILoggedInUser) {
     await this.update(
       { _id: id },
-      { $set: { status: "processed", processor } }
+      { $set: { status: "processed", processor, updatedAt: new Date() } }
     );
   }
 
   public async delete(id: string) {
-    await this.update({ _id: id }, { $set: { deleted: true } });
+    await this.update(
+      { _id: id },
+      { $set: { deleted: true, updatedAt: new Date() } }
+    );
   }
 
   public async addNote(id: string, note: string, notedBy: ILoggedInUser) {
-    await this.update(
-      { _id: id },
-      { $set: { note, notedBy, status: "noted" } }
-    );
+    try {
+      const result = await this.model.updateOne(
+        { _id: id },
+        {
+          $addToSet: { notes: { note, notedBy } },
+          $set: { status: "noted", updatedAt: new Date() }
+        }
+      );
+      if (result.nModified !== 1 || result.nMatched === 1) {
+        throw new Error(
+          `Error updating response: ${result.nModified} updated `
+        );
+      }
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
   }
 
   public async count(field?: { [name: string]: string }) {
