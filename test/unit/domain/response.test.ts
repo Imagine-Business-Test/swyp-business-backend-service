@@ -5,7 +5,7 @@ const respondant = {
   lastname: "Ossaija",
   email: "codebugsolved@gmail.com",
   phone: "08136868448",
-  _id: "123456"
+  id: "123456"
 };
 
 const loggedInUser = {
@@ -14,20 +14,21 @@ const loggedInUser = {
 };
 
 const form = {
-  _id: "13223i23",
+  id: "13223i23",
   business: "12345",
-workspace: "12346",
+  workspace: "12346",
+  name: "ddo"
 };
 
 const date = new Date();
-const res =  new Response(
+const res = new Response(
   respondant,
   form,
   content,
   "pending",
   false,
   "4321",
-  "new note",
+  ["new note"],
   loggedInUser,
   loggedInUser,
   date,
