@@ -33,13 +33,16 @@ class MongoBusinessRepository {
     addAccount(businessId, account) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let doc = yield this.model.findOne({ "accounts.email": account.email });
-                if (doc) {
+                let doc = yield this.model.findOne({
+                    "accounts.email": account.email,
+                    "accounts.deleted": false
+                });
+                if (doc && doc.deleted) {
                     throw new Error(`Account with the provided email already exist`);
                 }
                 doc = yield this.model.findByIdAndUpdate(businessId, {
                     $addToSet: { accounts: account }
-                });
+                }, { new: true });
                 if (!doc) {
                     throw new Error(`Account not found`);
                 }

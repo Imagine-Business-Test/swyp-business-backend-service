@@ -20,7 +20,7 @@ export const BusinessController = {
     router
       .get("/", this.all)
       .post("/requestpasswordrest", this.requestPasswordRest)
-      .post("/deleteuser", auth, admin, this.deleteUser)
+      .delete("/deleteuser", auth, admin, this.deleteUser)
       .post("/resetpassword", this.resetPassword)
       .post("/adduser", auth, admin, this.addUser)
       .post("/loginuser", this.loginUser)

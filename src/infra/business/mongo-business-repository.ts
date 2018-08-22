@@ -33,14 +33,21 @@ export class MongoBusinessRepository implements IBusinessRepository {
     account: IAccount
   ): Promise<Business> {
     try {
-      let doc = await this.model.findOne({ "accounts.email": account.email });
-      if (doc) {
+      let doc = await this.model.findOne({
+        "accounts.email": account.email,
+        "accounts.deleted": false
+      });
+      if (doc && doc.deleted) {
         throw new Error(`Account with the provided email already exist`);
       }
 
-      doc = await this.model.findByIdAndUpdate(businessId, {
-        $addToSet: { accounts: account }
-      });
+      doc = await this.model.findByIdAndUpdate(
+        businessId,
+        {
+          $addToSet: { accounts: account }
+        },
+        { new: true }
+      );
 
       if (!doc) {
         throw new Error(`Account not found`);

@@ -13,7 +13,7 @@ exports.BusinessController = {
         router
             .get("/", this.all)
             .post("/requestpasswordrest", this.requestPasswordRest)
-            .post("/deleteuser", middleware_1.auth, middleware_1.admin, this.deleteUser)
+            .delete("/deleteuser", middleware_1.auth, middleware_1.admin, this.deleteUser)
             .post("/resetpassword", this.resetPassword)
             .post("/adduser", middleware_1.auth, middleware_1.admin, this.addUser)
             .post("/loginuser", this.loginUser)

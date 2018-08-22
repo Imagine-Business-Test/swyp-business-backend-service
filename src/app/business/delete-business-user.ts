@@ -19,12 +19,12 @@ export class DeleteBusinessUser extends Operation {
         command.modifier
       );
 
-      this.emit(SUCCESS, { deleted: true });
+      return this.emit(SUCCESS, { deleted: true });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

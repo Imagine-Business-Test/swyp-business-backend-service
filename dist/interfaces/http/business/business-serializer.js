@@ -38,6 +38,7 @@ const pruneSensitiveData = (accounts) => {
             return {
                 created: account.created,
                 email: account.email,
+                role: account.role,
                 lastLogIn: account.lastLoginIn,
                 name: account.name,
                 phone: account.phone
@@ -49,7 +50,8 @@ const pruneSensitiveData = (accounts) => {
         email: accounts.email,
         lastLogIn: accounts.lastLoginIn,
         name: accounts.name,
-        phone: accounts.phone
+        phone: accounts.phone,
+        role: accounts.role
     };
 };
 //# sourceMappingURL=business-serializer.js.map

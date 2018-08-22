@@ -43,6 +43,7 @@ const pruneSensitiveData = (accounts: IAccount[] | IAccount) => {
         return {
           created: account.created,
           email: account.email,
+          role: account.role,
           lastLogIn: account.lastLoginIn,
           name: account.name,
           phone: account.phone
@@ -55,6 +56,7 @@ const pruneSensitiveData = (accounts: IAccount[] | IAccount) => {
     email: (accounts as IAccount).email,
     lastLogIn: (accounts as IAccount).lastLoginIn,
     name: (accounts as IAccount).name,
-    phone: (accounts as IAccount).phone
+    phone: (accounts as IAccount).phone,
+    role: (accounts as IAccount).role
   };
 };

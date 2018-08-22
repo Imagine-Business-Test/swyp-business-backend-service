@@ -14,7 +14,6 @@ export const MongoBusinessMapper = {
       logoUrl,
       _id
     );
-
     if (currentUser) {
       business.setUser(currentUser);
     }
