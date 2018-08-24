@@ -19,10 +19,9 @@ export class ResetPassword extends Operation {
     token: string;
   }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
-    const { email, token, password } = command;
+    const { token, password } = command;
     try {
       const business = await this.businessRepository.findByPasswordResetToken(
-        email,
         token
       );
       const user = business.getUser();
@@ -31,12 +30,12 @@ export class ResetPassword extends Operation {
 
       this.mailer.sendPasswordChanged(user.name, user.email);
 
-      this.emit(SUCCESS, { updated: true });
+      return this.emit(SUCCESS, { updated: true });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

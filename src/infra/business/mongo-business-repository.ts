@@ -62,8 +62,10 @@ export class MongoBusinessRepository implements IBusinessRepository {
 
   public async findByAccountEmail(email: string): Promise<Business> {
     try {
-      const doc = await this.model.findOne({ "accounts.email": email });
-
+      const doc = await this.model.findOne({
+        "accounts.email": email,
+        "accounts.deleted": false
+      });
       if (!doc) {
         throw new Error(`Account not found`);
       }
@@ -79,19 +81,15 @@ export class MongoBusinessRepository implements IBusinessRepository {
     }
   }
 
-  public async findByPasswordResetToken(
-    email: string,
-    token: string
-  ): Promise<Business> {
+  public async findByPasswordResetToken(token: string): Promise<Business> {
     const doc = await this.model.findOne({
-      "accounts.email": email,
       "accounts.passwordResetToken": token
     });
     if (!doc) {
       throw new Error(`Account not found`);
     }
 
-    const currentUser = this.processCurrentUser(doc.accounts, email);
+    const currentUser = this.processCurrentUser(doc.accounts, "", token);
 
     return MongoBusinessMapper.toEntity(doc, currentUser);
   }
@@ -167,12 +165,25 @@ export class MongoBusinessRepository implements IBusinessRepository {
     }
   }
 
-  private processCurrentUser(users: IAccount[], email: string): IAccount {
-    const currentUser = users.find(account => {
-      return account.email === email;
-    }) as IAccount;
+  private processCurrentUser(
+    users: IAccount[],
+    email: string,
+    token?: string
+  ): IAccount {
+    // An email can be associated with muitiple accounts
+    // But only one can be active at any point in time
+    let currentUser;
+    if (token) {
+      currentUser = users.find(
+        user => user.passwordResetToken === token && user.deleted === false
+      ) as IAccount;
+    } else {
+      currentUser = users.find(
+        user => user.email === email && user.deleted === false
+      ) as IAccount;
+    }
 
-    if (currentUser.deleted) {
+    if (!currentUser) {
       throw new Error("Account disabled");
     }
     return currentUser;

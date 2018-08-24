@@ -89,10 +89,6 @@ exports.BusinessRule = {
     resetPassword: joi_1.default
         .object()
         .keys({
-        email: joi_1.default
-            .string()
-            .email()
-            .required(),
         password: joi_1.default
             .string()
             .min(8)

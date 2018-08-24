@@ -18,18 +18,43 @@ class GetBusinessUserActivityStats extends operation_1.Operation {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR } = this.outputs;
             try {
-                const [processActivity, notingActivity] = yield Promise.all([
+                const [processingActivity, notingActivity] = yield Promise.all([
                     this.responseRepository.getProcessingActivityStats(),
                     this.responseRepository.getNotingActivityStats()
                 ]);
-                this.emit(SUCCESS, { processActivity, notingActivity });
+                const result = this.statsMerger({ processingActivity, notingActivity });
+                this.emit(SUCCESS, result);
             }
             catch (error) {
                 this.emit(ERROR, error);
             }
         });
     }
+    statsMerger(stats) {
+        const usersStats = [];
+        const processing = stats.processingActivity;
+        const noting = stats.notingActivity;
+        stateMerger(processing, usersStats, "processed");
+        stateMerger(noting, usersStats, "notes");
+        return usersStats;
+    }
 }
 exports.GetBusinessUserActivityStats = GetBusinessUserActivityStats;
 GetBusinessUserActivityStats.setOutputs(["SUCCESS", "ERROR"]);
+const stateMerger = (dirtyStats, cleanStats, countName) => {
+    dirtyStats.forEach((dStatObj) => {
+        const userIndex = cleanStats.findIndex((cStatObj) => cStatObj.name === dStatObj._id);
+        if (userIndex === -1) {
+            const obj = { name: dStatObj._id };
+            obj[countName] = dStatObj.count;
+            cleanStats.push(obj);
+        }
+        else {
+            const user = Object.assign({}, cleanStats[userIndex]);
+            user[countName] = dStatObj.count;
+            cleanStats[userIndex] = user;
+        }
+    });
+    return cleanStats;
+};
 //# sourceMappingURL=get-business-user-activity-stats.js.map

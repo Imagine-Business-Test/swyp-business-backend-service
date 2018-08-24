@@ -34,14 +34,14 @@ export class RequestPasswordReset extends Operation {
       const link = command.origin + `?token=${token}`;
 
       this.mailer.sendPasswordRequest(user.name, user.email, link);
-      this.emit(SUCCESS, {
+      return this.emit(SUCCESS, {
         message: "check your mail for a reset password link "
       });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

@@ -22,20 +22,20 @@ class ResetPassword extends operation_1.Operation {
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
-            const { email, token, password } = command;
+            const { token, password } = command;
             try {
-                const business = yield this.businessRepository.findByPasswordResetToken(email, token);
+                const business = yield this.businessRepository.findByPasswordResetToken(token);
                 const user = business.getUser();
                 const hasdPassword = yield bcrypt_1.default.hash(password, 10);
                 yield this.businessRepository.updatePassword(user.email, hasdPassword);
                 this.mailer.sendPasswordChanged(user.name, user.email);
-                this.emit(SUCCESS, { updated: true });
+                return this.emit(SUCCESS, { updated: true });
             }
             catch (ex) {
                 if (ex.message === "DatabaseError") {
-                    this.emit(DATABASE_ERROR, ex);
+                    return this.emit(DATABASE_ERROR, ex);
                 }
-                this.emit(ERROR, ex);
+                return this.emit(ERROR, ex);
             }
         });
     }

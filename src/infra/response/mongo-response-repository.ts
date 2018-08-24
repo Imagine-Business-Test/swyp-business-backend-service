@@ -102,19 +102,13 @@ export class MongoResponseRepository implements IResponseRepository {
   public async getProcessingActivityStats() {
     const match = { $match: { status: "processed" } };
     const group = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
-    const total = {
-      $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } }
-    };
-    return this.model.aggregate([match, group, total]);
+    return this.model.aggregate([match, group]);
   }
 
   public async getNotingActivityStats() {
     const match = { $match: { status: "noted" } };
     const group = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
-    const total = {
-      $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } }
-    };
-    return this.model.aggregate([match, group, total]);
+    return this.model.aggregate([match, group]);
   }
 
   private async update(

@@ -12,7 +12,7 @@ exports.BusinessController = {
         const router = express_1.Router();
         router
             .get("/", this.all)
-            .post("/requestpasswordrest", this.requestPasswordRest)
+            .post("/requestpasswordreset", this.requestPasswordRest)
             .delete("/deleteuser", middleware_1.auth, middleware_1.admin, this.deleteUser)
             .post("/resetpassword", this.resetPassword)
             .post("/adduser", middleware_1.auth, middleware_1.admin, this.addUser)

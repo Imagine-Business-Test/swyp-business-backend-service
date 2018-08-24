@@ -10,5 +10,5 @@ export interface IBusinessRepository {
   fetchAll: () => void;
   add: (business: Business) => Promise<Business>;
   deleteAccount: (email: string, modifier: ILoggedInUser) => void;
-  findByPasswordResetToken: (email: string, token: string) => Promise<Business>;
+  findByPasswordResetToken: (token: string) => Promise<Business>;
 }

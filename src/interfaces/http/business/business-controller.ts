@@ -19,7 +19,7 @@ export const BusinessController = {
     const router = Router();
     router
       .get("/", this.all)
-      .post("/requestpasswordrest", this.requestPasswordRest)
+      .post("/requestpasswordreset", this.requestPasswordRest)
       .delete("/deleteuser", auth, admin, this.deleteUser)
       .post("/resetpassword", this.resetPassword)
       .post("/adduser", auth, admin, this.addUser)

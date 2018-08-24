@@ -92,20 +92,14 @@ class MongoResponseRepository {
         return __awaiter(this, void 0, void 0, function* () {
             const match = { $match: { status: "processed" } };
             const group = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
-            const total = {
-                $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } }
-            };
-            return this.model.aggregate([match, group, total]);
+            return this.model.aggregate([match, group]);
         });
     }
     getNotingActivityStats() {
         return __awaiter(this, void 0, void 0, function* () {
             const match = { $match: { status: "noted" } };
             const group = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
-            const total = {
-                $group: { _id: null, total: { $sum: 1 }, users: { $push: "$$ROOT" } }
-            };
-            return this.model.aggregate([match, group, total]);
+            return this.model.aggregate([match, group]);
         });
     }
     update(condition, update) {

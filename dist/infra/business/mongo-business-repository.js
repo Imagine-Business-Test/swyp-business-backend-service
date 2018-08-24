@@ -58,7 +58,10 @@ class MongoBusinessRepository {
     findByAccountEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const doc = yield this.model.findOne({ "accounts.email": email });
+                const doc = yield this.model.findOne({
+                    "accounts.email": email,
+                    "accounts.deleted": false
+                });
                 if (!doc) {
                     throw new Error(`Account not found`);
                 }
@@ -73,16 +76,15 @@ class MongoBusinessRepository {
             }
         });
     }
-    findByPasswordResetToken(email, token) {
+    findByPasswordResetToken(token) {
         return __awaiter(this, void 0, void 0, function* () {
             const doc = yield this.model.findOne({
-                "accounts.email": email,
                 "accounts.passwordResetToken": token
             });
             if (!doc) {
                 throw new Error(`Account not found`);
             }
-            const currentUser = this.processCurrentUser(doc.accounts, email);
+            const currentUser = this.processCurrentUser(doc.accounts, "", token);
             return mongo_business_mapper_1.MongoBusinessMapper.toEntity(doc, currentUser);
         });
     }
@@ -147,11 +149,15 @@ class MongoBusinessRepository {
             }
         });
     }
-    processCurrentUser(users, email) {
-        const currentUser = users.find(account => {
-            return account.email === email;
-        });
-        if (currentUser.deleted) {
+    processCurrentUser(users, email, token) {
+        let currentUser;
+        if (token) {
+            currentUser = users.find(user => user.passwordResetToken === token && user.deleted === false);
+        }
+        else {
+            currentUser = users.find(user => user.email === email && user.deleted === false);
+        }
+        if (!currentUser) {
             throw new Error("Account disabled");
         }
         return currentUser;
