@@ -1,6 +1,6 @@
 import { IForm, IUser } from "../contracts/domain";
+import { IBranch } from "../contracts/infra";
 import { ILoggedInUser } from "../contracts/interfaces";
-
 export class Response {
   private processor?: ILoggedInUser;
   private notedBy?: ILoggedInUser;
@@ -13,9 +13,11 @@ export class Response {
   private id?: string;
   private form: IForm;
   private notes?: [string];
+  private branch: IBranch;
 
   constructor(
     respondant: IUser,
+    branch: IBranch,
     form: IForm,
     content: string,
     status: string,
@@ -31,6 +33,7 @@ export class Response {
     this.respondant = respondant;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.branch = branch;
     this.deleted = deleted;
     this.content = content;
     this.notedBy = notedBy;
@@ -78,6 +81,10 @@ export class Response {
 
   public getForm(): IForm {
     return this.form;
+  }
+
+  public getBranch(): IBranch {
+    return this.branch;
   }
 
   public getId(): string {

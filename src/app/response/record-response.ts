@@ -1,4 +1,5 @@
 import { IUser } from "../../contracts/domain";
+import { IBranch } from "../../contracts/infra";
 import {
   IFormRepository,
   IResponseRepository
@@ -22,13 +23,16 @@ export class RecordResponse extends Operation {
     form: string;
     content: string;
     user: IUser;
+    branch: IBranch;
   }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {
-      const { content, user } = command;
+      const { content, user, branch } = command;
       const form = await this.formResponse.findBySlug(command.form);
-      await this.responseRepository.add(form.createResponse(content, user));
+      await this.responseRepository.add(
+        form.createResponse(content, user, branch)
+      );
       return this.emit(SUCCESS, {});
     } catch (ex) {
       if (ex.message === "DatabaseError") {

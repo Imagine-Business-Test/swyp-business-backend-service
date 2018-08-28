@@ -1,10 +1,15 @@
 /* tslint:disable: no-shadowed-variable */
-
 import { Form, Response } from "../../../src/domain";
 
 const loggedInUser = {
   name: "Ossaija ThankGod",
   email: "codebugsolved@gmail.com"
+};
+
+const branch = {
+  name: "Apapa",
+  state: "Lagos",
+  address: "another one"
 };
 
 const content = "<h1>Hello world</h1>";
@@ -43,12 +48,13 @@ describe("Domain :: Form", () => {
         id: "123456"
       };
 
-      const response = form.createResponse(content, respondant);
+      const response = form.createResponse(content, respondant, branch);
 
       expect(response instanceof Response).toBeTruthy();
       expect(response).toEqual(
         expect.objectContaining({
           content,
+          branch,
           respondant,
           form: {
             id: "4321",

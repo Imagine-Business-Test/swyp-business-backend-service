@@ -1,5 +1,10 @@
 import { Response } from "../../../src/domain";
 const content = "<p>Ok thanks for the form</p>";
+const branch = {
+  name: "Apapa",
+  state: "Lagos",
+  address: "another one"
+};
 const respondant = {
   firstname: "ThankGod",
   lastname: "Ossaija",
@@ -23,6 +28,7 @@ const form = {
 const date = new Date();
 const res = new Response(
   respondant,
+  branch,
   form,
   content,
   "pending",
@@ -63,6 +69,12 @@ describe("Domain :: Response", () => {
   describe("#getRespondant", () => {
     test("Return the respondant that submitted the response", () => {
       expect(res.getRespondant()).toEqual(expect.objectContaining(respondant));
+    });
+  });
+
+  describe("#getBranch", () => {
+    test("Return the branch where response should be processed", () => {
+      expect(res.getBranch()).toEqual(expect.objectContaining(branch));
     });
   });
 

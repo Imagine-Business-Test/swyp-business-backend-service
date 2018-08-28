@@ -8,6 +8,7 @@ export const MongoResponseMapper = {
       respondant,
       deleted,
       content,
+      branch,
       status,
       updatedAt,
       createdAt,
@@ -18,6 +19,7 @@ export const MongoResponseMapper = {
     } = doc;
     return new Response(
       respondant,
+      branch,
       form,
       content,
       status,
@@ -35,6 +37,7 @@ export const MongoResponseMapper = {
     return {
       respondant: response.getRespondant(),
       form: response.getForm(),
+      branch: response.getBranch(),
       content: response.getContent(),
       status: response.getStatus(),
       deleted: response.isDeleted(),

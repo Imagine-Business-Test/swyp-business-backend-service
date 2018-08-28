@@ -16,7 +16,7 @@ class Form {
         this.id = id;
         this.slug = slug;
     }
-    createResponse(content, respondant) {
+    createResponse(content, respondant, branch) {
         const deleted = false;
         const status = "pending";
         const business = this.getBusiness();
@@ -26,7 +26,7 @@ class Form {
             business: business.id,
             workspace: this.getWorkspace()
         };
-        return new response_1.Response(respondant, form, content, status, deleted);
+        return new response_1.Response(respondant, branch, form, content, status, deleted);
     }
     getLastModifier() {
         return this.lastModifier;

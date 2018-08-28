@@ -11,6 +11,11 @@ const Schema = new mongoose_1.default.Schema({
         business: { type: mongoose_1.default.Schema.Types.ObjectId, required: true },
         name: { type: String, required: true }
     },
+    branch: {
+        state: { type: String, required: true },
+        name: { type: String, required: true },
+        address: { type: String, required: true }
+    },
     createdAt: { type: Date, required: true, default: new Date() },
     content: {},
     note: String,

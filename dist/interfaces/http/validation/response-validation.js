@@ -10,6 +10,11 @@ exports.ResponseRule = {
         .keys({
         content: joi_1.default.object().required(),
         form: joi_1.default.string().required(),
+        branch: joi_1.default.object().keys({
+            name: joi_1.default.string().required(),
+            state: joi_1.default.string().required(),
+            address: joi_1.default.string().required()
+        }),
         user: joi_1.default
             .object()
             .keys({

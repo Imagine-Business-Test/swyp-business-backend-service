@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Response {
-    constructor(respondant, form, content, status, deleted, id, notes, processor, notedBy, createdAt, updatedAt) {
+    constructor(respondant, branch, form, content, status, deleted, id, notes, processor, notedBy, createdAt, updatedAt) {
         this.processor = processor;
         this.respondant = respondant;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.branch = branch;
         this.deleted = deleted;
         this.content = content;
         this.notedBy = notedBy;
@@ -43,6 +44,9 @@ class Response {
     }
     getForm() {
         return this.form;
+    }
+    getBranch() {
+        return this.branch;
     }
     getId() {
         return this.id;

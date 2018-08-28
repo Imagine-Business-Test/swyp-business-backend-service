@@ -1,4 +1,5 @@
 import { IBusiness, IUser } from "../contracts/domain";
+import { IBranch } from "../contracts/infra";
 import { ILoggedInUser } from "../contracts/interfaces";
 import { Response } from "./response";
 
@@ -44,7 +45,11 @@ export class Form {
     this.slug = slug;
   }
 
-  public createResponse(content: any, respondant: IUser): Response {
+  public createResponse(
+    content: any,
+    respondant: IUser,
+    branch: IBranch
+  ): Response {
     const deleted = false;
     const status = "pending";
     const business: IBusiness = this.getBusiness();
@@ -54,7 +59,7 @@ export class Form {
       business: business.id,
       workspace: this.getWorkspace()
     };
-    return new Response(respondant, form, content, status, deleted);
+    return new Response(respondant, branch, form, content, status, deleted);
   }
 
   public getLastModifier(): ILoggedInUser {
