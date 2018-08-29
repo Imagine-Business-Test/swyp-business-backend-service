@@ -1,5 +1,4 @@
 import { IUser } from "../../contracts/domain";
-import { IBranch } from "../../contracts/infra";
 import {
   IFormRepository,
   IResponseRepository
@@ -23,7 +22,7 @@ export class RecordResponse extends Operation {
     form: string;
     content: string;
     user: IUser;
-    branch: IBranch;
+    branch: string;
   }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 

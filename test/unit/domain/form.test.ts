@@ -6,11 +6,7 @@ const loggedInUser = {
   email: "codebugsolved@gmail.com"
 };
 
-const branch = {
-  name: "Apapa",
-  state: "Lagos",
-  address: "another one"
-};
+const branch = "Apapa";
 
 const content = "<h1>Hello world</h1>";
 const date = new Date();

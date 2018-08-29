@@ -1,10 +1,7 @@
 import { Response } from "../../../src/domain";
 const content = "<p>Ok thanks for the form</p>";
-const branch = {
-  name: "Apapa",
-  state: "Lagos",
-  address: "another one"
-};
+const branch = "Apapa";
+
 const respondant = {
   firstname: "ThankGod",
   lastname: "Ossaija",
@@ -74,7 +71,7 @@ describe("Domain :: Response", () => {
 
   describe("#getBranch", () => {
     test("Return the branch where response should be processed", () => {
-      expect(res.getBranch()).toEqual(expect.objectContaining(branch));
+      expect(res.getBranch()).toBe(branch);
     });
   });
 

@@ -1,5 +1,4 @@
 import { IForm, IUser } from "../contracts/domain";
-import { IBranch } from "../contracts/infra";
 import { ILoggedInUser } from "../contracts/interfaces";
 export class Response {
   private processor?: ILoggedInUser;
@@ -13,11 +12,11 @@ export class Response {
   private id?: string;
   private form: IForm;
   private notes?: [string];
-  private branch: IBranch;
+  private branch: string;
 
   constructor(
     respondant: IUser,
-    branch: IBranch,
+    branch: string,
     form: IForm,
     content: string,
     status: string,
@@ -83,7 +82,7 @@ export class Response {
     return this.form;
   }
 
-  public getBranch(): IBranch {
+  public getBranch(): string {
     return this.branch;
   }
 

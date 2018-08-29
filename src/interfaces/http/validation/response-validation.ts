@@ -6,11 +6,7 @@ export const ResponseRule = {
     .keys({
       content: joi.object().required(),
       form: joi.string().required(),
-      branch: joi.object().keys({
-        name: joi.string().required(),
-        state: joi.string().required(),
-        address: joi.string().required()
-      }),
+      branch: joi.string().required(),
       user: joi
         .object()
         .keys({

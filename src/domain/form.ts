@@ -1,5 +1,4 @@
 import { IBusiness, IUser } from "../contracts/domain";
-import { IBranch } from "../contracts/infra";
 import { ILoggedInUser } from "../contracts/interfaces";
 import { Response } from "./response";
 
@@ -48,7 +47,7 @@ export class Form {
   public createResponse(
     content: any,
     respondant: IUser,
-    branch: IBranch
+    branch: string
   ): Response {
     const deleted = false;
     const status = "pending";

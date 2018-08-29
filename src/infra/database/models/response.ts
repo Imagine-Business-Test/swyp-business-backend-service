@@ -7,11 +7,7 @@ const Schema = new mongoose.Schema({
     business: { type: mongoose.Schema.Types.ObjectId, required: true },
     name: { type: String, required: true }
   },
-  branch: {
-    state: { type: String, required: true },
-    name: { type: String, required: true },
-    address: { type: String, required: true }
-  },
+  branch: { type: String, required: true },
   createdAt: { type: Date, required: true, default: new Date() },
   content: {},
   note: String,

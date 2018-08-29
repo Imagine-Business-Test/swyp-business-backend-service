@@ -1,15 +1,11 @@
 import mongoose from "mongoose";
 import { IForm, IUser } from "../domain";
 import { ILoggedInUser } from "../interfaces";
-export interface IBranch {
-  name: string;
-  state: string;
-  address: string;
-}
+
 export type ResponseInterface = mongoose.Document & {
   processor: ILoggedInUser;
   notedBy: ILoggedInUser;
-  branch: IBranch;
+  branch: string;
   respondant: IUser;
   deleted: boolean;
   updatedAt: Date;
