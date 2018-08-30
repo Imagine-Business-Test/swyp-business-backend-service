@@ -19,9 +19,9 @@ class CreateForm extends operation_1.Operation {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             try {
-                const { workspace, name, content, user } = command;
+                const { workspace, name, content, user, elementCount } = command;
                 const workspaceRecord = yield this.workspaceRepository.find(workspace);
-                const form = yield this.formRepository.add(workspaceRecord.createForm(name, content, user));
+                const form = yield this.formRepository.add(workspaceRecord.createForm(name, content, elementCount, user));
                 return this.emit(SUCCESS, form);
             }
             catch (ex) {

@@ -10,6 +10,7 @@ export const MongoFormMapper = {
       workspace,
       business,
       status,
+      elementCount,
       creator,
       lastModifier,
       deleted,
@@ -25,6 +26,7 @@ export const MongoFormMapper = {
       business,
       content,
       status,
+      elementCount,
       creator,
       lastModifier,
       deleted,
@@ -36,12 +38,13 @@ export const MongoFormMapper = {
 
   toDatabase(form: Form) {
     return {
+      elementCount: form.getElementCount(),
       lastModifier: form.getLastModifier(),
+      updateAt: form.getLastUpdateDate(),
+      createdAt: form.getCreationDate(),
       workspace: form.getWorkspace(),
       business: form.getBusiness(),
-      updateAt: form.getLastUpdateDate(),
       creator: form.getCreator(),
-      createdAt: form.getCreationDate(),
       content: form.getContent(),
       deleted: form.isDeleted(),
       slug: form.getSlug(),

@@ -19,18 +19,19 @@ export class CreateForm extends Operation {
   }
 
   public async execute(command: {
-    workspace: string;
     name: string;
     content: string;
+    workspace: string;
+    elementCount: number;
     user: ILoggedInUser;
   }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
-      const { workspace, name, content, user } = command;
+      const { workspace, name, content, user, elementCount } = command;
 
       const workspaceRecord = await this.workspaceRepository.find(workspace);
       const form = await this.formRepository.add(
-        workspaceRecord.createForm(name, content, user)
+        workspaceRecord.createForm(name, content, elementCount, user)
       );
 
       return this.emit(SUCCESS, form);

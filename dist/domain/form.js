@@ -2,13 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = require("./response");
 class Form {
-    constructor(name, slug, workstation, business, content, status, createdBy, modifier, deleted, id, updatedAt, createdAt) {
+    constructor(name, slug, workstation, business, content, status, elementCount, createdBy, modifier, deleted, id, updatedAt, createdAt) {
+        this.elementCount = elementCount;
         this.workstation = workstation;
-        this.creator = createdBy;
+        this.lastModifier = modifier;
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
+        this.creator = createdBy;
         this.business = business;
-        this.lastModifier = modifier;
         this.content = content;
         this.deleted = deleted;
         this.status = status;
@@ -27,6 +28,9 @@ class Form {
             workspace: this.getWorkspace()
         };
         return new response_1.Response(respondant, branch, form, content, status, deleted);
+    }
+    getElementCount() {
+        return this.elementCount;
     }
     getLastModifier() {
         return this.lastModifier;

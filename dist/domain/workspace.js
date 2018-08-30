@@ -16,11 +16,11 @@ class Workspace {
         this.name = name;
         this.id = id;
     }
-    createForm(name, content, creator) {
+    createForm(name, content, elementCount, creator) {
         const deleted = false;
         const status = "active";
         const sluggedName = slug_1.default(name);
-        return new form_1.Form(name, sluggedName, this.getId(), this.getBusiness(), content, status, creator, creator, deleted);
+        return new form_1.Form(name, sluggedName, this.getId(), this.getBusiness(), content, status, elementCount, creator, creator, deleted);
     }
     getCreationDate() {
         return this.createdAt;

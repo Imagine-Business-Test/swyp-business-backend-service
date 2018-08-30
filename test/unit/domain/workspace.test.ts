@@ -31,6 +31,7 @@ describe("Domain :: Workstation", () => {
       const form = workstation.createForm(
         "open account",
         content,
+        3,
         loggedInUser
       );
 
@@ -41,7 +42,8 @@ describe("Domain :: Workstation", () => {
           content,
           status: "active",
           deleted: false,
-          workstation: "4321"
+          workstation: "4321",
+          elementCount: 3
         })
       );
     });

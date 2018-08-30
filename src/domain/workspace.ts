@@ -37,6 +37,7 @@ export class Workspace {
   public createForm(
     name: string,
     content: string,
+    elementCount: number,
     creator: ILoggedInUser
   ): Form {
     const deleted = false;
@@ -49,6 +50,7 @@ export class Workspace {
       this.getBusiness(),
       content,
       status,
+      elementCount,
       creator,
       creator,
       deleted

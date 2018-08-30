@@ -5,17 +5,19 @@ import { Response } from "./response";
 export class Form {
   private lastModifier: ILoggedInUser;
   private creator: ILoggedInUser;
+  private elementCount: number;
   private workstation: string;
   private business: IBusiness;
   private updatedAt?: Date;
+  private createdAt?: Date;
   private deleted: boolean;
   private content: string;
-  private createdAt?: Date;
   private status: string;
   private name: string;
   private slug: string;
   private id?: string;
 
+  // changing order of parameter is disruptive
   constructor(
     name: string,
     slug: string,
@@ -23,6 +25,7 @@ export class Form {
     business: IBusiness,
     content: string,
     status: string,
+    elementCount: number,
     createdBy: ILoggedInUser,
     modifier: ILoggedInUser,
     deleted: boolean,
@@ -30,12 +33,13 @@ export class Form {
     updatedAt?: Date,
     createdAt?: Date
   ) {
+    this.elementCount = elementCount;
     this.workstation = workstation;
-    this.creator = createdBy;
+    this.lastModifier = modifier;
     this.updatedAt = updatedAt;
     this.createdAt = createdAt;
+    this.creator = createdBy;
     this.business = business;
-    this.lastModifier = modifier;
     this.content = content;
     this.deleted = deleted;
     this.status = status;
@@ -59,6 +63,10 @@ export class Form {
       workspace: this.getWorkspace()
     };
     return new Response(respondant, branch, form, content, status, deleted);
+  }
+
+  public getElementCount(): number {
+    return this.elementCount;
   }
 
   public getLastModifier(): ILoggedInUser {

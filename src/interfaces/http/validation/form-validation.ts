@@ -4,9 +4,10 @@ export const FormRules = {
   createForm: joi
     .object()
     .keys({
-      content: joi.string().required(),
       name: joi.string().required(),
-      workspace: joi.string().required()
+      content: joi.string().required(),
+      workspace: joi.string().required(),
+      elementCount: joi.number().required()
     })
     .required(),
 

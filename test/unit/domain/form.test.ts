@@ -18,6 +18,7 @@ const form = new Form(
   business,
   content,
   "active",
+  4,
   loggedInUser,
   loggedInUser,
   false,
@@ -62,6 +63,12 @@ describe("Domain :: Form", () => {
           deleted: false
         })
       );
+    });
+  });
+
+  describe("#getElementCount", () => {
+    test("It returns the number of elements in a form", () => {
+      expect(form.getElementCount()).toBe(4);
     });
   });
 
