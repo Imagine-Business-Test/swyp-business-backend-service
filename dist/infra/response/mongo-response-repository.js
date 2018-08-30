@@ -74,12 +74,19 @@ class MongoResponseRepository {
             return this.model.count({});
         });
     }
-    findByStatus(business, status, page = 1, limit = 10) {
+    findByStatus(business, status, page = 1, limit = 10, from, to) {
         return __awaiter(this, void 0, void 0, function* () {
             const skip = page * limit - limit;
             const countPromise = this.model.count({ status });
+            const condition = from && to
+                ? {
+                    "form.business": business,
+                    status,
+                    createdAt: { $gte: new Date(from), $lte: new Date(to) }
+                }
+                : { "form.business": business, status };
             const queryPromise = this.model
-                .find({ "form.business": business, status })
+                .find(condition)
                 .skip(skip)
                 .limit(limit)
                 .sort({ createdAt: -1 });

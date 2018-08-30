@@ -83,12 +83,23 @@ export class MongoResponseRepository implements IResponseRepository {
     business: string,
     status: string,
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+    from?: Date,
+    to?: Date
   ) {
     const skip = page * limit - limit;
     const countPromise = this.model.count({ status });
+    const condition =
+      from && to
+        ? {
+            "form.business": business,
+            status,
+            createdAt: { $gte: new Date(from), $lte: new Date(to) }
+          }
+        : { "form.business": business, status };
+
     const queryPromise = this.model
-      .find({ "form.business": business, status })
+      .find(condition)
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });

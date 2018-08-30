@@ -71,13 +71,24 @@ export const ResponseController = {
       "getResponseByStatus"
     ) as GetResponseByStatus;
     const { SUCCESS, ERROR } = handler.outputs;
+    const { business, from, to } = req.query;
 
-    const command = {
-      limit: req.query.limit || 10,
-      page: req.query.page || 1,
-      status: req.params.status,
-      business: req.query.business
-    };
+    const command =
+      from && to
+        ? {
+            limit: req.query.limit || 10,
+            page: req.query.page || 1,
+            status: req.params.status,
+            business,
+            from,
+            to
+          }
+        : {
+            limit: req.query.limit || 10,
+            page: req.query.page || 1,
+            status: req.params.status,
+            business
+          };
 
     handler
       .on(SUCCESS, data => {

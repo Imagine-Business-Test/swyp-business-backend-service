@@ -54,12 +54,22 @@ exports.ResponseController = {
         req.validateQuery(validation_1.ResponseRule.byStatus.query);
         const handler = req.container.resolve("getResponseByStatus");
         const { SUCCESS, ERROR } = handler.outputs;
-        const command = {
-            limit: req.query.limit || 10,
-            page: req.query.page || 1,
-            status: req.params.status,
-            business: req.query.business
-        };
+        const { business, from, to } = req.query;
+        const command = from && to
+            ? {
+                limit: req.query.limit || 10,
+                page: req.query.page || 1,
+                status: req.params.status,
+                business,
+                from,
+                to
+            }
+            : {
+                limit: req.query.limit || 10,
+                page: req.query.page || 1,
+                status: req.params.status,
+                business
+            };
         handler
             .on(SUCCESS, data => {
             res.status(http_status_1.default.OK).json(data);

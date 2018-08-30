@@ -12,8 +12,10 @@ export class GetResponseByStatus extends Operation {
   public async execute(command: {
     business: string;
     status: string;
-    page: number;
     limit: number;
+    page: number;
+    from?: Date;
+    to?: Date;
   }) {
     const { SUCCESS, ERROR } = this.outputs;
     const { business, status, page, limit } = command;

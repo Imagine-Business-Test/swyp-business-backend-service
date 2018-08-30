@@ -70,7 +70,9 @@ export const ResponseRule = {
       .keys({
         business: joi.string().required(),
         limit: joi.number(),
-        page: joi.number()
+        page: joi.number(),
+        from: joi.date(),
+        to: joi.date()
       })
       .required()
   },

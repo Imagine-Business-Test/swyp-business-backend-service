@@ -68,7 +68,9 @@ exports.ResponseRule = {
             .keys({
             business: joi_1.default.string().required(),
             limit: joi_1.default.number(),
-            page: joi_1.default.number()
+            page: joi_1.default.number(),
+            from: joi_1.default.date(),
+            to: joi_1.default.date()
         })
             .required()
     },
