@@ -8,6 +8,13 @@ const user = {
   password: "princtg",
   role: "admin"
 };
+const branches = [
+  {
+    name: "Apapa",
+    state: "Lagos",
+    address: "Warf rood"
+  }
+];
 accounts.push(user);
 const business = new Business(
   "GT Bank",
@@ -15,6 +22,7 @@ const business = new Business(
   false,
   false,
   accounts,
+  branches,
   "http://ww.gtbank.com/logo",
   "1234"
 );
@@ -36,6 +44,16 @@ describe("Domain :: Business", () => {
     });
   });
 
+  describe("#getBranches", () => {
+    test("It is a function", () => {
+      expect(typeof business.getBranches).toBe("function");
+    });
+
+    test("It is an area of objects", () => {
+      expect(business.getBranches()).toEqual(expect.arrayContaining(branches));
+    });
+  });
+
   describe("#getLogo", () => {
     test("It is a function", () => {
       expect(typeof business.getLogo).toBe("function");
@@ -54,6 +72,7 @@ describe("Domain :: Business", () => {
         false,
         false,
         [],
+        branches,
         "http://ww.gtbank.com/logo",
         "1234"
       );

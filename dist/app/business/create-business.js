@@ -30,7 +30,7 @@ class CreateBusiness extends operation_1.Operation {
                 const slug = name.toLowerCase().replace(" ", "");
                 const deleted = false;
                 const approved = true;
-                const newBusiness = new domain_1.Business(name, slug, approved, deleted, [], logoUrl);
+                const newBusiness = new domain_1.Business(name, slug, approved, deleted, [], [], logoUrl);
                 const savedBusiness = yield this.businessRepository.add(newBusiness);
                 account.password = yield bcrypt_1.default.hash(account.password, 10);
                 const business = yield this.businessRepository.addAccount(savedBusiness.getId(), account);

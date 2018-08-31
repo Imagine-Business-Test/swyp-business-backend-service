@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
 
 import { IAccount } from "../domain";
-
+export interface IBranch {
+  name: string;
+  state: string;
+  address: string;
+}
 export type IBusinessInterface = mongoose.Document & {
   accounts: IAccount[];
+  branches: IBranch[];
   approved: boolean;
   deleted: boolean;
   logoUrl: string;

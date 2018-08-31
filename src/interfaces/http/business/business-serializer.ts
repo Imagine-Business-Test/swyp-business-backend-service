@@ -5,10 +5,10 @@ export const BusinessSerializer = {
   serialize(response: any) {
     let { business } = response;
     const { user, token } = response;
-
     business = {
-      accounts: pruneSensitiveData(business.getAccounts()),
+      accounts: pruneSensitiveUserData(business.getAccounts()),
       logoUrl: business.getLogo(),
+      branches: business.getBranches(),
       name: business.getName(),
       slug: business.getSlug(),
       id: business.getId()
@@ -20,13 +20,14 @@ export const BusinessSerializer = {
     return {
       business,
       token,
-      user: pruneSensitiveData(user)
+      user: pruneSensitiveUserData(user)
     };
   },
 
   lean(responses: IBusinessInterface[]) {
     return responses.map(res => {
       return {
+        branches: res.branches,
         logo: res.logoUrl,
         name: res.name,
         slug: res.slug
@@ -35,7 +36,7 @@ export const BusinessSerializer = {
   }
 };
 
-const pruneSensitiveData = (accounts: IAccount[] | IAccount) => {
+const pruneSensitiveUserData = (accounts: IAccount[] | IAccount) => {
   if (Array.isArray(accounts)) {
     return accounts
       .filter((account: IAccount) => !account.deleted)

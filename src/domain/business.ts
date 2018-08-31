@@ -1,9 +1,11 @@
 import { IAccount } from "../contracts/domain";
+import { IBranch } from "../contracts/infra";
 import { Workspace } from "./workspace";
 
 export class Business {
   private currentUser?: IAccount;
   private accounts: IAccount[];
+  private branches?: IBranch[];
   private approved: boolean;
   private deleted: boolean;
   private logoUrl?: string;
@@ -17,11 +19,13 @@ export class Business {
     approved: boolean,
     deleted: boolean,
     accounts: IAccount[],
+    branches?: IBranch[],
     logoUrl?: string,
     id?: string
   ) {
     this.accounts = accounts;
     this.approved = approved;
+    this.branches = branches;
     this.deleted = deleted;
     this.logoUrl = logoUrl;
     this.slug = slug;
@@ -55,6 +59,10 @@ export class Business {
     }
 
     return true;
+  }
+
+  public getBranches(): IBranch[] {
+    return this.branches!;
   }
 
   public getId(): string {

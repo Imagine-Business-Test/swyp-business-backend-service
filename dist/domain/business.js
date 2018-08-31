@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const workspace_1 = require("./workspace");
 class Business {
-    constructor(name, slug, approved, deleted, accounts, logoUrl, id) {
+    constructor(name, slug, approved, deleted, accounts, branches, logoUrl, id) {
         this.accounts = accounts;
         this.approved = approved;
+        this.branches = branches;
         this.deleted = deleted;
         this.logoUrl = logoUrl;
         this.slug = slug;
@@ -34,6 +35,9 @@ class Business {
             throw new Error(`${user.name} does not belong to ${this.name}`);
         }
         return true;
+    }
+    getBranches() {
+        return this.branches;
     }
     getId() {
         return this.id;

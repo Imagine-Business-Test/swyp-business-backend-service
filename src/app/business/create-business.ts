@@ -40,6 +40,7 @@ export class CreateBusiness extends Operation {
         approved,
         deleted,
         [],
+        [],
         logoUrl
       );
       const savedBusiness = await this.businessRepository.add(newBusiness);
