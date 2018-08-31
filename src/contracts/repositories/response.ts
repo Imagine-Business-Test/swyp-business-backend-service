@@ -12,7 +12,9 @@ export interface IResponseRepository {
     business: string,
     status: string,
     page: number,
-    limit: number
+    limit: number,
+    from?: Date,
+    to?: Date
   ) => any;
   getProcessingActivityStats: () => any;
   getNotingActivityStats: () => any;

@@ -18,13 +18,15 @@ export class GetResponseByStatus extends Operation {
     to?: Date;
   }) {
     const { SUCCESS, ERROR } = this.outputs;
-    const { business, status, page, limit } = command;
+    const { business, status, page, limit, from, to } = command;
     try {
       const result = await this.responseRepository.findByStatus(
         business,
         status,
         page,
-        limit
+        limit,
+        from,
+        to
       );
       this.emit(SUCCESS, result);
     } catch (error) {

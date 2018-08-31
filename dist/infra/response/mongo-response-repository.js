@@ -78,11 +78,14 @@ class MongoResponseRepository {
         return __awaiter(this, void 0, void 0, function* () {
             const skip = page * limit - limit;
             const countPromise = this.model.count({ status });
+            const fromDate = new Date(from);
+            const toDate = new Date(to);
+            toDate.setDate(toDate.getDate() + 1);
             const condition = from && to
                 ? {
                     "form.business": business,
                     status,
-                    createdAt: { $gte: new Date(from), $lte: new Date(to) }
+                    createdAt: { $gte: fromDate, $lte: toDate }
                 }
                 : { "form.business": business, status };
             const queryPromise = this.model
