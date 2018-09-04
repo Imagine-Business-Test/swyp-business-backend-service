@@ -43,12 +43,14 @@ const pruneSensitiveUserData = (accounts) => {
                 role: account.role,
                 lastLogIn: account.lastLoginIn,
                 name: account.name,
-                phone: account.phone
+                phone: account.phone,
+                branch: account.branch
             };
         });
     }
     return {
         created: accounts.created,
+        branch: accounts.branch,
         email: accounts.email,
         lastLogIn: accounts.lastLoginIn,
         name: accounts.name,

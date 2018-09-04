@@ -102,9 +102,10 @@ export const BusinessController = {
       .on(ERROR, next);
     const command = {
       account: {
+        branch: req.body.branch,
+        phone: req.body.phone,
         email: req.body.email,
         name: req.body.name,
-        phone: req.body.phone,
         role: req.body.role
       },
       origin: req.body.origin,

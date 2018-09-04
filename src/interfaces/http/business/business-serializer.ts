@@ -1,5 +1,5 @@
-import { IAccount } from "../../../contracts/domain";
 import { IBusinessInterface } from "../../../contracts/infra";
+import { IAccount } from "../../../contracts/domain";
 
 export const BusinessSerializer = {
   serialize(response: any) {
@@ -47,13 +47,15 @@ const pruneSensitiveUserData = (accounts: IAccount[] | IAccount) => {
           role: account.role,
           lastLogIn: account.lastLoginIn,
           name: account.name,
-          phone: account.phone
+          phone: account.phone,
+          branch: account.branch
         };
       });
   }
 
   return {
     created: (accounts as IAccount).created,
+    branch: (accounts as IAccount).branch,
     email: (accounts as IAccount).email,
     lastLogIn: (accounts as IAccount).lastLoginIn,
     name: (accounts as IAccount).name,

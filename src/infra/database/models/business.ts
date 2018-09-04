@@ -4,6 +4,7 @@ const Schema = new mongoose.Schema({
   branches: [
     {
       name: { type: String, required: true },
+      area: { type: String, required: true },
       state: { type: String, required: true },
       address: { type: String, required: true }
     }
@@ -16,6 +17,7 @@ const Schema = new mongoose.Schema({
       email: { type: String, required: true, email: true },
       lastLogIn: { type: Date, default: new Date() },
       name: { type: String, required: true },
+      branch: { type: String, required: true },
       password: { type: String, min: 8 },
       passwordResetExpires: { type: Date },
       passwordResetToken: { type: String },

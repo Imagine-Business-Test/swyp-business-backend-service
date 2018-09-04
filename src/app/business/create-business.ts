@@ -1,11 +1,12 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { IConfig } from "../../contracts/config";
-import { IAccount } from "../../contracts/domain";
 import { IBusinessRepository } from "../../contracts/repositories";
+import { IAccount } from "../../contracts/domain";
+import { IConfig } from "../../contracts/config";
+import { IBranch } from "../../contracts/infra";
 import { Business } from "../../domain";
-import { Mailer } from "../../services";
 import { Operation } from "../operation";
+import { Mailer } from "../../services";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 export class CreateBusiness extends Operation {
   private businessRepository: IBusinessRepository;
@@ -27,10 +28,11 @@ export class CreateBusiness extends Operation {
     name: string;
     logoUrl: string;
     account: IAccount;
+    branches: IBranch[];
   }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
-      const { name, logoUrl, account } = command;
+      const { name, logoUrl, account, branches } = command;
       const slug = name.toLowerCase().replace(" ", "");
       const deleted = false;
       const approved = true;
@@ -40,9 +42,10 @@ export class CreateBusiness extends Operation {
         approved,
         deleted,
         [],
-        [],
+        branches,
         logoUrl
       );
+
       const savedBusiness = await this.businessRepository.add(newBusiness);
       account.password = await bcrypt.hash(account.password, 10);
 

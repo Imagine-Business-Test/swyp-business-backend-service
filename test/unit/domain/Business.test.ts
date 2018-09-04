@@ -6,11 +6,13 @@ const user = {
   email: "codebugsolved@gmail.com",
   name: "Ossaija ThankGod",
   password: "princtg",
-  role: "admin"
+  role: "admin",
+  branch: "Apapa"
 };
 const branches = [
   {
     name: "Apapa",
+    area: "Apapa",
     state: "Lagos",
     address: "Warf rood"
   }

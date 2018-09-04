@@ -16,6 +16,7 @@ exports.BusinessRule = {
                 .email()
                 .required(),
             name: joi_1.default.string().required(),
+            branch: joi_1.default.string().required(),
             password: joi_1.default
                 .string()
                 .min(8)
@@ -24,16 +25,24 @@ exports.BusinessRule = {
             role: joi_1.default
                 .string()
                 .allow(["worker", "admin"])
+                .label("User role")
                 .required()
         })
             .required(),
-        name: joi_1.default.string().required()
+        name: joi_1.default.string().required(),
+        branches: joi_1.default.array().items(joi_1.default.object().keys({
+            name: joi_1.default.string().required(),
+            area: joi_1.default.string().required(),
+            state: joi_1.default.string().required(),
+            address: joi_1.default.string().required()
+        }))
     })
         .required(),
     addBusinessUser: joi_1.default
         .object()
         .keys({
         business: joi_1.default.string().required(),
+        branch: joi_1.default.string().required(),
         role: joi_1.default
             .string()
             .required()

@@ -12,6 +12,7 @@ export const BusinessRule = {
             .email()
             .required(),
           name: joi.string().required(),
+          branch: joi.string().required(),
           password: joi
             .string()
             .min(8)
@@ -20,10 +21,19 @@ export const BusinessRule = {
           role: joi
             .string()
             .allow(["worker", "admin"])
+            .label("User role")
             .required()
         })
         .required(),
-      name: joi.string().required()
+      name: joi.string().required(),
+      branches: joi.array().items(
+        joi.object().keys({
+          name: joi.string().required(),
+          area: joi.string().required(),
+          state: joi.string().required(),
+          address: joi.string().required()
+        })
+      )
     })
     .required(),
 
@@ -31,6 +41,7 @@ export const BusinessRule = {
     .object()
     .keys({
       business: joi.string().required(),
+      branch: joi.string().required(),
       role: joi
         .string()
         .required()

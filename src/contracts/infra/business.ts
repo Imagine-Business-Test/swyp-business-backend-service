@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 import { IAccount } from "../domain";
 export interface IBranch {
+  area: string;
   name: string;
   state: string;
   address: string;

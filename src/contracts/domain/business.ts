@@ -6,6 +6,7 @@ export interface IAccount {
   password?: string;
   updatedAt?: Date;
   created?: Date;
+  branch: string;
   phone: string;
   email: string;
   name: string;
