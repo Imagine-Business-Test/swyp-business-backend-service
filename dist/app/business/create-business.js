@@ -37,6 +37,7 @@ class CreateBusiness extends operation_1.Operation {
                 const user = business.getUser();
                 this.mailer.welcomeAdmin(business.getName(), user.name, user.email);
                 const token = jsonwebtoken_1.default.sign({
+                    branch: user.branch,
                     email: user.email,
                     isBusiness: true,
                     name: user.name,

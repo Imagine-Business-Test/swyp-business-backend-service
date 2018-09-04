@@ -72,10 +72,10 @@ export const ResponseController = {
     ) as GetResponseByStatus;
     const { SUCCESS, ERROR } = handler.outputs;
     const { business, from, to } = req.query;
-
     const command =
       from && to
         ? {
+            user: req.user,
             limit: req.query.limit || 10,
             page: req.query.page || 1,
             status: req.params.status,
@@ -84,6 +84,7 @@ export const ResponseController = {
             to
           }
         : {
+            user: req.user,
             limit: req.query.limit || 10,
             page: req.query.page || 1,
             status: req.params.status,

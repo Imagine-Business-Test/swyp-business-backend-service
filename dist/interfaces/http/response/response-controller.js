@@ -57,6 +57,7 @@ exports.ResponseController = {
         const { business, from, to } = req.query;
         const command = from && to
             ? {
+                user: req.user,
                 limit: req.query.limit || 10,
                 page: req.query.page || 1,
                 status: req.params.status,
@@ -65,6 +66,7 @@ exports.ResponseController = {
                 to
             }
             : {
+                user: req.user,
                 limit: req.query.limit || 10,
                 page: req.query.page || 1,
                 status: req.params.status,

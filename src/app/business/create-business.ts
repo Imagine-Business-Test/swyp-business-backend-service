@@ -59,6 +59,7 @@ export class CreateBusiness extends Operation {
       this.mailer.welcomeAdmin(business.getName(), user.name, user.email);
       const token = jwt.sign(
         {
+          branch: user.branch,
           email: user.email,
           isBusiness: true,
           name: user.name,

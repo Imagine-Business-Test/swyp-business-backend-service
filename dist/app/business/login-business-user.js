@@ -34,6 +34,7 @@ class LoginBusinessUser extends operation_1.Operation {
                     throw new Error("AuthenticationError");
                 }
                 const token = jsonwebtoken_1.default.sign({
+                    branch: user.branch,
                     email: user.email,
                     isBusiness: true,
                     name: user.name,

@@ -10,6 +10,7 @@ export interface IResponseRepository {
   addNote: (id: string, note: string, notedBy: ILoggedInUser) => void;
   findByStatus: (
     business: string,
+    branch: string,
     status: string,
     page: number,
     limit: number,

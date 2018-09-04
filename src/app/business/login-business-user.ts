@@ -39,6 +39,7 @@ export class LoginBusinessUser extends Operation {
 
       const token = jwt.sign(
         {
+          branch: user.branch,
           email: user.email,
           isBusiness: true,
           name: user.name,

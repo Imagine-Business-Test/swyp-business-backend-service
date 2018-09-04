@@ -1,4 +1,5 @@
 import { IResponseRepository } from "../../contracts/repositories";
+import { IAuthenticatedUser } from "../../contracts/interfaces";
 import { Operation } from "../operation";
 
 export class GetResponseByStatus extends Operation {
@@ -10,6 +11,7 @@ export class GetResponseByStatus extends Operation {
   }
 
   public async execute(command: {
+    user: IAuthenticatedUser;
     business: string;
     status: string;
     limit: number;
@@ -18,10 +20,12 @@ export class GetResponseByStatus extends Operation {
     to?: Date;
   }) {
     const { SUCCESS, ERROR } = this.outputs;
-    const { business, status, page, limit, from, to } = command;
+    const { business, user, status, page, limit, from, to } = command;
+    const branch = user.branch;
     try {
       const result = await this.responseRepository.findByStatus(
         business,
+        branch,
         status,
         page,
         limit,

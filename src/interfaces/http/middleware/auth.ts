@@ -1,13 +1,8 @@
+import { IAuthenticatedUser } from "../../../contracts/interfaces";
+
 import { Response } from "express";
 import Status from "http-status";
 import jwt from "jsonwebtoken";
-
-interface IUser {
-  email: string;
-  name: string;
-  isBusiness: boolean;
-  role: string;
-}
 
 export const auth = (req: any, res: Response, next: any) => {
   let token = req.get("Authorization");
@@ -21,10 +16,10 @@ export const auth = (req: any, res: Response, next: any) => {
 
   try {
     token = token.replace("Bearer: ", "");
-    const user: IUser = (req.user = jwt.verify(
+    const user: IAuthenticatedUser = (req.user = jwt.verify(
       token,
       req.config.web.json_secret
-    ) as IUser);
+    ) as IAuthenticatedUser);
 
     if (!user.isBusiness) {
       throw new Error("AuthorizationError");
