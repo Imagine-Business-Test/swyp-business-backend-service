@@ -7,8 +7,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongo_business_mapper_1 = require("./mongo-business-mapper");
+const mongoose_1 = __importDefault(require("mongoose"));
 class MongoBusinessRepository {
     constructor(businessModel) {
         this.model = businessModel;
@@ -37,10 +41,10 @@ class MongoBusinessRepository {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.accountRelatedUpdate({
                 $set: {
-                    "accounts.$[elem].deleted": true,
-                    "accounts.$[elem].deletedBy": modifer
+                    "accounts.$[element].deleted": true,
+                    "accounts.$[element].deletedBy": modifer
                 }
-            }, { arrayFilters: [{ "elem.email": email, "elem.deleted": false }] });
+            }, { arrayFilters: [{ "element.email": email, "element.deleted": false }] });
         });
     }
     add(business) {
@@ -61,30 +65,32 @@ class MongoBusinessRepository {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.accountRelatedUpdate({
                 $set: {
-                    "accounts.$[elem].branch": newBranch
+                    "accounts.$[element].branch": newBranch
                 }
-            }, { arrayFilters: [{ "elem._id": userId }] });
+            }, {
+                arrayFilters: [{ "element._id": mongoose_1.default.Types.ObjectId(userId) }]
+            });
         });
     }
     updatePassword(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.accountRelatedUpdate({
                 $set: {
-                    "accounts.$[elem].password": password,
-                    "accounts.$[elem].passwordResetExpires": null,
-                    "accounts.$[elem].passwordResetToken": null
+                    "accounts.$[element].password": password,
+                    "accounts.$[element].passwordResetExpires": null,
+                    "accounts.$[element].passwordResetToken": null
                 }
-            }, { arrayFilters: [{ "elem.email": email, "elem.deleted": false }] });
+            }, { arrayFilters: [{ "element.email": email, "element.deleted": false }] });
         });
     }
     requestPasswordReset(email, token, expires) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.accountRelatedUpdate({
                 $set: {
-                    "accounts.$[elem].passwordResetExpires": expires,
-                    "accounts.$[elem].passwordResetToken": token
+                    "accounts.$[element].passwordResetExpires": expires,
+                    "accounts.$[element].passwordResetToken": token
                 }
-            }, { arrayFilters: [{ "elem.email": email, "elem.deleted": false }] });
+            }, { arrayFilters: [{ "element.email": email, "element.deleted": false }] });
         });
     }
     addAccount(businessId, account) {
@@ -117,7 +123,11 @@ class MongoBusinessRepository {
     }
     updateLastLogin(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.accountRelatedUpdate({ $set: { "accounts.$[element].lastLogIn": new Date() } }, { arrayFilters: [{ "element.email": user.email, "elem.deleted": false }] });
+            return this.accountRelatedUpdate({ $set: { "accounts.$[element].lastLogIn": new Date() } }, {
+                arrayFilters: [
+                    { "element.email": user.email, "element.deleted": false }
+                ]
+            });
         });
     }
     fetchOne(condition) {
@@ -141,7 +151,7 @@ class MongoBusinessRepository {
             try {
                 const result = yield this.model.updateOne({}, update, arrayCondition);
                 if (result.nModified !== 1 || result.nMatched === 1) {
-                    throw new Error(`Error updating account: ${result.nModified} updated `);
+                    throw new Error("Update operation failed");
                 }
             }
             catch (ex) {

@@ -1,79 +1,79 @@
-import { scopePerRequest } from "awilix-express";
-import { Application } from "../../app/application";
-import config from "../../config";
-import { MongoBusinessRepository } from "../../infra/business";
-import mongoDB from "../../infra/database/mongodb";
-import { MongoFormRepository } from "../../infra/form";
-import { Logger } from "../../infra/logging";
-import { MongoResponseRepository } from "../../infra/response";
 import { MongoWorkspaceRepository } from "../../infra/workspace";
-import { Mailer } from "../../services";
-import { BusinessSerializer } from "./business";
-import { FormSerializer } from "./form";
-import { ResponseSerializer } from "./response";
-import { HttpServer } from "./server";
+import { MongoBusinessRepository } from "../../infra/business";
+import { MongoResponseRepository } from "../../infra/response";
+import { MongoFormRepository } from "../../infra/form";
+import { Application } from "../../app/application";
+import mongoDB from "../../infra/database/mongodb";
 import { WorkspaceSerializer } from "./workspace";
-
+import { scopePerRequest } from "awilix-express";
+import { BusinessSerializer } from "./business";
+import { ResponseSerializer } from "./response";
+import { Logger } from "../../infra/logging";
+import { Mailer } from "../../services";
+import { FormSerializer } from "./form";
+import { HttpServer } from "./server";
+import config from "../../config";
 import router from "./router";
 
 import {
   BusinessModel,
-  FormModel,
   ResponseModel,
-  WorkspaceModel
+  WorkspaceModel,
+  FormModel
 } from "../../infra/database/models";
 
 import {
-  asClass,
-  asFunction,
-  asValue,
   createContainer,
-  InjectionMode
+  InjectionMode,
+  asFunction,
+  asClass,
+  asValue
 } from "awilix";
 
 import {
   configMiddleware,
   devErrorHandler,
-  errorHandler,
   logMiddleware,
+  errorHandler,
   validator
 } from "./middleware";
 
 import {
+  GetBusinessUserActivityStats,
+  RequestPasswordReset,
+  DeleteBusinessUser,
+  LoginBusinessUser,
+  UpdateUserBranch,
   AddBusinessUser,
   CreateBusiness,
-  DeleteBusinessUser,
   GetBusinesses,
-  GetBusinessUserActivityStats,
-  LoginBusinessUser,
-  RequestPasswordReset,
   ResetPassword
 } from "../../app/business";
 
 import {
+  GetBusinessWorkspaces,
   CreateWorkspace,
-  DeleteWorkspace,
-  GetBusinessWorkspaces
+  DeleteWorkspace
 } from "../../app/workspace";
 
 import {
-  AddNoteToResponse,
-  DeleteResponse,
-  GetFormResponses,
+  UpdateResponseContent,
   GetResponseByStatus,
+  AddNoteToResponse,
+  GetFormResponses,
   ProcessResponse,
   RecordResponse,
-  UpdateResponseContent
+  DeleteResponse
 } from "../../app/response";
 
 import {
-  CreateForm,
-  DeleteForm,
-  DisableForm,
+  GetWorkspaceForms,
+  UpdateFormContent,
   GetBusinessForms,
   GetFormContent,
-  GetWorkspaceForms,
-  UpdateFormContent
+  CreateForm,
+  DeleteForm,
+  DisableForm
 } from "../../app/form";
 
 const container = createContainer({
@@ -126,6 +126,7 @@ container.register({
   requestPasswordReset: asClass(RequestPasswordReset),
   deleteBusinessUser: asClass(DeleteBusinessUser),
   loginBusinessUser: asClass(LoginBusinessUser),
+  updateUserBranch: asClass(UpdateUserBranch),
   addBusinessUser: asClass(AddBusinessUser),
   createBusiness: asClass(CreateBusiness),
   resetPassword: asClass(ResetPassword),

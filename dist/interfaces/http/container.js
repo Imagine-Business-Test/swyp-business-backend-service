@@ -3,21 +3,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const awilix_express_1 = require("awilix-express");
-const application_1 = require("../../app/application");
-const config_1 = __importDefault(require("../../config"));
-const business_1 = require("../../infra/business");
-const mongodb_1 = __importDefault(require("../../infra/database/mongodb"));
-const form_1 = require("../../infra/form");
-const logging_1 = require("../../infra/logging");
-const response_1 = require("../../infra/response");
 const workspace_1 = require("../../infra/workspace");
-const services_1 = require("../../services");
-const business_2 = require("./business");
-const form_2 = require("./form");
-const response_2 = require("./response");
-const server_1 = require("./server");
+const business_1 = require("../../infra/business");
+const response_1 = require("../../infra/response");
+const form_1 = require("../../infra/form");
+const application_1 = require("../../app/application");
+const mongodb_1 = __importDefault(require("../../infra/database/mongodb"));
 const workspace_2 = require("./workspace");
+const awilix_express_1 = require("awilix-express");
+const business_2 = require("./business");
+const response_2 = require("./response");
+const logging_1 = require("../../infra/logging");
+const services_1 = require("../../services");
+const form_2 = require("./form");
+const server_1 = require("./server");
+const config_1 = __importDefault(require("../../config"));
 const router_1 = __importDefault(require("./router"));
 const models_1 = require("../../infra/database/models");
 const awilix_1 = require("awilix");
@@ -64,6 +64,7 @@ container.register({
     requestPasswordReset: awilix_1.asClass(business_3.RequestPasswordReset),
     deleteBusinessUser: awilix_1.asClass(business_3.DeleteBusinessUser),
     loginBusinessUser: awilix_1.asClass(business_3.LoginBusinessUser),
+    updateUserBranch: awilix_1.asClass(business_3.UpdateUserBranch),
     addBusinessUser: awilix_1.asClass(business_3.AddBusinessUser),
     createBusiness: awilix_1.asClass(business_3.CreateBusiness),
     resetPassword: awilix_1.asClass(business_3.ResetPassword),

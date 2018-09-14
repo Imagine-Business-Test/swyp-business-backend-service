@@ -38,6 +38,16 @@ exports.BusinessRule = {
         }))
     })
         .required(),
+    resetPassword: joi_1.default
+        .object()
+        .keys({
+        password: joi_1.default
+            .string()
+            .min(8)
+            .required(),
+        token: joi_1.default.string().required()
+    })
+        .required(),
     addBusinessUser: joi_1.default
         .object()
         .keys({
@@ -58,6 +68,22 @@ exports.BusinessRule = {
             .label("Url to redirect user"),
         name: joi_1.default.string().required(),
         phone: joi_1.default.string().required()
+    })
+        .required(),
+    updateBranch: joi_1.default
+        .object()
+        .keys({
+        userId: joi_1.default.string().required(),
+        branch: joi_1.default.string().required()
+    })
+        .required(),
+    deleteBusinessUser: joi_1.default
+        .object()
+        .keys({
+        email: joi_1.default
+            .string()
+            .email()
+            .required()
     })
         .required(),
     loginBusinessUser: joi_1.default
@@ -84,25 +110,6 @@ exports.BusinessRule = {
             .string()
             .required()
             .label("Origin to redirect user is missing")
-    })
-        .required(),
-    deleteBusinessUser: joi_1.default
-        .object()
-        .keys({
-        email: joi_1.default
-            .string()
-            .email()
-            .required()
-    })
-        .required(),
-    resetPassword: joi_1.default
-        .object()
-        .keys({
-        password: joi_1.default
-            .string()
-            .min(8)
-            .required(),
-        token: joi_1.default.string().required()
     })
         .required()
 };

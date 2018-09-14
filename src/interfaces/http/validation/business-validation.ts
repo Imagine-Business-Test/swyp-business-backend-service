@@ -37,6 +37,17 @@ export const BusinessRule = {
     })
     .required(),
 
+  resetPassword: joi
+    .object()
+    .keys({
+      password: joi
+        .string()
+        .min(8)
+        .required(),
+      token: joi.string().required()
+    })
+    .required(),
+
   addBusinessUser: joi
     .object()
     .keys({
@@ -57,6 +68,24 @@ export const BusinessRule = {
         .label("Url to redirect user"),
       name: joi.string().required(),
       phone: joi.string().required()
+    })
+    .required(),
+
+  updateBranch: joi
+    .object()
+    .keys({
+      userId: joi.string().required(),
+      branch: joi.string().required()
+    })
+    .required(),
+
+  deleteBusinessUser: joi
+    .object()
+    .keys({
+      email: joi
+        .string()
+        .email()
+        .required()
     })
     .required(),
 
@@ -85,27 +114,6 @@ export const BusinessRule = {
         .string()
         .required()
         .label("Origin to redirect user is missing")
-    })
-    .required(),
-
-  deleteBusinessUser: joi
-    .object()
-    .keys({
-      email: joi
-        .string()
-        .email()
-        .required()
-    })
-    .required(),
-
-  resetPassword: joi
-    .object()
-    .keys({
-      password: joi
-        .string()
-        .min(8)
-        .required(),
-      token: joi.string().required()
     })
     .required()
 };

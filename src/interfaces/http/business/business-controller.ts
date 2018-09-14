@@ -1,16 +1,17 @@
-import { Response, Router } from "express";
-import Status from "http-status";
-import { admin, auth } from "../middleware";
 import { BusinessRule } from "../validation";
+import { Response, Router } from "express";
+import { admin, auth } from "../middleware";
+import Status from "http-status";
 
 import {
+  GetBusinessUserActivityStats,
+  RequestPasswordReset,
+  DeleteBusinessUser,
+  LoginBusinessUser,
+  UpdateUserBranch,
   AddBusinessUser,
   CreateBusiness,
-  DeleteBusinessUser,
   GetBusinesses,
-  GetBusinessUserActivityStats,
-  LoginBusinessUser,
-  RequestPasswordReset,
   ResetPassword
 } from "../../../app/business";
 
@@ -20,6 +21,7 @@ export const BusinessController = {
     router
       .get("/", this.all)
       .post("/requestpasswordreset", this.requestPasswordRest)
+      .put("/updatebranch", auth, admin, this.updateBranch)
       .delete("/deleteuser", auth, admin, this.deleteUser)
       .post("/resetpassword", this.resetPassword)
       .post("/adduser", auth, admin, this.addUser)
@@ -37,6 +39,21 @@ export const BusinessController = {
     handler
       .on(SUCCESS, data => {
         res.status(Status.OK).json(serializer.lean(data));
+      })
+      .on(ERROR, next);
+
+    handler.execute();
+  },
+
+  getStats(req: any, res: Response, next: any) {
+    const handler = req.container.resolve(
+      "getBusinessUserActivityStats"
+    ) as GetBusinessUserActivityStats;
+    const { SUCCESS, ERROR } = handler.outputs;
+
+    handler
+      .on(SUCCESS, data => {
+        res.status(Status.OK).json(data);
       })
       .on(ERROR, next);
 
@@ -161,16 +178,17 @@ export const BusinessController = {
     handler.execute(command);
   },
 
-  requestPasswordRest(req: any, res: Response, next: any) {
-    req.validateBody(BusinessRule.requestPasswordReset);
+  updateBranch(req: any, res: Response, next: any) {
+    req.validateBody(BusinessRule.updateBranch);
     const handler = req.container.resolve(
-      "requestPasswordReset"
-    ) as RequestPasswordReset;
+      "updateUserBranch"
+    ) as UpdateUserBranch;
+    const serializer = req.container.resolve("businessSerializer");
     const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
 
     handler
-      .on(SUCCESS, response => {
-        res.status(Status.OK).json(response);
+      .on(SUCCESS, resp => {
+        res.status(Status.OK).json(serializer.serialize(resp));
       })
       .on(DATABASE_ERROR, error => {
         res.status(Status.BAD_REQUEST).json({
@@ -179,8 +197,12 @@ export const BusinessController = {
         });
       })
       .on(ERROR, next);
-
-    handler.execute(req.body);
+    const command = {
+      userId: req.body.userId,
+      newBranch: req.body.branch,
+      user: req.user
+    };
+    handler.execute(command);
   },
 
   resetPassword(req: any, res: Response, next: any) {
@@ -203,18 +225,25 @@ export const BusinessController = {
     handler.execute(req.body);
   },
 
-  getStats(req: any, res: Response, next: any) {
+  requestPasswordRest(req: any, res: Response, next: any) {
+    req.validateBody(BusinessRule.requestPasswordReset);
     const handler = req.container.resolve(
-      "getBusinessUserActivityStats"
-    ) as GetBusinessUserActivityStats;
-    const { SUCCESS, ERROR } = handler.outputs;
+      "requestPasswordReset"
+    ) as RequestPasswordReset;
+    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
 
     handler
-      .on(SUCCESS, data => {
-        res.status(Status.OK).json(data);
+      .on(SUCCESS, response => {
+        res.status(Status.OK).json(response);
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.BAD_REQUEST).json({
+          details: error.details,
+          type: "DatabaseError"
+        });
       })
       .on(ERROR, next);
 
-    handler.execute();
+    handler.execute(req.body);
   }
 };

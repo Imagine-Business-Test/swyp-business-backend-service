@@ -4,6 +4,7 @@ import { MongoBusinessMapper } from "./mongo-business-mapper";
 import { ILoggedInUser } from "../../contracts/interfaces";
 import { IAccount } from "../../contracts/domain";
 import { Business } from "../../domain";
+import mongoose from "mongoose";
 
 export class MongoBusinessRepository implements IBusinessRepository {
   private model: BusinessModel;
@@ -37,11 +38,11 @@ export class MongoBusinessRepository implements IBusinessRepository {
     await this.accountRelatedUpdate(
       {
         $set: {
-          "accounts.$[elem].deleted": true,
-          "accounts.$[elem].deletedBy": modifer
+          "accounts.$[element].deleted": true,
+          "accounts.$[element].deletedBy": modifer
         }
       },
-      { arrayFilters: [{ "elem.email": email, "elem.deleted": false }] }
+      { arrayFilters: [{ "element.email": email, "element.deleted": false }] }
     );
   }
 
@@ -61,10 +62,12 @@ export class MongoBusinessRepository implements IBusinessRepository {
     await this.accountRelatedUpdate(
       {
         $set: {
-          "accounts.$[elem].branch": newBranch
+          "accounts.$[element].branch": newBranch
         }
       },
-      { arrayFilters: [{ "elem._id": userId }] }
+      {
+        arrayFilters: [{ "element._id": mongoose.Types.ObjectId(userId) }]
+      }
     );
   }
 
@@ -72,12 +75,12 @@ export class MongoBusinessRepository implements IBusinessRepository {
     await this.accountRelatedUpdate(
       {
         $set: {
-          "accounts.$[elem].password": password,
-          "accounts.$[elem].passwordResetExpires": null,
-          "accounts.$[elem].passwordResetToken": null
+          "accounts.$[element].password": password,
+          "accounts.$[element].passwordResetExpires": null,
+          "accounts.$[element].passwordResetToken": null
         }
       },
-      { arrayFilters: [{ "elem.email": email, "elem.deleted": false }] }
+      { arrayFilters: [{ "element.email": email, "element.deleted": false }] }
     );
   }
 
@@ -89,11 +92,11 @@ export class MongoBusinessRepository implements IBusinessRepository {
     await this.accountRelatedUpdate(
       {
         $set: {
-          "accounts.$[elem].passwordResetExpires": expires,
-          "accounts.$[elem].passwordResetToken": token
+          "accounts.$[element].passwordResetExpires": expires,
+          "accounts.$[element].passwordResetToken": token
         }
       },
-      { arrayFilters: [{ "elem.email": email, "elem.deleted": false }] }
+      { arrayFilters: [{ "element.email": email, "element.deleted": false }] }
     );
   }
 
@@ -136,7 +139,11 @@ export class MongoBusinessRepository implements IBusinessRepository {
   private async updateLastLogin(user: IAccount) {
     return this.accountRelatedUpdate(
       { $set: { "accounts.$[element].lastLogIn": new Date() } },
-      { arrayFilters: [{ "element.email": user.email, "elem.deleted": false }] }
+      {
+        arrayFilters: [
+          { "element.email": user.email, "element.deleted": false }
+        ]
+      }
     );
   }
 
@@ -163,7 +170,7 @@ export class MongoBusinessRepository implements IBusinessRepository {
     try {
       const result = await this.model.updateOne({}, update, arrayCondition);
       if (result.nModified !== 1 || result.nMatched === 1) {
-        throw new Error(`Error updating account: ${result.nModified} updated `);
+        throw new Error("Update operation failed");
       }
     } catch (ex) {
       ex.details = ex.message;
