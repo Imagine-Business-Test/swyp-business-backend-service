@@ -21,11 +21,75 @@ export class MongoResponseRepository implements IResponseRepository {
       .sort({ createdAt: -1 });
   }
 
+  public async addNote(id: string, note: string, notedBy: ILoggedInUser) {
+    try {
+      const result = await this.model.updateOne(
+        { _id: id },
+        {
+          $addToSet: { notes: { note, notedBy } },
+          $set: { status: "noted", updatedAt: new Date() }
+        }
+      );
+      if (result.nModified !== 1 || result.nMatched === 1) {
+        throw new Error(
+          `Error updating response: ${result.nModified} updated `
+        );
+      }
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
+  }
+
+  public async makeAsprocessed(id: string, processor: ILoggedInUser) {
+    await this.update(
+      { _id: id },
+      { $set: { status: "processed", processor, updatedAt: new Date() } }
+    );
+  }
+
   public async count(field?: { [name: string]: string }) {
     if (field) {
       return this.model.count(field);
     }
     return this.model.count({});
+  }
+
+  public async add(response: Response): Promise<Response> {
+    try {
+      const doc: ResponseInterface = await this.model.create(
+        MongoResponseMapper.toDatabase(response)
+      );
+      return MongoResponseMapper.toEntity(doc);
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
+  }
+
+  public async updateContent(id: string, content: string) {
+    await this.update({ _id: id }, { $set: { content } });
+  }
+
+  public async getProcessingActivityStats() {
+    const match = { $match: { status: "processed" } };
+    const group = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
+    return this.model.aggregate([match, group]);
+  }
+
+  public async getNotingActivityStats() {
+    const match = { $match: { status: "noted" } };
+    const group = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
+    return this.model.aggregate([match, group]);
+  }
+
+  public async delete(id: string) {
+    await this.update(
+      { _id: id },
+      { $set: { deleted: true, updatedAt: new Date() } }
+    );
   }
 
   public async findByStatus(
@@ -62,70 +126,6 @@ export class MongoResponseRepository implements IResponseRepository {
     const pages = Math.ceil(count / limit);
 
     return { result, count, pages };
-  }
-
-  public async getProcessingActivityStats() {
-    const match = { $match: { status: "processed" } };
-    const group = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
-    return this.model.aggregate([match, group]);
-  }
-
-  public async getNotingActivityStats() {
-    const match = { $match: { status: "noted" } };
-    const group = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
-    return this.model.aggregate([match, group]);
-  }
-
-  public async add(response: Response): Promise<Response> {
-    try {
-      const doc: ResponseInterface = await this.model.create(
-        MongoResponseMapper.toDatabase(response)
-      );
-      return MongoResponseMapper.toEntity(doc);
-    } catch (ex) {
-      ex.details = ex.message;
-      ex.message = "DatabaseError";
-      throw ex;
-    }
-  }
-
-  public async updateContent(id: string, content: string) {
-    await this.update({ _id: id }, { $set: { content } });
-  }
-
-  public async addNote(id: string, note: string, notedBy: ILoggedInUser) {
-    try {
-      const result = await this.model.updateOne(
-        { _id: id },
-        {
-          $addToSet: { notes: { note, notedBy } },
-          $set: { status: "noted", updatedAt: new Date() }
-        }
-      );
-      if (result.nModified !== 1 || result.nMatched === 1) {
-        throw new Error(
-          `Error updating response: ${result.nModified} updated `
-        );
-      }
-    } catch (ex) {
-      ex.details = ex.message;
-      ex.message = "DatabaseError";
-      throw ex;
-    }
-  }
-
-  public async delete(id: string) {
-    await this.update(
-      { _id: id },
-      { $set: { deleted: true, updatedAt: new Date() } }
-    );
-  }
-
-  public async makeAsprocessed(id: string, processor: ILoggedInUser) {
-    await this.update(
-      { _id: id },
-      { $set: { status: "processed", processor, updatedAt: new Date() } }
-    );
   }
 
   private async update(

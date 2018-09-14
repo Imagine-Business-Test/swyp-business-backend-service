@@ -42,24 +42,26 @@ const pruneSensitiveUserData = (accounts: IAccount[] | IAccount) => {
       .filter((account: IAccount) => !account.deleted)
       .map((account: IAccount) => {
         return {
-          created: account.created,
-          email: account.email,
-          role: account.role,
           lastLogIn: account.lastLoginIn,
-          name: account.name,
+          created: account.created,
+          branch: account.branch,
+          email: account.email,
           phone: account.phone,
-          branch: account.branch
+          role: account.role,
+          name: account.name,
+          id: account._id
         };
       });
   }
 
   return {
+    lastLogIn: (accounts as IAccount).lastLoginIn,
     created: (accounts as IAccount).created,
     branch: (accounts as IAccount).branch,
     email: (accounts as IAccount).email,
-    lastLogIn: (accounts as IAccount).lastLoginIn,
-    name: (accounts as IAccount).name,
     phone: (accounts as IAccount).phone,
-    role: (accounts as IAccount).role
+    role: (accounts as IAccount).role,
+    name: (accounts as IAccount).name,
+    id: (accounts as IAccount)._id
   };
 };

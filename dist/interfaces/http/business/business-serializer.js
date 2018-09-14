@@ -38,24 +38,26 @@ const pruneSensitiveUserData = (accounts) => {
             .filter((account) => !account.deleted)
             .map((account) => {
             return {
-                created: account.created,
-                email: account.email,
-                role: account.role,
                 lastLogIn: account.lastLoginIn,
-                name: account.name,
+                created: account.created,
+                branch: account.branch,
+                email: account.email,
                 phone: account.phone,
-                branch: account.branch
+                role: account.role,
+                name: account.name,
+                id: account._id
             };
         });
     }
     return {
+        lastLogIn: accounts.lastLoginIn,
         created: accounts.created,
         branch: accounts.branch,
         email: accounts.email,
-        lastLogIn: accounts.lastLoginIn,
-        name: accounts.name,
         phone: accounts.phone,
-        role: accounts.role
+        role: accounts.role,
+        name: accounts.name,
+        id: accounts._id
     };
 };
 //# sourceMappingURL=business-serializer.js.map

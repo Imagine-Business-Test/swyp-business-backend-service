@@ -20,12 +20,72 @@ class MongoResponseRepository {
                 .sort({ createdAt: -1 });
         });
     }
+    addNote(id, note, notedBy) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.model.updateOne({ _id: id }, {
+                    $addToSet: { notes: { note, notedBy } },
+                    $set: { status: "noted", updatedAt: new Date() }
+                });
+                if (result.nModified !== 1 || result.nMatched === 1) {
+                    throw new Error(`Error updating response: ${result.nModified} updated `);
+                }
+            }
+            catch (ex) {
+                ex.details = ex.message;
+                ex.message = "DatabaseError";
+                throw ex;
+            }
+        });
+    }
+    makeAsprocessed(id, processor) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.update({ _id: id }, { $set: { status: "processed", processor, updatedAt: new Date() } });
+        });
+    }
     count(field) {
         return __awaiter(this, void 0, void 0, function* () {
             if (field) {
                 return this.model.count(field);
             }
             return this.model.count({});
+        });
+    }
+    add(response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const doc = yield this.model.create(mongo_response_mapper_1.MongoResponseMapper.toDatabase(response));
+                return mongo_response_mapper_1.MongoResponseMapper.toEntity(doc);
+            }
+            catch (ex) {
+                ex.details = ex.message;
+                ex.message = "DatabaseError";
+                throw ex;
+            }
+        });
+    }
+    updateContent(id, content) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.update({ _id: id }, { $set: { content } });
+        });
+    }
+    getProcessingActivityStats() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const match = { $match: { status: "processed" } };
+            const group = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
+            return this.model.aggregate([match, group]);
+        });
+    }
+    getNotingActivityStats() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const match = { $match: { status: "noted" } };
+            const group = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
+            return this.model.aggregate([match, group]);
+        });
+    }
+    delete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.update({ _id: id }, { $set: { deleted: true, updatedAt: new Date() } });
         });
     }
     findByStatus(business, branch, status, page = 1, limit = 10, from, to) {
@@ -51,66 +111,6 @@ class MongoResponseRepository {
             const [result, count] = yield Promise.all([queryPromise, countPromise]);
             const pages = Math.ceil(count / limit);
             return { result, count, pages };
-        });
-    }
-    getProcessingActivityStats() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const match = { $match: { status: "processed" } };
-            const group = { $group: { _id: "$processor.name", count: { $sum: 1 } } };
-            return this.model.aggregate([match, group]);
-        });
-    }
-    getNotingActivityStats() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const match = { $match: { status: "noted" } };
-            const group = { $group: { _id: "$notedBy.name", count: { $sum: 1 } } };
-            return this.model.aggregate([match, group]);
-        });
-    }
-    add(response) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const doc = yield this.model.create(mongo_response_mapper_1.MongoResponseMapper.toDatabase(response));
-                return mongo_response_mapper_1.MongoResponseMapper.toEntity(doc);
-            }
-            catch (ex) {
-                ex.details = ex.message;
-                ex.message = "DatabaseError";
-                throw ex;
-            }
-        });
-    }
-    updateContent(id, content) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.update({ _id: id }, { $set: { content } });
-        });
-    }
-    addNote(id, note, notedBy) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield this.model.updateOne({ _id: id }, {
-                    $addToSet: { notes: { note, notedBy } },
-                    $set: { status: "noted", updatedAt: new Date() }
-                });
-                if (result.nModified !== 1 || result.nMatched === 1) {
-                    throw new Error(`Error updating response: ${result.nModified} updated `);
-                }
-            }
-            catch (ex) {
-                ex.details = ex.message;
-                ex.message = "DatabaseError";
-                throw ex;
-            }
-        });
-    }
-    delete(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.update({ _id: id }, { $set: { deleted: true, updatedAt: new Date() } });
-        });
-    }
-    makeAsprocessed(id, processor) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.update({ _id: id }, { $set: { status: "processed", processor, updatedAt: new Date() } });
         });
     }
     update(condition, update) {

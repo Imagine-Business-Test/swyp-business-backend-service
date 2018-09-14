@@ -13,6 +13,36 @@ class MongoBusinessRepository {
     constructor(businessModel) {
         this.model = businessModel;
     }
+    findByPasswordResetToken(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const doc = yield this.fetchOne({
+                "accounts.passwordResetToken": token
+            });
+            const currentUser = this.processCurrentUser(doc.accounts, "", token);
+            return mongo_business_mapper_1.MongoBusinessMapper.toEntity(doc, currentUser);
+        });
+    }
+    findByAccountEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const doc = yield this.fetchOne({
+                "accounts.email": email,
+                "accounts.deleted": false
+            });
+            const currentUser = this.processCurrentUser(doc.accounts, email);
+            yield this.updateLastLogin(currentUser);
+            return mongo_business_mapper_1.MongoBusinessMapper.toEntity(doc, currentUser);
+        });
+    }
+    deleteAccount(email, modifer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.accountRelatedUpdate({
+                $set: {
+                    "accounts.$[elem].deleted": true,
+                    "accounts.$[elem].deletedBy": modifer
+                }
+            }, { arrayFilters: [{ "elem.email": email, "elem.deleted": false }] });
+        });
+    }
     add(business) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -27,8 +57,35 @@ class MongoBusinessRepository {
             }
         });
     }
-    fetchAll() {
-        return this.model.find({});
+    updateBranch(userId, newBranch) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.accountRelatedUpdate({
+                $set: {
+                    "accounts.$[elem].branch": newBranch
+                }
+            }, { arrayFilters: [{ "elem._id": userId }] });
+        });
+    }
+    updatePassword(email, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.accountRelatedUpdate({
+                $set: {
+                    "accounts.$[elem].password": password,
+                    "accounts.$[elem].passwordResetExpires": null,
+                    "accounts.$[elem].passwordResetToken": null
+                }
+            }, { arrayFilters: [{ "elem.email": email, "elem.deleted": false }] });
+        });
+    }
+    requestPasswordReset(email, token, expires) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.accountRelatedUpdate({
+                $set: {
+                    "accounts.$[elem].passwordResetExpires": expires,
+                    "accounts.$[elem].passwordResetToken": token
+                }
+            }, { arrayFilters: [{ "elem.email": email, "elem.deleted": false }] });
+        });
     }
     addAccount(businessId, account) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -55,19 +112,22 @@ class MongoBusinessRepository {
             }
         });
     }
-    findByAccountEmail(email) {
+    fetchAll() {
+        return this.model.find({});
+    }
+    updateLastLogin(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.accountRelatedUpdate({ $set: { "accounts.$[element].lastLogIn": new Date() } }, { arrayFilters: [{ "element.email": user.email, "elem.deleted": false }] });
+        });
+    }
+    fetchOne(condition) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const doc = yield this.model.findOne({
-                    "accounts.email": email,
-                    "accounts.deleted": false
-                });
+                const doc = yield this.model.findOne(condition);
                 if (!doc) {
                     throw new Error(`Account not found`);
                 }
-                const currentUser = this.processCurrentUser(doc.accounts, email);
-                yield this.updateLastLogin(currentUser);
-                return mongo_business_mapper_1.MongoBusinessMapper.toEntity(doc, currentUser);
+                return doc;
             }
             catch (ex) {
                 ex.details = ex.message;
@@ -76,70 +136,12 @@ class MongoBusinessRepository {
             }
         });
     }
-    findByPasswordResetToken(token) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const doc = yield this.model.findOne({
-                "accounts.passwordResetToken": token
-            });
-            if (!doc) {
-                throw new Error(`Account not found`);
-            }
-            const currentUser = this.processCurrentUser(doc.accounts, "", token);
-            return mongo_business_mapper_1.MongoBusinessMapper.toEntity(doc, currentUser);
-        });
-    }
-    requestPasswordReset(email, token, expires) {
+    accountRelatedUpdate(update, arrayCondition) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.model.updateOne({}, {
-                    $set: {
-                        "accounts.$[elem].passwordResetExpires": expires,
-                        "accounts.$[elem].passwordResetToken": token
-                    }
-                }, { arrayFilters: [{ "elem.email": email }] });
+                const result = yield this.model.updateOne({}, update, arrayCondition);
                 if (result.nModified !== 1 || result.nMatched === 1) {
                     throw new Error(`Error updating account: ${result.nModified} updated `);
-                }
-            }
-            catch (ex) {
-                ex.details = ex.message;
-                ex.message = "DatabaseError";
-                throw ex;
-            }
-        });
-    }
-    updatePassword(email, password) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield this.model.updateOne({}, {
-                    $set: {
-                        "accounts.$[elem].password": password,
-                        "accounts.$[elem].passwordResetExpires": null,
-                        "accounts.$[elem].passwordResetToken": null
-                    }
-                }, { arrayFilters: [{ "elem.email": email }] });
-                if (result.nModified !== 1 || result.nMatched === 1) {
-                    throw new Error(`Error updating account: ${result.nModified} updated `);
-                }
-            }
-            catch (ex) {
-                ex.details = ex.message;
-                ex.message = "DatabaseError";
-                throw ex;
-            }
-        });
-    }
-    deleteAccount(email, modifer) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield this.model.updateOne({}, {
-                    $set: {
-                        "accounts.$[elem].deleted": true,
-                        "accounts.$[elem].deletedBy": modifer
-                    }
-                }, { arrayFilters: [{ "elem.email": email }] });
-                if (result.nModified !== 1 || result.nMatched === 1) {
-                    throw new Error(`Error deleting account: ${result.nModified} deleted `);
                 }
             }
             catch (ex) {
@@ -161,11 +163,6 @@ class MongoBusinessRepository {
             throw new Error("Account disabled");
         }
         return currentUser;
-    }
-    updateLastLogin(user) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.model.updateOne({}, { $set: { "accounts.$[element].lastLogIn": new Date() } }, { arrayFilters: [{ "element.email": user.email }] });
-        });
     }
 }
 exports.MongoBusinessRepository = MongoBusinessRepository;
