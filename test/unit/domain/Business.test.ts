@@ -86,7 +86,7 @@ describe("Domain :: Business", () => {
     test("It sets logged in user from business accounts", () => {
       business.setUser(user);
 
-      expect(business.setUser(user)).toBeTruthy();
+      expect(business.getUser()).toEqual(expect.objectContaining(user));
     });
   });
 
