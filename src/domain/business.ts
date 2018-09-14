@@ -47,7 +47,7 @@ export class Business {
     return new Workspace(name, business, loggedinUser, loggedinUser, deleted);
   }
 
-  public setUser(user: IAccount): boolean {
+  public setUser(user: IAccount) {
     for (const entry of this.accounts as IAccount[]) {
       if (entry.email === user.email) {
         this.currentUser = user;
@@ -57,8 +57,6 @@ export class Business {
     if (!this.currentUser) {
       throw new Error(`${user.name} does not belong to ${this.name}`);
     }
-
-    return true;
   }
 
   public getBranches(): IBranch[] {

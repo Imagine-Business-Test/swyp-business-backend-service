@@ -34,7 +34,6 @@ class Business {
         if (!this.currentUser) {
             throw new Error(`${user.name} does not belong to ${this.name}`);
         }
-        return true;
     }
     getBranches() {
         return this.branches;

@@ -1,4 +1,3 @@
-/* tslint:disable: no-submodule-imports ordered-imports */
 import { IBusinessRepository } from "../../contracts/repositories";
 import { ILoggedInUser } from "../../contracts/interfaces";
 import { IAccount } from "../../contracts/domain";
@@ -37,7 +36,6 @@ export class AddBusinessUser extends Operation {
       const link = command.origin + `?token=${urlToken}`;
 
       // new account created event
-
       this.mailer.welcome(
         user.name,
         command.user.name,

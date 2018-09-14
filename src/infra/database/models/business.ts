@@ -22,7 +22,11 @@ const Schema = new mongoose.Schema({
       passwordResetExpires: { type: Date },
       passwordResetToken: { type: String },
       phone: { type: String, required: true },
-      role: { type: String, required: true, enum: ["admin", "worker"] },
+      role: {
+        type: String,
+        required: true,
+        enum: ["admin", "worker", "manager"]
+      },
       updatedAt: { type: Date, default: new Date() }
     }
   ],

@@ -2,6 +2,7 @@
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
     "class-name": true,
+    "no-submodule-imports": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "comment-format": [true, "check-space"],
