@@ -47,9 +47,7 @@ export const WorkspaceController = {
   },
 
   getWorkspaces(req: any, res: Response, next: any) {
-    const handler = req.container.resolve(
-      "getBusinessWorkspaces"
-    ) as GetWorkspaces;
+    const handler = req.container.resolve("getWorkspaces") as GetWorkspaces;
     const { SUCCESS, ERROR } = handler.outputs;
 
     handler

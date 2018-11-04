@@ -40,7 +40,7 @@ exports.WorkspaceController = {
         handler.execute(command);
     },
     getWorkspaces(req, res, next) {
-        const handler = req.container.resolve("getBusinessWorkspaces");
+        const handler = req.container.resolve("getWorkspaces");
         const { SUCCESS, ERROR } = handler.outputs;
         handler
             .on(SUCCESS, workspaces => {
