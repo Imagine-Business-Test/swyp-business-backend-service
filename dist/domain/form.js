@@ -24,8 +24,7 @@ class Form {
         const form = {
             id: this.getId(),
             name: this.getName(),
-            business: business.id,
-            workspace: this.getWorkspace()
+            business: business.id
         };
         return new response_1.Response(respondant, branch, form, content, status, deleted);
     }

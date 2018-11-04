@@ -1,6 +1,5 @@
 import { IAccount } from "../contracts/domain";
 import { IBranch } from "../contracts/infra";
-import { Workspace } from "./workspace";
 
 export class Business {
   private currentUser?: IAccount;
@@ -31,20 +30,6 @@ export class Business {
     this.slug = slug;
     this.name = name;
     this.id = id;
-  }
-
-  public createWorkspace(name: string): Workspace {
-    const loggedinUser = {
-      email: this.currentUser!.email as string,
-      name: this.currentUser!.name as string
-    };
-
-    const business = {
-      id: this.getId(),
-      name: this.getSlug()
-    };
-    const deleted = false;
-    return new Workspace(name, business, loggedinUser, loggedinUser, deleted);
   }
 
   public setUser(user: IAccount) {

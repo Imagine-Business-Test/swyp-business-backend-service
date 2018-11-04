@@ -60,7 +60,6 @@ container.register({
     validator: awilix_1.asValue(middleware_1.validator)
 });
 container.register({
-    getBusinessWorkspaces: awilix_1.asClass(workspace_3.GetBusinessWorkspaces),
     requestPasswordReset: awilix_1.asClass(business_3.RequestPasswordReset),
     deleteBusinessUser: awilix_1.asClass(business_3.DeleteBusinessUser),
     loginBusinessUser: awilix_1.asClass(business_3.LoginBusinessUser),
@@ -69,6 +68,7 @@ container.register({
     createBusiness: awilix_1.asClass(business_3.CreateBusiness),
     resetPassword: awilix_1.asClass(business_3.ResetPassword),
     getBusinesses: awilix_1.asClass(business_3.GetBusinesses),
+    getWorkspaces: awilix_1.asClass(workspace_3.GetWorkspaces),
     createWorkspace: awilix_1.asClass(workspace_3.CreateWorkspace),
     deleteWorkspace: awilix_1.asClass(workspace_3.DeleteWorkspace),
     updateResponseContent: awilix_1.asClass(response_3.UpdateResponseContent),

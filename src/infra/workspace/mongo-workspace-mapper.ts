@@ -6,7 +6,7 @@ export const MongoWorkspaceMapper = {
     const {
       _id,
       name,
-      business,
+      parent,
       creator,
       lastModifier,
       deleted,
@@ -15,7 +15,7 @@ export const MongoWorkspaceMapper = {
     } = doc;
     return new Workspace(
       name,
-      business,
+      parent,
       creator,
       lastModifier,
       deleted,
@@ -29,7 +29,7 @@ export const MongoWorkspaceMapper = {
     return {
       lastModifier: workspace.getLastModifier(),
       creator: workspace.getCreator(),
-      business: workspace.getBusiness(),
+      business: workspace.getParent(),
       name: workspace.getName()
     };
   }

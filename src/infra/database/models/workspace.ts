@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const Schema = new mongoose.Schema({
-  business: {
-    id: { type: mongoose.Schema.Types.ObjectId, required: true },
-    name: { type: String, required: true }
+  parent: {
+    type: String,
+    enum: ["individual", "corprate"]
   },
   name: { type: String, required: true },
   createdAt: { type: Date, default: Date.now() },

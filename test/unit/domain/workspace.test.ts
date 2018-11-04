@@ -5,11 +5,11 @@ const loggedInUser = {
   email: "codebugsolved@gmail.com"
 };
 const date = new Date();
-const business = { id: "1234", name: "firstbank" };
+const parent = "Individual";
 
 const workstation = new Workspace(
   "Account Openning",
-  business,
+  parent,
   loggedInUser,
   loggedInUser,
   false,
@@ -22,30 +22,6 @@ describe("Domain :: Workstation", () => {
   describe("#constructor", () => {
     test("It is a constructor", () => {
       expect(typeof Workspace).toBe("function");
-    });
-  });
-
-  describe("#createForm", () => {
-    test("It creates a new form", () => {
-      const content = "<h1>hello open account</h1>";
-      const form = workstation.createForm(
-        "open account",
-        content,
-        3,
-        loggedInUser
-      );
-
-      expect(form instanceof Form).toBeTruthy();
-      expect(form).toEqual(
-        expect.objectContaining({
-          name: "open account",
-          content,
-          status: "active",
-          deleted: false,
-          workstation: "4321",
-          elementCount: 3
-        })
-      );
     });
   });
 
@@ -75,9 +51,7 @@ describe("Domain :: Workstation", () => {
 
   describe("#getBusinessId", () => {
     test("It return deleted property of form", () => {
-      expect(workstation.getBusiness()).toEqual(
-        expect.objectContaining(business)
-      );
+      expect(workstation.getParent()).toBe(parent);
     });
   });
 

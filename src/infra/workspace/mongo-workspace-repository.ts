@@ -1,8 +1,8 @@
 import { WorkspaceInterface, WorkspaceModel } from "../../contracts/infra";
-import { ILoggedInUser } from "../../contracts/interfaces";
 import { IWorkspaceRepository } from "../../contracts/repositories";
-import { Workspace } from "../../domain";
+import { ILoggedInUser } from "../../contracts/interfaces";
 import { MongoWorkspaceMapper } from "./mongo-workspace-mapper";
+import { Workspace } from "../../domain";
 
 export class MongoWorkspaceRepository implements IWorkspaceRepository {
   private model: WorkspaceModel;
@@ -38,10 +38,15 @@ export class MongoWorkspaceRepository implements IWorkspaceRepository {
     }
   }
 
-  public async findByBusiness(
-    businessId: string
-  ): Promise<WorkspaceInterface[]> {
-    return this.model.find({ "business.id": businessId, deleted: false });
+  public async fetchAll(): Promise<WorkspaceInterface[]> {
+    const matchTransformation = { $match: { deleted: false } };
+    const groupTransformation = {
+      $group: {
+        _id: "$parent",
+        entry: { $push: { parent: "$parent", name: "$name" } }
+      }
+    };
+    return this.model.aggregate([matchTransformation, groupTransformation]);
   }
 
   public async delete(id: string, user: ILoggedInUser) {

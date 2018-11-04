@@ -1,4 +1,4 @@
-import { IBusiness, IUser } from "../contracts/domain";
+import { IBusiness, IUser, IWorkspace } from "../contracts/domain";
 import { ILoggedInUser } from "../contracts/interfaces";
 import { Response } from "./response";
 
@@ -6,7 +6,7 @@ export class Form {
   private lastModifier: ILoggedInUser;
   private creator: ILoggedInUser;
   private elementCount: number;
-  private workstation: string;
+  private workstation: IWorkspace;
   private business: IBusiness;
   private updatedAt?: Date;
   private createdAt?: Date;
@@ -21,7 +21,7 @@ export class Form {
   constructor(
     name: string,
     slug: string,
-    workstation: string,
+    workstation: IWorkspace,
     business: IBusiness,
     content: string,
     status: string,
@@ -59,8 +59,7 @@ export class Form {
     const form = {
       id: this.getId(),
       name: this.getName(),
-      business: business.id,
-      workspace: this.getWorkspace()
+      business: business.id
     };
     return new Response(respondant, branch, form, content, status, deleted);
   }
@@ -85,7 +84,7 @@ export class Form {
     return this.creator;
   }
 
-  public getWorkspace(): string {
+  public getWorkspace(): IWorkspace {
     return this.workstation;
   }
 

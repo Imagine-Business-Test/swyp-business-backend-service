@@ -11,10 +11,11 @@ const branch = "Apapa";
 const content = "<h1>Hello world</h1>";
 const date = new Date();
 const business = { id: "1234", name: "firstbank" };
+const workspace = { id: "1233", name: "Account Opening", parent: "Corprate" };
 const form = new Form(
   "Open Account",
   "Open-Account",
-  "1234",
+  workspace,
   business,
   content,
   "active",
@@ -55,7 +56,6 @@ describe("Domain :: Form", () => {
           respondant,
           form: {
             id: "4321",
-            workspace: "1234",
             business: business.id,
             name: "Open Account"
           },
@@ -100,7 +100,7 @@ describe("Domain :: Form", () => {
 
   describe("#getWorkstation", () => {
     test("It return the workstation of the form ", () => {
-      expect(form.getWorkspace()).toBe("1234");
+      expect(form.getWorkspace()).toEqual(expect.objectContaining(workspace));
     });
   });
 

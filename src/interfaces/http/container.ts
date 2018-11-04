@@ -51,9 +51,9 @@ import {
 } from "../../app/business";
 
 import {
-  GetBusinessWorkspaces,
   CreateWorkspace,
-  DeleteWorkspace
+  DeleteWorkspace,
+  GetWorkspaces
 } from "../../app/workspace";
 
 import {
@@ -122,7 +122,6 @@ container.register({
 // Operations
 
 container.register({
-  getBusinessWorkspaces: asClass(GetBusinessWorkspaces),
   requestPasswordReset: asClass(RequestPasswordReset),
   deleteBusinessUser: asClass(DeleteBusinessUser),
   loginBusinessUser: asClass(LoginBusinessUser),
@@ -131,6 +130,7 @@ container.register({
   createBusiness: asClass(CreateBusiness),
   resetPassword: asClass(ResetPassword),
   getBusinesses: asClass(GetBusinesses),
+  getWorkspaces: asClass(GetWorkspaces),
 
   createWorkspace: asClass(CreateWorkspace),
   deleteWorkspace: asClass(DeleteWorkspace),

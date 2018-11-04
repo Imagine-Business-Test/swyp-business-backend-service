@@ -9,7 +9,7 @@ export const WorkspaceSerializer = {
           lastModifier: workspace.lastModifier,
           updatedAt: workspace.updatedAt,
           createdAt: workspace.createdAt,
-          business: workspace.business,
+          parent: workspace.parent,
           creator: workspace.creator,
           name: workspace.name,
           id: workspace._id
@@ -20,7 +20,7 @@ export const WorkspaceSerializer = {
       lastModifier: response.getLastModifier(),
       updatedAt: response.getLastUpdateDate(),
       createdAt: response.getCreationDate(),
-      business: response.getBusiness(),
+      parent: response.getParent(),
       creator: response.getCreator(),
       name: response.getName(),
       id: response.getId()

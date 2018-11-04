@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 
 const Schema = new mongoose.Schema({
   status: { type: String, enum: ["active", "disabled"], default: "active" },
-  workspace: { type: mongoose.Schema.Types.ObjectId, required: true },
+  workspace: {
+    id: { type: String, required: true },
+    parent: { type: String, required: true },
+    name: { type: String, required: true }
+  },
   business: {
     id: { type: String, required: true },
     name: { type: String, required: true }

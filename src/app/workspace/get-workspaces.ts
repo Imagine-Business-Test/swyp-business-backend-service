@@ -1,19 +1,17 @@
 import { IWorkspaceRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
-export class GetBusinessWorkspaces extends Operation {
+export class GetWorkspaces extends Operation {
   private workspaceRepository: IWorkspaceRepository;
 
   constructor(workspaceRepository: IWorkspaceRepository) {
     super();
     this.workspaceRepository = workspaceRepository;
   }
-  public async execute(command: { business: string }) {
+  public async execute() {
     const { SUCCESS, ERROR } = this.outputs;
     try {
-      const workspaces = await this.workspaceRepository.findByBusiness(
-        command.business
-      );
+      const workspaces = await this.workspaceRepository.fetchAll();
 
       this.emit(SUCCESS, workspaces);
     } catch (ex) {
@@ -22,4 +20,4 @@ export class GetBusinessWorkspaces extends Operation {
   }
 }
 
-GetBusinessWorkspaces.setOutputs(["SUCCESS", "ERROR"]);
+GetWorkspaces.setOutputs(["SUCCESS", "ERROR"]);

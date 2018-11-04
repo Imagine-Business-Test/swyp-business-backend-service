@@ -1,8 +1,8 @@
 import { FormInterface, FormModel } from "../../contracts/infra";
-import { ILoggedInUser } from "../../contracts/interfaces";
 import { IFormRepository } from "../../contracts/repositories";
-import { Form } from "../../domain";
+import { ILoggedInUser } from "../../contracts/interfaces";
 import { MongoFormMapper } from "./mongo-form-mapper";
+import { Form } from "../../domain";
 
 export class MongoFormRepository implements IFormRepository {
   private model: FormModel;

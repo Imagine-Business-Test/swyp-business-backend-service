@@ -7,12 +7,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const operation_1 = require("../operation");
+const domain_1 = require("../../domain");
+const slug_1 = __importDefault(require("slug"));
 class CreateForm extends operation_1.Operation {
-    constructor(formRepository, workspaceRepository) {
+    constructor(formRepository, businessRepository, workspaceRepository) {
         super();
         this.workspaceRepository = workspaceRepository;
+        this.businessRepository = businessRepository;
         this.formRepository = formRepository;
     }
     execute(command) {
@@ -20,8 +26,20 @@ class CreateForm extends operation_1.Operation {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             try {
                 const { workspace, name, content, user, elementCount } = command;
+                const partner = yield this.businessRepository.findByAccountEmail(user.email);
                 const workspaceRecord = yield this.workspaceRepository.find(workspace);
-                const form = yield this.formRepository.add(workspaceRecord.createForm(name, content, elementCount, user));
+                const status = "active";
+                const workspaceData = {
+                    id: workspaceRecord.getId(),
+                    name: workspaceRecord.getName(),
+                    parent: workspaceRecord.getParent()
+                };
+                const business = {
+                    id: partner.getId(),
+                    name: partner.getName()
+                };
+                const nameSlug = slug_1.default(name);
+                const form = yield this.formRepository.add(new domain_1.Form(name, nameSlug, workspaceData, business, content, status, elementCount, user, user, false));
                 return this.emit(SUCCESS, form);
             }
             catch (ex) {

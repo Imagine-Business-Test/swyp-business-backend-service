@@ -8,19 +8,14 @@ exports.WorkspaceRule = {
     createWorkspace: joi_1.default
         .object()
         .keys({
-        name: joi_1.default.string().required()
+        name: joi_1.default.string().required(),
+        parent: joi_1.default.string().required()
     })
         .required(),
     deleteWorkspace: joi_1.default
         .object()
         .keys({
         id: joi_1.default.string().required()
-    })
-        .required(),
-    getBusinessWorkspaces: joi_1.default
-        .object()
-        .keys({
-        business: joi_1.default.string().required()
     })
         .required()
 };

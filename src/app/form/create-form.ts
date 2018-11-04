@@ -1,20 +1,27 @@
 import { ILoggedInUser } from "../../contracts/interfaces";
+import { IWorkspace, IBusiness } from "../../contracts/domain";
+import { Operation } from "../operation";
 import {
   IFormRepository,
+  IBusinessRepository,
   IWorkspaceRepository
 } from "../../contracts/repositories";
-import { Operation } from "../operation";
+import { Form } from "../../domain";
+import slug from "slug";
 
 export class CreateForm extends Operation {
   private formRepository: IFormRepository;
+  private businessRepository: IBusinessRepository;
   private workspaceRepository: IWorkspaceRepository;
 
   constructor(
     formRepository: IFormRepository,
+    businessRepository: IBusinessRepository,
     workspaceRepository: IWorkspaceRepository
   ) {
     super();
     this.workspaceRepository = workspaceRepository;
+    this.businessRepository = businessRepository;
     this.formRepository = formRepository;
   }
 
@@ -28,10 +35,34 @@ export class CreateForm extends Operation {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
       const { workspace, name, content, user, elementCount } = command;
-
+      const partner = await this.businessRepository.findByAccountEmail(
+        user.email
+      );
       const workspaceRecord = await this.workspaceRepository.find(workspace);
+      const status = "active";
+      const workspaceData: IWorkspace = {
+        id: workspaceRecord.getId(),
+        name: workspaceRecord.getName(),
+        parent: workspaceRecord.getParent()
+      };
+      const business: IBusiness = {
+        id: partner.getId(),
+        name: partner.getName()
+      };
+      const nameSlug = slug(name);
       const form = await this.formRepository.add(
-        workspaceRecord.createForm(name, content, elementCount, user)
+        new Form(
+          name,
+          nameSlug,
+          workspaceData,
+          business,
+          content,
+          status,
+          elementCount,
+          user,
+          user,
+          false
+        )
       );
 
       return this.emit(SUCCESS, form);

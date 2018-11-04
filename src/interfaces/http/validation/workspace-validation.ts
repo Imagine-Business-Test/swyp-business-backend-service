@@ -4,7 +4,8 @@ export const WorkspaceRule = {
   createWorkspace: joi
     .object()
     .keys({
-      name: joi.string().required()
+      name: joi.string().required(),
+      parent: joi.string().required()
     })
     .required(),
 
@@ -12,13 +13,6 @@ export const WorkspaceRule = {
     .object()
     .keys({
       id: joi.string().required()
-    })
-    .required(),
-
-  getBusinessWorkspaces: joi
-    .object()
-    .keys({
-      business: joi.string().required()
     })
     .required()
 };

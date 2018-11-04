@@ -3,18 +3,18 @@ import Status from "http-status";
 import {
   CreateWorkspace,
   DeleteWorkspace,
-  GetBusinessWorkspaces
+  GetWorkspaces
 } from "../../../app/workspace";
-import { auth } from "../middleware";
+import { auth, swypAdmin } from "../middleware";
 import { WorkspaceRule } from "../validation";
 
 export const WorkspaceController = {
   get router() {
     const router = Router();
     router
-      .post("/", auth, this.create)
-      .get("/businesses/:business", auth, this.getBusinessWorkspaces)
-      .delete("/:id", auth, this.delete);
+      .get("/", auth, this.getWorkspaces)
+      .post("/", auth, swypAdmin, this.create)
+      .delete("/:id", auth, swypAdmin, this.delete);
 
     return router;
   },
@@ -39,29 +39,26 @@ export const WorkspaceController = {
       .on(ERROR, next);
 
     const command = {
-      businessId: req.body.business,
+      parent: req.body.parent,
       name: req.body.name,
       user: req.user
     };
     handler.execute(command);
   },
 
-  getBusinessWorkspaces(req: any, res: Response, next: any) {
-    req.validateParams(WorkspaceRule.getBusinessWorkspaces);
-
+  getWorkspaces(req: any, res: Response, next: any) {
     const handler = req.container.resolve(
       "getBusinessWorkspaces"
-    ) as GetBusinessWorkspaces;
-    const serializer = req.container.resolve("workspaceSerializer");
+    ) as GetWorkspaces;
     const { SUCCESS, ERROR } = handler.outputs;
 
     handler
-      .on(SUCCESS, workspace => {
-        res.status(Status.OK).json(serializer.serialize(workspace));
+      .on(SUCCESS, workspaces => {
+        res.status(Status.OK).json(workspaces);
       })
       .on(ERROR, next);
 
-    handler.execute(req.params);
+    handler.execute();
   },
 
   delete(req: any, res: Response, next: any) {

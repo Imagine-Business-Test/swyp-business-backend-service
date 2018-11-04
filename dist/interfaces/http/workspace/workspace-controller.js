@@ -11,9 +11,9 @@ exports.WorkspaceController = {
     get router() {
         const router = express_1.Router();
         router
-            .post("/", middleware_1.auth, this.create)
-            .get("/businesses/:business", middleware_1.auth, this.getBusinessWorkspaces)
-            .delete("/:id", middleware_1.auth, this.delete);
+            .get("/", middleware_1.auth, this.getWorkspaces)
+            .post("/", middleware_1.auth, middleware_1.swypAdmin, this.create)
+            .delete("/:id", middleware_1.auth, middleware_1.swypAdmin, this.delete);
         return router;
     },
     create(req, res, next) {
@@ -33,23 +33,21 @@ exports.WorkspaceController = {
         })
             .on(ERROR, next);
         const command = {
-            businessId: req.body.business,
+            parent: req.body.parent,
             name: req.body.name,
             user: req.user
         };
         handler.execute(command);
     },
-    getBusinessWorkspaces(req, res, next) {
-        req.validateParams(validation_1.WorkspaceRule.getBusinessWorkspaces);
+    getWorkspaces(req, res, next) {
         const handler = req.container.resolve("getBusinessWorkspaces");
-        const serializer = req.container.resolve("workspaceSerializer");
         const { SUCCESS, ERROR } = handler.outputs;
         handler
-            .on(SUCCESS, workspace => {
-            res.status(http_status_1.default.OK).json(serializer.serialize(workspace));
+            .on(SUCCESS, workspaces => {
+            res.status(http_status_1.default.OK).json(workspaces);
         })
             .on(ERROR, next);
-        handler.execute(req.params);
+        handler.execute();
     },
     delete(req, res, next) {
         req.validateParams(validation_1.WorkspaceRule.deleteWorkspace);

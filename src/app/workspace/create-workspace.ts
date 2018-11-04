@@ -1,38 +1,27 @@
+import { IWorkspaceRepository } from "../../contracts/repositories";
 import { ILoggedInUser } from "../../contracts/interfaces";
-import {
-  IBusinessRepository,
-  IWorkspaceRepository
-} from "../../contracts/repositories";
+import { Workspace } from "../../domain";
 import { Operation } from "../operation";
 
 export class CreateWorkspace extends Operation {
-  private businessRepository: IBusinessRepository;
   private workspaceRepository: IWorkspaceRepository;
 
-  constructor(
-    workspaceRepository: IWorkspaceRepository,
-    businessRepository: IBusinessRepository
-  ) {
+  constructor(workspaceRepository: IWorkspaceRepository) {
     super();
     this.workspaceRepository = workspaceRepository;
-    this.businessRepository = businessRepository;
   }
 
   public async execute(command: {
-    businessId: string;
+    parent: string;
     name: string;
     user: ILoggedInUser;
   }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {
-      const { name, user } = command;
-
-      const business = await this.businessRepository.findByAccountEmail(
-        user.email
-      );
+      const { name, parent, user } = command;
       const workspace = await this.workspaceRepository.add(
-        business.createWorkspace(name)
+        new Workspace(name, parent, user, user, false)
       );
 
       return this.emit(SUCCESS, workspace);

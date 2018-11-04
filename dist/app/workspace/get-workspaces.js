@@ -8,30 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const domain_1 = require("../../domain");
 const operation_1 = require("../operation");
-class CreateWorkspace extends operation_1.Operation {
+class GetWorkspaces extends operation_1.Operation {
     constructor(workspaceRepository) {
         super();
         this.workspaceRepository = workspaceRepository;
     }
-    execute(command) {
+    execute() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
+            const { SUCCESS, ERROR } = this.outputs;
             try {
-                const { name, parent, user } = command;
-                const workspace = yield this.workspaceRepository.add(new domain_1.Workspace(name, parent, user, user, false));
-                return this.emit(SUCCESS, workspace);
+                const workspaces = yield this.workspaceRepository.fetchAll();
+                this.emit(SUCCESS, workspaces);
             }
             catch (ex) {
-                if (ex.message === "DatabaseError") {
-                    return this.emit(DATABASE_ERROR, ex);
-                }
-                return this.emit(ERROR, ex);
+                this.emit(ERROR, ex);
             }
         });
     }
 }
-exports.CreateWorkspace = CreateWorkspace;
-CreateWorkspace.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
-//# sourceMappingURL=create-workspace.js.map
+exports.GetWorkspaces = GetWorkspaces;
+GetWorkspaces.setOutputs(["SUCCESS", "ERROR"]);
+//# sourceMappingURL=get-workspaces.js.map

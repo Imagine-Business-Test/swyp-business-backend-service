@@ -6,5 +6,5 @@ export interface IWorkspaceRepository {
   add: (workspace: Workspace) => Promise<Workspace>;
   delete: (id: string, user: ILoggedInUser) => void;
   find: (id: string) => Promise<Workspace>;
-  findByBusiness: (businessId: string) => Promise<WorkspaceInterface[]>;
+  fetchAll: () => Promise<WorkspaceInterface[]>;
 }

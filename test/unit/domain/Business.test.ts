@@ -97,21 +97,4 @@ describe("Domain :: Business", () => {
       expect(result).toEqual(expect.objectContaining(user));
     });
   });
-
-  describe("#createWorkspace", () => {
-    test("It creates a work space", () => {
-      business.setUser(user);
-      const workspace = business.createWorkspace("Account Opening");
-
-      expect(workspace).toEqual(
-        expect.objectContaining({
-          name: "Account Opening",
-          lastModifier: { name: user.name, email: user.email },
-          creator: { name: user.name, email: user.email },
-          business: { id: business.getId(), name: business.getSlug() },
-          deleted: false
-        })
-      );
-    });
-  });
 });

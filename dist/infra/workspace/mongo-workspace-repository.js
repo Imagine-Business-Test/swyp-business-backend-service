@@ -42,9 +42,16 @@ class MongoWorkspaceRepository {
             }
         });
     }
-    findByBusiness(businessId) {
+    fetchAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.model.find({ "business.id": businessId, deleted: false });
+            const matchTransformation = { $match: { deleted: false } };
+            const groupTransformation = {
+                $group: {
+                    _id: "$parent",
+                    entry: { $push: { parent: "$parent", name: "$name" } }
+                }
+            };
+            return this.model.aggregate([matchTransformation, groupTransformation]);
         });
     }
     delete(id, user) {
