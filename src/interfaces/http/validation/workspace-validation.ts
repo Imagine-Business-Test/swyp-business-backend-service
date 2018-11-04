@@ -5,7 +5,10 @@ export const WorkspaceRule = {
     .object()
     .keys({
       name: joi.string().required(),
-      parent: joi.string().required()
+      parent: joi
+        .string()
+        .allow(["Individual", "Corporate"])
+        .required()
     })
     .required(),
 

@@ -29,6 +29,7 @@ export const MongoWorkspaceMapper = {
     return {
       lastModifier: workspace.getLastModifier(),
       creator: workspace.getCreator(),
+      parent: workspace.getParent(),
       business: workspace.getParent(),
       name: workspace.getName()
     };

@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const Schema = new mongoose.Schema({
   parent: {
     type: String,
-    enum: ["individual", "corprate"]
+    enum: ["Individual", "Corporate"],
+    required: true
   },
   name: { type: String, required: true },
   createdAt: { type: Date, default: Date.now() },

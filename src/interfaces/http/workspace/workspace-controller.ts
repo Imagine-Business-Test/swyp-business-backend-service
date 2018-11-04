@@ -37,7 +37,6 @@ export const WorkspaceController = {
         });
       })
       .on(ERROR, next);
-
     const command = {
       parent: req.body.parent,
       name: req.body.name,

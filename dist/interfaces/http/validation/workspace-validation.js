@@ -9,7 +9,10 @@ exports.WorkspaceRule = {
         .object()
         .keys({
         name: joi_1.default.string().required(),
-        parent: joi_1.default.string().required()
+        parent: joi_1.default
+            .string()
+            .allow(["Individual", "Corporate"])
+            .required()
     })
         .required(),
     deleteWorkspace: joi_1.default

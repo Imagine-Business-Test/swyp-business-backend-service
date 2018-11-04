@@ -7,7 +7,8 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = new mongoose_1.default.Schema({
     parent: {
         type: String,
-        enum: ["individual", "corprate"]
+        enum: ["Individual", "Corporate"],
+        required: true
     },
     name: { type: String, required: true },
     createdAt: { type: Date, default: Date.now() },
