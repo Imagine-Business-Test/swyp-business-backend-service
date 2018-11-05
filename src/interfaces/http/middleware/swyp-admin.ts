@@ -9,7 +9,7 @@ interface IUser {
 
 export const swypAdmin = (req: any, res: Response, next: any) => {
   const user = req.user as IUser;
-  if (user.role !== "admin") {
+  if (user.role !== "swyp-admin") {
     return res.status(Status.UNAUTHORIZED).json({
       details: "Access Denied",
       type: "AuthorizationError"

@@ -12,7 +12,6 @@ export class GetWorkspaces extends Operation {
     const { SUCCESS, ERROR } = this.outputs;
     try {
       const workspaces = await this.workspaceRepository.fetchAll();
-
       this.emit(SUCCESS, workspaces);
     } catch (ex) {
       this.emit(ERROR, ex);
