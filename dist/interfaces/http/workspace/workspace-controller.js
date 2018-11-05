@@ -11,7 +11,7 @@ exports.WorkspaceController = {
     get router() {
         const router = express_1.Router();
         router
-            .get("/", middleware_1.auth, this.getWorkspaces)
+            .get("/", this.getWorkspaces)
             .post("/", middleware_1.auth, middleware_1.swypAdmin, this.create)
             .delete("/:id", middleware_1.auth, middleware_1.swypAdmin, this.delete);
         return router;

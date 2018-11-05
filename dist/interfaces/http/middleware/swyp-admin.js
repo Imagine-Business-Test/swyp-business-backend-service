@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const http_status_1 = __importDefault(require("http-status"));
 exports.swypAdmin = (req, res, next) => {
     const user = req.user;
-    if (user.role !== "swyp-admin") {
+    if (user.role !== "admin") {
         return res.status(http_status_1.default.UNAUTHORIZED).json({
             details: "Access Denied",
             type: "AuthorizationError"

@@ -18,7 +18,13 @@ class GetWorkspaces extends operation_1.Operation {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR } = this.outputs;
             try {
-                const workspaces = yield this.workspaceRepository.fetchAll();
+                const items = yield this.workspaceRepository.fetchAll();
+                const workspaces = {};
+                items.forEach((item) => {
+                    if (!workspaces.hasOwnProperty(item._id)) {
+                        workspaces[item._id] = item.entry;
+                    }
+                });
                 this.emit(SUCCESS, workspaces);
             }
             catch (ex) {

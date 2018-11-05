@@ -12,7 +12,7 @@ export const WorkspaceController = {
   get router() {
     const router = Router();
     router
-      .get("/", auth, this.getWorkspaces)
+      .get("/", this.getWorkspaces)
       .post("/", auth, swypAdmin, this.create)
       .delete("/:id", auth, swypAdmin, this.delete);
 
