@@ -2,15 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const response_1 = require("./response");
 class Form {
-    constructor(name, slug, workstation, business, content, status, elementCount, createdBy, modifier, deleted, id, updatedAt, createdAt) {
-        this.elementCount = elementCount;
+    constructor(name, slug, workstation, business, elements, status, createdBy, modifier, deleted, id, updatedAt, createdAt) {
         this.workstation = workstation;
         this.lastModifier = modifier;
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
         this.creator = createdBy;
         this.business = business;
-        this.content = content;
+        this.elements = elements;
         this.deleted = deleted;
         this.status = status;
         this.name = name;
@@ -27,9 +26,6 @@ class Form {
             business: business.id
         };
         return new response_1.Response(respondant, branch, form, content, status, deleted);
-    }
-    getElementCount() {
-        return this.elementCount;
     }
     getLastModifier() {
         return this.lastModifier;
@@ -49,8 +45,8 @@ class Form {
     isDeleted() {
         return this.deleted;
     }
-    getContent() {
-        return this.content;
+    getElements() {
+        return this.elements;
     }
     getBusiness() {
         return this.business;

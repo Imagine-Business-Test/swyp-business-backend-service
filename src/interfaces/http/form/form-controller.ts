@@ -1,4 +1,6 @@
 import { Response, Router } from "express";
+import { FormRules } from "../validation";
+import { auth } from "../middleware";
 import Status from "http-status";
 import {
   CreateForm,
@@ -9,15 +11,12 @@ import {
   GetWorkspaceForms,
   UpdateFormContent
 } from "../../../app/form";
-import { auth } from "../middleware";
-import { FormRules } from "../validation";
 
 export const FormController = {
   get router() {
     const router = Router();
     router
-
-      .get("/workspaces/:workspace", auth, this.getWorkspaceForms)
+      .get("/workspaces/:workspace", this.getWorkspaceForms)
       .get("/businesses/:business", this.getBusinessForms)
       .put("/:form", auth, this.updateContent)
       .get("/:slug", this.getFormContent)

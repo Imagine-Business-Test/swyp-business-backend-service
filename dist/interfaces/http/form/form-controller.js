@@ -4,14 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const http_status_1 = __importDefault(require("http-status"));
-const middleware_1 = require("../middleware");
 const validation_1 = require("../validation");
+const middleware_1 = require("../middleware");
+const http_status_1 = __importDefault(require("http-status"));
 exports.FormController = {
     get router() {
         const router = express_1.Router();
         router
-            .get("/workspaces/:workspace", middleware_1.auth, this.getWorkspaceForms)
+            .get("/workspaces/:workspace", this.getWorkspaceForms)
             .get("/businesses/:business", this.getBusinessForms)
             .put("/:form", middleware_1.auth, this.updateContent)
             .get("/:slug", this.getFormContent)

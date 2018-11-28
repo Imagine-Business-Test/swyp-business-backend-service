@@ -1,5 +1,6 @@
 /* tslint:disable: no-shadowed-variable */
 import { Form, Response } from "../../../src/domain";
+import { Ielement } from "../../../src/contracts/domain";
 
 const loggedInUser = {
   name: "Ossaija ThankGod",
@@ -8,7 +9,9 @@ const loggedInUser = {
 
 const branch = "Apapa";
 
-const content = "<h1>Hello world</h1>";
+const elements: [Ielement] = [
+  { name: "new form", position: 0, children: [], validationRules: [] }
+];
 const date = new Date();
 const business = { id: "1234", name: "firstbank" };
 const workspace = { id: "1233", name: "Account Opening", parent: "Corprate" };
@@ -17,9 +20,8 @@ const form = new Form(
   "Open-Account",
   workspace,
   business,
-  content,
+  elements,
   "active",
-  4,
   loggedInUser,
   loggedInUser,
   false,
@@ -63,12 +65,6 @@ describe("Domain :: Form", () => {
           deleted: false
         })
       );
-    });
-  });
-
-  describe("#getElementCount", () => {
-    test("It returns the number of elements in a form", () => {
-      expect(form.getElementCount()).toBe(4);
     });
   });
 
@@ -118,7 +114,7 @@ describe("Domain :: Form", () => {
 
   describe("#getContent", () => {
     test("It return the workstation of the form ", () => {
-      expect(form.getContent()).toBe(content);
+      expect(form.getElements()).toEqual(expect.objectContaining(elements));
     });
   });
 

@@ -5,9 +5,8 @@ export const FormRules = {
     .object()
     .keys({
       name: joi.string().required(),
-      content: joi.string().required(),
-      workspace: joi.string().required(),
-      elementCount: joi.number().required()
+      elements: joi.array().required(),
+      formTypeId: joi.string().required()
     })
     .required(),
 

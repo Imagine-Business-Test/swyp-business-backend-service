@@ -17,8 +17,7 @@
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
     "format": "lint-staged",
-    "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
   "devDependencies": {
     "@types/bcrypt": "^2.0.0",

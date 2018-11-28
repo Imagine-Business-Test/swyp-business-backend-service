@@ -17,19 +17,18 @@ const slug_1 = __importDefault(require("slug"));
 class CreateForm extends operation_1.Operation {
     constructor(formRepository, businessRepository, workspaceRepository) {
         super();
-        this.workspaceRepository = workspaceRepository;
-        this.businessRepository = businessRepository;
+        this.workspaceRepo = workspaceRepository;
+        this.businessRepo = businessRepository;
         this.formRepository = formRepository;
     }
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             try {
-                const { workspace, name, content, user, elementCount } = command;
-                const partner = yield this.businessRepository.findByAccountEmail(user.email);
-                const workspaceRecord = yield this.workspaceRepository.find(workspace);
-                const status = "active";
-                const workspaceData = {
+                const { formTypeId, name, elements, user } = command;
+                const workspaceRecord = yield this.workspaceRepo.find(formTypeId);
+                const partner = yield this.businessRepo.findByAccountEmail(user.email);
+                const formtype = {
                     id: workspaceRecord.getId(),
                     name: workspaceRecord.getName(),
                     parent: workspaceRecord.getParent()
@@ -39,7 +38,8 @@ class CreateForm extends operation_1.Operation {
                     name: partner.getName()
                 };
                 const nameSlug = slug_1.default(name);
-                const form = yield this.formRepository.add(new domain_1.Form(name, nameSlug, workspaceData, business, content, status, elementCount, user, user, false));
+                const status = "active";
+                const form = yield this.formRepository.add(new domain_1.Form(name, nameSlug, formtype, business, elements, status, user, user, false));
                 return this.emit(SUCCESS, form);
             }
             catch (ex) {

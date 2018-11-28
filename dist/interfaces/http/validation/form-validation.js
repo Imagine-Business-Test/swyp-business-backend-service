@@ -9,9 +9,8 @@ exports.FormRules = {
         .object()
         .keys({
         name: joi_1.default.string().required(),
-        content: joi_1.default.string().required(),
-        workspace: joi_1.default.string().required(),
-        elementCount: joi_1.default.number().required()
+        elements: joi_1.default.array().required(),
+        formTypeId: joi_1.default.string().required()
     })
         .required(),
     deleteForm: joi_1.default

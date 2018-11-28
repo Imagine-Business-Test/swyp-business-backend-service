@@ -1,17 +1,16 @@
-import { IBusiness, IUser, IWorkspace } from "../contracts/domain";
+import { IBusiness, IUser, IWorkspace, Ielement } from "../contracts/domain";
 import { ILoggedInUser } from "../contracts/interfaces";
 import { Response } from "./response";
 
 export class Form {
   private lastModifier: ILoggedInUser;
   private creator: ILoggedInUser;
-  private elementCount: number;
   private workstation: IWorkspace;
   private business: IBusiness;
   private updatedAt?: Date;
   private createdAt?: Date;
   private deleted: boolean;
-  private content: string;
+  private elements: [any];
   private status: string;
   private name: string;
   private slug: string;
@@ -23,9 +22,8 @@ export class Form {
     slug: string,
     workstation: IWorkspace,
     business: IBusiness,
-    content: string,
+    elements: [Ielement],
     status: string,
-    elementCount: number,
     createdBy: ILoggedInUser,
     modifier: ILoggedInUser,
     deleted: boolean,
@@ -33,14 +31,13 @@ export class Form {
     updatedAt?: Date,
     createdAt?: Date
   ) {
-    this.elementCount = elementCount;
     this.workstation = workstation;
     this.lastModifier = modifier;
     this.updatedAt = updatedAt;
     this.createdAt = createdAt;
     this.creator = createdBy;
     this.business = business;
-    this.content = content;
+    this.elements = elements;
     this.deleted = deleted;
     this.status = status;
     this.name = name;
@@ -62,10 +59,6 @@ export class Form {
       business: business.id
     };
     return new Response(respondant, branch, form, content, status, deleted);
-  }
-
-  public getElementCount(): number {
-    return this.elementCount;
   }
 
   public getLastModifier(): ILoggedInUser {
@@ -92,8 +85,8 @@ export class Form {
     return this.deleted;
   }
 
-  public getContent(): string {
-    return this.content;
+  public getElements(): [Ielement] {
+    return this.elements;
   }
 
   public getBusiness(): IBusiness {

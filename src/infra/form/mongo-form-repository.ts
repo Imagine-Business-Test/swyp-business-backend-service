@@ -52,7 +52,11 @@ export class MongoFormRepository implements IFormRepository {
   }
 
   public async fetchByWorkspace(workspace: string): Promise<FormInterface[]> {
-    return this.model.find({ workspace, status: "active", deleted: false });
+    return this.model.find({
+      "workspace.id": workspace,
+      status: "active",
+      deleted: false
+    });
   }
 
   public async updateContent(

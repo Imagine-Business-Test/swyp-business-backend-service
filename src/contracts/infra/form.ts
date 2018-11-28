@@ -1,14 +1,13 @@
-import { IBusiness, IWorkspace } from "../domain";
+import { IBusiness, IWorkspace, Ielement } from "../domain";
 import mongoose from "mongoose";
 
 export type FormInterface = mongoose.Document & {
   lastModifier: { email: string; name: string };
   creator: { email: string; name: string };
   business: IBusiness;
-  elementCount: number;
   workspace: IWorkspace;
   deleted: boolean;
-  content: string;
+  elements: [Ielement];
   createdAt: Date;
   status: string;
   updateAt: Date;

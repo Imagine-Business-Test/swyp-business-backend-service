@@ -43,7 +43,7 @@ export class MongoWorkspaceRepository implements IWorkspaceRepository {
     const groupTransformation = {
       $group: {
         _id: "$parent",
-        entry: { $push: { parent: "$parent", name: "$name" } }
+        entry: { $push: { parent: "$parent", name: "$name", id: "$_id" } }
       }
     };
     return this.model.aggregate([matchTransformation, groupTransformation]);

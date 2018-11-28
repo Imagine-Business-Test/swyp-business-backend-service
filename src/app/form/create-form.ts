@@ -1,5 +1,5 @@
+import { IWorkspace, IBusiness, Ielement } from "../../contracts/domain";
 import { ILoggedInUser } from "../../contracts/interfaces";
-import { IWorkspace, IBusiness } from "../../contracts/domain";
 import { Operation } from "../operation";
 import {
   IFormRepository,
@@ -11,8 +11,8 @@ import slug from "slug";
 
 export class CreateForm extends Operation {
   private formRepository: IFormRepository;
-  private businessRepository: IBusinessRepository;
-  private workspaceRepository: IWorkspaceRepository;
+  private businessRepo: IBusinessRepository;
+  private workspaceRepo: IWorkspaceRepository;
 
   constructor(
     formRepository: IFormRepository,
@@ -20,27 +20,24 @@ export class CreateForm extends Operation {
     workspaceRepository: IWorkspaceRepository
   ) {
     super();
-    this.workspaceRepository = workspaceRepository;
-    this.businessRepository = businessRepository;
+    this.workspaceRepo = workspaceRepository;
+    this.businessRepo = businessRepository;
     this.formRepository = formRepository;
   }
 
   public async execute(command: {
     name: string;
-    content: string;
-    workspace: string;
+    elements: [Ielement];
+    formTypeId: string;
     elementCount: number;
     user: ILoggedInUser;
   }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
-      const { workspace, name, content, user, elementCount } = command;
-      const partner = await this.businessRepository.findByAccountEmail(
-        user.email
-      );
-      const workspaceRecord = await this.workspaceRepository.find(workspace);
-      const status = "active";
-      const workspaceData: IWorkspace = {
+      const { formTypeId, name, elements, user } = command;
+      const workspaceRecord = await this.workspaceRepo.find(formTypeId);
+      const partner = await this.businessRepo.findByAccountEmail(user.email);
+      const formtype: IWorkspace = {
         id: workspaceRecord.getId(),
         name: workspaceRecord.getName(),
         parent: workspaceRecord.getParent()
@@ -50,15 +47,15 @@ export class CreateForm extends Operation {
         name: partner.getName()
       };
       const nameSlug = slug(name);
+      const status = "active";
       const form = await this.formRepository.add(
         new Form(
           name,
           nameSlug,
-          workspaceData,
+          formtype,
           business,
-          content,
+          elements,
           status,
-          elementCount,
           user,
           user,
           false
