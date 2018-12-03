@@ -16,17 +16,20 @@ class GetFormContent extends operation_1.Operation {
     }
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { SUCCESS, ERROR } = this.outputs;
+            const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             try {
-                const form = yield this.formRepository.findBySlug(command.slug);
-                this.emit(SUCCESS, form);
+                const form = yield this.formRepository.fetchContentOf(command);
+                return this.emit(SUCCESS, form);
             }
             catch (error) {
-                this.emit(ERROR, error);
+                if (error.message === "DatabaseError") {
+                    return this.emit(DATABASE_ERROR, error);
+                }
+                return this.emit(ERROR, error);
             }
         });
     }
 }
 exports.GetFormContent = GetFormContent;
-GetFormContent.setOutputs(["SUCCESS", "ERROR"]);
+GetFormContent.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
 //# sourceMappingURL=get-form-content.js.map

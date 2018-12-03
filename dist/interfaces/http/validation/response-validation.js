@@ -8,7 +8,12 @@ exports.ResponseRule = {
     recordResponse: joi_1.default
         .object()
         .keys({
-        content: joi_1.default.object().required(),
+        content: joi_1.default.array().items(joi_1.default.object().keys({
+            questionType: joi_1.default.string().required(),
+            position: joi_1.default.number().required(),
+            question: joi_1.default.string().required(),
+            answer: joi_1.default.string().required()
+        })),
         form: joi_1.default.string().required(),
         branch: joi_1.default.string().required(),
         user: joi_1.default

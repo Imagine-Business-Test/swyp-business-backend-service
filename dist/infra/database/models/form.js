@@ -13,6 +13,7 @@ const Schema = new mongoose_1.default.Schema({
     },
     business: {
         id: { type: String, required: true },
+        slug: { type: String, required: true },
         name: { type: String, required: true }
     },
     createdAt: { type: Date, default: new Date() },

@@ -4,7 +4,14 @@ export const ResponseRule = {
   recordResponse: joi
     .object()
     .keys({
-      content: joi.object().required(),
+      content: joi.array().items(
+        joi.object().keys({
+          questionType: joi.string().required(),
+          position: joi.number().required(),
+          question: joi.string().required(),
+          answer: joi.string().required()
+        })
+      ),
       form: joi.string().required(),
       branch: joi.string().required(),
       user: joi

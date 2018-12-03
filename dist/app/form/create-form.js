@@ -35,9 +35,10 @@ class CreateForm extends operation_1.Operation {
                 };
                 const business = {
                     id: partner.getId(),
+                    slug: partner.getSlug(),
                     name: partner.getName()
                 };
-                const nameSlug = slug_1.default(name);
+                const nameSlug = slug_1.default(name).toLowerCase();
                 const status = "active";
                 const form = yield this.formRepository.add(new domain_1.Form(name, nameSlug, formtype, business, elements, status, user, user, false));
                 return this.emit(SUCCESS, form);

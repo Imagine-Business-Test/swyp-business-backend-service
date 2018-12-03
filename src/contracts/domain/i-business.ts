@@ -16,5 +16,6 @@ export interface IAccount {
 
 export interface IBusiness {
   id: string;
+  slug: string;
   name: string;
 }

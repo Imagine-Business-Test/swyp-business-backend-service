@@ -12,9 +12,8 @@ exports.FormController = {
         const router = express_1.Router();
         router
             .get("/workspaces/:workspace", this.getWorkspaceForms)
-            .get("/businesses/:business", this.getBusinessForms)
-            .put("/:form", middleware_1.auth, this.updateContent)
-            .get("/:slug", this.getFormContent)
+            .get("/businesses/:business/:formtype", this.getBusinessForms)
+            .get("/:biz/:parent/:formType/:form", this.getFormContent)
             .put("/disable/:form", middleware_1.auth, this.disable)
             .delete("/:form", middleware_1.auth, this.delete)
             .post("/", middleware_1.auth, this.create);
@@ -31,7 +30,7 @@ exports.FormController = {
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.BAD_GATEWAY).json({
-                type: "DatabaseErrorMe",
+                type: "DatabaseError",
                 details: error.details
             });
         })
@@ -64,24 +63,13 @@ exports.FormController = {
         handler.execute(req.params);
     },
     getFormContent(req, res, next) {
+        req.validateParams(validation_1.FormRules.getContentOf);
         const handler = req.container.resolve("getFormContent");
         const serializer = req.container.resolve("formSerializer");
-        const { SUCCESS, ERROR } = handler.outputs;
+        const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
         handler
             .on(SUCCESS, form => {
             res.status(http_status_1.default.OK).json(serializer.forBusiness(form));
-        })
-            .on(ERROR, next);
-        handler.execute(req.params);
-    },
-    updateContent(req, res, next) {
-        req.validateBody(validation_1.FormRules.updateContent.content);
-        req.validateParams(validation_1.FormRules.updateContent.form);
-        const handler = req.container.resolve("updateFormContent");
-        const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler
-            .on(SUCCESS, () => {
-            res.status(http_status_1.default.OK).json({ updated: true });
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.BAD_GATEWAY).json({
@@ -91,9 +79,10 @@ exports.FormController = {
         })
             .on(ERROR, next);
         const command = {
-            form: req.params.form,
-            content: req.body.content,
-            modifier: req.user
+            formTypeParent: req.params.parent,
+            formType: req.params.formType,
+            businessSlug: req.params.biz,
+            formSlug: req.params.form
         };
         handler.execute(command);
     },

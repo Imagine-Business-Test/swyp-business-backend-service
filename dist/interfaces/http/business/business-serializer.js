@@ -27,7 +27,8 @@ exports.BusinessSerializer = {
                 branches: res.branches,
                 logo: res.logoUrl,
                 name: res.name,
-                slug: res.slug
+                slug: res.slug,
+                id: res._id
             };
         });
     }

@@ -1,4 +1,10 @@
-import { IBusiness, IUser, IWorkspace, Ielement } from "../contracts/domain";
+import {
+  IBusiness,
+  IUser,
+  IWorkspace,
+  Ielement,
+  IResponseContent
+} from "../contracts/domain";
 import { ILoggedInUser } from "../contracts/interfaces";
 import { Response } from "./response";
 
@@ -46,7 +52,7 @@ export class Form {
   }
 
   public createResponse(
-    content: any,
+    content: [IResponseContent],
     respondant: IUser,
     branch: string
   ): Response {
@@ -54,9 +60,10 @@ export class Form {
     const status = "pending";
     const business: IBusiness = this.getBusiness();
     const form = {
-      id: this.getId(),
+      workspace: this.getWorkspace().id,
       name: this.getName(),
-      business: business.id
+      business: business.id,
+      id: this.getId()
     };
     return new Response(respondant, branch, form, content, status, deleted);
   }

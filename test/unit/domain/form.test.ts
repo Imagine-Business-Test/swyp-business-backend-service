@@ -1,6 +1,6 @@
 /* tslint:disable: no-shadowed-variable */
 import { Form, Response } from "../../../src/domain";
-import { Ielement } from "../../../src/contracts/domain";
+import { Ielement, IResponseContent } from "../../../src/contracts/domain";
 
 const loggedInUser = {
   name: "Ossaija ThankGod",
@@ -10,10 +10,10 @@ const loggedInUser = {
 const branch = "Apapa";
 
 const elements: [Ielement] = [
-  { name: "new form", position: 0, children: [], validationRules: [] }
+  { name: "new form", position: 0, children: ["jel"], validationRules: ["me"] }
 ];
 const date = new Date();
-const business = { id: "1234", name: "firstbank" };
+const business = { id: "1234", name: "firstbank", slug: "firstbank" };
 const workspace = { id: "1233", name: "Account Opening", parent: "Corprate" };
 const form = new Form(
   "Open Account",
@@ -39,7 +39,14 @@ describe("Domain :: Form", () => {
 
   describe("#createResponse", () => {
     test("It record new form respnse", () => {
-      const content = "<p>Ok thanks for the form</p>";
+      const content: [IResponseContent] = [
+        {
+          question: "how are you",
+          answer: "fine",
+          position: 1,
+          questionType: "simple"
+        }
+      ];
       const respondant = {
         firstname: "ThankGod",
         lastname: "Ossaija",
@@ -51,20 +58,6 @@ describe("Domain :: Form", () => {
       const response = form.createResponse(content, respondant, branch);
 
       expect(response instanceof Response).toBeTruthy();
-      expect(response).toEqual(
-        expect.objectContaining({
-          content,
-          branch,
-          respondant,
-          form: {
-            id: "4321",
-            business: business.id,
-            name: "Open Account"
-          },
-          status: "pending",
-          deleted: false
-        })
-      );
     });
   });
 

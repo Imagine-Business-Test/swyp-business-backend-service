@@ -44,9 +44,10 @@ export class CreateForm extends Operation {
       };
       const business: IBusiness = {
         id: partner.getId(),
+        slug: partner.getSlug(),
         name: partner.getName()
       };
-      const nameSlug = slug(name);
+      const nameSlug = slug(name).toLowerCase();
       const status = "active";
       const form = await this.formRepository.add(
         new Form(

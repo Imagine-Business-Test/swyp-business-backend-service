@@ -17,20 +17,15 @@ export const FormRules = {
     })
     .required(),
 
-  updateContent: {
-    content: joi
-      .object()
-      .keys({
-        content: joi.string().required()
-      })
-      .required(),
-    form: joi
-      .object()
-      .keys({
-        form: joi.string().required()
-      })
-      .required()
-  },
+  getContentOf: joi
+    .object()
+    .keys({
+      formType: joi.string().required(),
+      parent: joi.string().required(),
+      form: joi.string().required(),
+      biz: joi.string().required()
+    })
+    .required(),
 
   disableForm: joi
     .object()
@@ -42,7 +37,8 @@ export const FormRules = {
   getABusinessForms: joi
     .object()
     .keys({
-      business: joi.string().required()
+      business: joi.string().required(),
+      formtype: joi.string().required()
     })
     .required(),
 

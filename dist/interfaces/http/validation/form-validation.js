@@ -19,20 +19,15 @@ exports.FormRules = {
         form: joi_1.default.string().required()
     })
         .required(),
-    updateContent: {
-        content: joi_1.default
-            .object()
-            .keys({
-            content: joi_1.default.string().required()
-        })
-            .required(),
-        form: joi_1.default
-            .object()
-            .keys({
-            form: joi_1.default.string().required()
-        })
-            .required()
-    },
+    getContentOf: joi_1.default
+        .object()
+        .keys({
+        formType: joi_1.default.string().required(),
+        parent: joi_1.default.string().required(),
+        form: joi_1.default.string().required(),
+        biz: joi_1.default.string().required()
+    })
+        .required(),
     disableForm: joi_1.default
         .object()
         .keys({
@@ -42,7 +37,8 @@ exports.FormRules = {
     getABusinessForms: joi_1.default
         .object()
         .keys({
-        business: joi_1.default.string().required()
+        business: joi_1.default.string().required(),
+        formtype: joi_1.default.string().required()
     })
         .required(),
     getWorkspaceForms: joi_1.default

@@ -13,6 +13,10 @@ export class MongoFormRepository implements IFormRepository {
 
   public async add(form: Form) {
     try {
+      /*
+        Still to be done:
+        *** Ensure no other form by the same bank has the same slug as this new form
+      */
       const doc: FormInterface = await this.model.create(
         MongoFormMapper.toDatabase(form)
       );
@@ -24,9 +28,34 @@ export class MongoFormRepository implements IFormRepository {
     }
   }
 
-  public async findBySlug(slug: string): Promise<Form> {
+  public async find(id: string): Promise<Form> {
     try {
-      const doc = await this.model.findOne({ slug });
+      const doc = await this.model.findOne({ _id: id });
+      if (!doc) {
+        throw new Error(`Account not found`);
+      }
+      return MongoFormMapper.toEntity(doc);
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
+  }
+
+  public async fetchContentOf(options: {
+    formSlug: string;
+    formType: string;
+    formTypeParent: string;
+    businessSlug: string;
+  }): Promise<Form> {
+    try {
+      const { formSlug, formType, formTypeParent, businessSlug } = options;
+      const doc = await this.model.findOne({
+        "workspace.parent": formTypeParent,
+        "business.slug": businessSlug,
+        "workspace.name": formType,
+        slug: formSlug
+      });
       if (!doc) {
         throw new Error("The specified form record is not found");
       }
@@ -37,18 +66,20 @@ export class MongoFormRepository implements IFormRepository {
       throw ex;
     }
   }
-  public async fetchByBusiness(business: string): Promise<FormInterface[]> {
+
+  public async fetchByBusiness(
+    business: string,
+    formType: string
+  ): Promise<FormInterface[]> {
     return this.model
       .find({
-        $or: [
-          { "business.name": { $regex: new RegExp("^" + business, "i") } },
-          { "business.id": business }
-        ],
+        "business.id": business,
+        "workspace.name": formType,
         status: "active",
         deleted: false
       })
       .limit(10)
-      .select("name slug _id");
+      .select("name slug workspace elements _id");
   }
 
   public async fetchByWorkspace(workspace: string): Promise<FormInterface[]> {

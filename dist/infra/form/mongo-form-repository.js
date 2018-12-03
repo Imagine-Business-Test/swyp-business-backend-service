@@ -26,10 +26,32 @@ class MongoFormRepository {
             }
         });
     }
-    findBySlug(slug) {
+    find(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const doc = yield this.model.findOne({ slug });
+                const doc = yield this.model.findOne({ _id: id });
+                if (!doc) {
+                    throw new Error(`Account not found`);
+                }
+                return mongo_form_mapper_1.MongoFormMapper.toEntity(doc);
+            }
+            catch (ex) {
+                ex.details = ex.message;
+                ex.message = "DatabaseError";
+                throw ex;
+            }
+        });
+    }
+    fetchContentOf(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { formSlug, formType, formTypeParent, businessSlug } = options;
+                const doc = yield this.model.findOne({
+                    "workspace.parent": formTypeParent,
+                    "business.slug": businessSlug,
+                    "workspace.name": formType,
+                    slug: formSlug
+                });
                 if (!doc) {
                     throw new Error("The specified form record is not found");
                 }
@@ -42,19 +64,17 @@ class MongoFormRepository {
             }
         });
     }
-    fetchByBusiness(business) {
+    fetchByBusiness(business, formType) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.model
                 .find({
-                $or: [
-                    { "business.name": { $regex: new RegExp("^" + business, "i") } },
-                    { "business.id": business }
-                ],
+                "business.id": business,
+                "workspace.name": formType,
                 status: "active",
                 deleted: false
             })
                 .limit(10)
-                .select("name slug _id");
+                .select("name slug workspace elements _id");
         });
     }
     fetchByWorkspace(workspace) {

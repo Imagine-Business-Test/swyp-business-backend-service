@@ -1,4 +1,4 @@
-import { IForm, IUser } from "../contracts/domain";
+import { IForm, IUser, IResponseContent } from "../contracts/domain";
 import { ILoggedInUser } from "../contracts/interfaces";
 export class Response {
   private processor?: ILoggedInUser;
@@ -7,7 +7,7 @@ export class Response {
   private respondant: IUser;
   private updatedAt?: Date;
   private createdAt?: Date;
-  private content: any;
+  private content: [IResponseContent];
   private status: string;
   private id?: string;
   private form: IForm;
@@ -18,7 +18,7 @@ export class Response {
     respondant: IUser,
     branch: string,
     form: IForm,
-    content: string,
+    content: [IResponseContent],
     status: string,
     deleted: boolean,
     id?: string,
@@ -70,7 +70,7 @@ export class Response {
     return this.createdAt!;
   }
 
-  public getContent(): any {
+  public getContent(): [IResponseContent] {
     return this.content;
   }
 

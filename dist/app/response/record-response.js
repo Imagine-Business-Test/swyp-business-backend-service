@@ -20,9 +20,9 @@ class RecordResponse extends operation_1.Operation {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             try {
                 const { content, user, branch } = command;
-                const form = yield this.formResponse.findBySlug(command.form);
+                const form = yield this.formResponse.find(command.form);
                 yield this.responseRepository.add(form.createResponse(content, user, branch));
-                return this.emit(SUCCESS, {});
+                return this.emit(SUCCESS, { created: true });
             }
             catch (ex) {
                 if (ex.message === "DatabaseError") {

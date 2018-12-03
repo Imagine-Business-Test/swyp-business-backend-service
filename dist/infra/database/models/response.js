@@ -13,7 +13,12 @@ const Schema = new mongoose_1.default.Schema({
     },
     branch: { type: String, required: true },
     createdAt: { type: Date, required: true, default: new Date() },
-    content: {},
+    content: [
+        { questionType: { type: String, required: true } },
+        { question: { type: String, required: true } },
+        { position: { type: Number, required: true } },
+        { answer: { type: String, required: true } }
+    ],
     note: String,
     notes: [
         {

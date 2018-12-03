@@ -21,9 +21,10 @@ class Form {
         const status = "pending";
         const business = this.getBusiness();
         const form = {
-            id: this.getId(),
+            workspace: this.getWorkspace().id,
             name: this.getName(),
-            business: business.id
+            business: business.id,
+            id: this.getId()
         };
         return new response_1.Response(respondant, branch, form, content, status, deleted);
     }

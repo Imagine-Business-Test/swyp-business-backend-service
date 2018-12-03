@@ -8,16 +8,23 @@ export class GetFormContent extends Operation {
     this.formRepository = formRepository;
   }
 
-  public async execute(command: { slug: string }) {
-    const { SUCCESS, ERROR } = this.outputs;
-
+  public async execute(command: {
+    formTypeParent: string;
+    businessSlug: string;
+    formSlug: string;
+    formType: string;
+  }) {
+    const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
-      const form = await this.formRepository.findBySlug(command.slug);
-      this.emit(SUCCESS, form);
+      const form = await this.formRepository.fetchContentOf(command);
+      return this.emit(SUCCESS, form);
     } catch (error) {
-      this.emit(ERROR, error);
+      if (error.message === "DatabaseError") {
+        return this.emit(DATABASE_ERROR, error);
+      }
+      return this.emit(ERROR, error);
     }
   }
 }
 
-GetFormContent.setOutputs(["SUCCESS", "ERROR"]);
+GetFormContent.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);

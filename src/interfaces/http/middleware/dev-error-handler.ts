@@ -13,7 +13,6 @@ export const devErrorHandler = (
       message: err.details
     });
   }
-
   res.status(Status.INTERNAL_SERVER_ERROR).json({
     type: "InternalServerError",
     message: err.message,
