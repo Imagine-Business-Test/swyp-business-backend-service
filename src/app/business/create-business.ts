@@ -1,40 +1,73 @@
-import { BusinessRepository } from "../../contracts/repositories";
-import { Account } from "../../contracts/domain";
-import { Config } from "../../contracts/config";
-import { Operation } from "../operation";
+import { IBusinessRepository } from "../../contracts/repositories";
+import { IAccount } from "../../contracts/domain";
+import { IConfig } from "../../contracts/config";
+import { IBranch } from "../../contracts/infra";
 import { Business } from "../../domain";
+import { Operation } from "../operation";
+import { Mailer } from "../../services";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-
 export class CreateBusiness extends Operation {
-  private businessRepository: BusinessRepository;
-  private config: Config;
+  private businessRepository: IBusinessRepository;
+  private config: IConfig;
+  private mailer: Mailer;
 
-  constructor(businessRepository: BusinessRepository, config: Config) {
+  constructor(
+    businessRepository: IBusinessRepository,
+    config: IConfig,
+    mailer: Mailer
+  ) {
     super();
     this.businessRepository = businessRepository;
-    this.config             = config;
+    this.config = config;
+    this.mailer = mailer;
   }
 
-
-  async execute(command: {name: string, logoUrl: string, account: Account }) {
-
+  public async execute(command: {
+    name: string;
+    logoUrl: string;
+    account: IAccount;
+    branches: IBranch[];
+  }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
-      const { name, logoUrl, account } = command;
+      const { name, logoUrl, account, branches } = command;
+      const slug = name.toLowerCase().replace(" ", "");
+      const deleted = false;
+      const approved = true;
+      const newBusiness = new Business(
+        name,
+        slug,
+        approved,
+        deleted,
+        [],
+        branches,
+        logoUrl
+      );
 
-      const newBusiness    = new Business(name, logoUrl, []);
-      const savedBusiness  = await this.businessRepository.add(newBusiness);
-      account.password     = await bcrypt.hash(account.password, 10);
+      const savedBusiness = await this.businessRepository.add(newBusiness);
+      account.password = await bcrypt.hash(account.password, 10);
 
-      const business = await this.businessRepository.addAccount(savedBusiness.getId()!, account);
-      const user     = business.getUser();
-      const token    = jwt.sign({
-        email: user.email,
-        name: user.name,
-        isBusiness: true
-      }, this.config.web.json_secret, {expiresIn: "24h"});
+      const business = await this.businessRepository.addAccount(
+        savedBusiness.getId()!,
+        account
+      );
+      const user = business.getUser();
+
+      // send welcome email
+      this.mailer.welcomeAdmin(business.getName(), user.name, user.email);
+      const token = jwt.sign(
+        {
+          branch: user.branch,
+          email: user.email,
+          isBusiness: true,
+          name: user.name,
+          role: user.role
+        },
+        this.config.web.json_secret,
+        { expiresIn: "24h" }
+      );
 
       return this.emit(SUCCESS, { business, user, token });
     } catch (ex) {

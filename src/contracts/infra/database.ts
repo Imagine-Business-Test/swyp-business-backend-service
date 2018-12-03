@@ -1,6 +1,5 @@
-export type UpdateResult = {
-  nMatched: number,
-  nUpserted: number,
-  nModified: number
-};
-
+export interface IUpdateResult {
+  nMatched: number;
+  nUpserted: number;
+  nModified: number;
+}

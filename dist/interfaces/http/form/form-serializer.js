@@ -5,26 +5,46 @@ exports.FormSerializer = {
         if (Array.isArray(response)) {
             return response.map(form => {
                 return {
-                    status: form.status,
-                    workstation: form.workstation,
-                    content: form.content,
+                    name: form.name,
+                    workspace: form.workspace,
+                    business: form.business,
+                    elements: form.elements,
                     creator: form.creator,
                     lastModifier: form.lastModifier,
                     createdAt: form.createdAt,
                     updatedAt: form.updateAt,
-                    _id: form._id
+                    id: form._id,
+                    slug: form.slug
                 };
             });
         }
         return {
             lastModifier: response.getLastModifier(),
-            workstation: response.getWorkstationId(),
             updatedAt: response.getLastUpdateDate(),
+            workspace: response.getWorkspace(),
             created: response.getCreationDate(),
+            business: response.getBusiness(),
             creator: response.getCreator(),
-            content: response.getContent(),
+            elements: response.getElements(),
             name: response.getName(),
-            _id: response.getId()
+            slug: response.getSlug(),
+            id: response.getId()
+        };
+    },
+    forBusiness(response) {
+        if (Array.isArray(response)) {
+            return response.map(form => {
+                return {
+                    name: form.name,
+                    id: form._id,
+                    slug: form.slug
+                };
+            });
+        }
+        return {
+            elements: response.getElements(),
+            id: response.getId(),
+            business: response.getBusiness()
         };
     }
 };

@@ -17,8 +17,9 @@ class ProcessResponse extends operation_1.Operation {
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
+            const { response, processor } = command;
             try {
-                yield this.responseRepository.makeAsprocessed(command.response);
+                yield this.responseRepository.makeAsprocessed(response, processor);
                 return this.emit(SUCCESS, { processed: true });
             }
             catch (ex) {

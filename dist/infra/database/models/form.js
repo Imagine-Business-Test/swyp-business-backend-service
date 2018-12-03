@@ -6,11 +6,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = new mongoose_1.default.Schema({
     status: { type: String, enum: ["active", "disabled"], default: "active" },
-    workstation: { type: mongoose_1.default.Schema.Types.ObjectId, required: true },
+    workspace: {
+        id: { type: String, required: true },
+        parent: { type: String, required: true },
+        name: { type: String, required: true }
+    },
+    business: {
+        id: { type: String, required: true },
+        slug: { type: String, required: true },
+        name: { type: String, required: true }
+    },
     createdAt: { type: Date, default: new Date() },
     updatedAt: { type: Date, default: new Date() },
     deleted: { type: Boolean, default: false },
-    content: { type: String, required: true },
+    elements: { type: Array, required: true },
     creator: {
         email: { type: String, email: true, required: true },
         name: { type: String, required: true }
@@ -20,6 +29,7 @@ const Schema = new mongoose_1.default.Schema({
         name: { type: String, required: true }
     },
     name: { type: String, required: true },
+    slug: { type: String, required: true }
 });
 Schema.pre("update", function update(next) {
     this.update({}, { $set: { updatedAt: new Date() } });

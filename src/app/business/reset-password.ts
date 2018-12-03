@@ -1,37 +1,41 @@
-import { BusinessRepository } from "../../contracts/repositories";
-import { Operation } from "../operation";
-import { Mailer } from "../../services";
 import bcrypt from "bcrypt";
-
+import { IBusinessRepository } from "../../contracts/repositories";
+import { Mailer } from "../../services";
+import { Operation } from "../operation";
 
 export class ResetPassword extends Operation {
-  private businessRepository: BusinessRepository;
+  private businessRepository: IBusinessRepository;
   private mailer: Mailer;
 
-  constructor(businessRepository: BusinessRepository, mailer: Mailer) {
+  constructor(businessRepository: IBusinessRepository, mailer: Mailer) {
     super();
     this.businessRepository = businessRepository;
     this.mailer = mailer;
   }
 
-  async execute(command: { email: string, password: string, token: string }) {
+  public async execute(command: {
+    email: string;
+    password: string;
+    token: string;
+  }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
-    const { email, token, password } = command;
+    const { token, password } = command;
     try {
-
-      const business = await this.businessRepository.findByPasswordResetToken(email, token);
+      const business = await this.businessRepository.findByPasswordResetToken(
+        token
+      );
       const user = business.getUser();
       const hasdPassword = await bcrypt.hash(password, 10);
       await this.businessRepository.updatePassword(user.email, hasdPassword);
 
       this.mailer.sendPasswordChanged(user.name, user.email);
 
-      this.emit(SUCCESS, {updated: true });
+      return this.emit(SUCCESS, { updated: true });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
-        this.emit(DATABASE_ERROR, ex);
+        return this.emit(DATABASE_ERROR, ex);
       }
-      this.emit(ERROR, ex);
+      return this.emit(ERROR, ex);
     }
   }
 }

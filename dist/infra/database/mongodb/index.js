@@ -7,13 +7,13 @@ const mongoose_1 = __importDefault(require("mongoose"));
 exports.default = (config) => {
     return {
         authenticate(logger) {
-            return mongoose_1.default.connect(config.db.mongo_url)
+            return mongoose_1.default
+                .connect(config.db.mongo_url)
                 .then(() => logger.info("Connection to database established "))
                 .catch(err => logger.error(err.message));
         },
         drop(logger) {
-            mongoose_1.default.connect(config.db.mongo_url)
-                .then((conn) => {
+            mongoose_1.default.connect(config.db.mongo_url).then((conn) => {
                 conn.db.dropDatabase();
                 logger.info("Dropped database");
             });

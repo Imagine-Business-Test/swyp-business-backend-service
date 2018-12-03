@@ -1,21 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const workstation_1 = require("./workstation");
 class Business {
-    constructor(name, logoUrl, accounts, _id) {
+    constructor(name, slug, approved, deleted, accounts, branches, logoUrl, id) {
         this.accounts = accounts;
+        this.approved = approved;
+        this.branches = branches;
+        this.deleted = deleted;
         this.logoUrl = logoUrl;
+        this.slug = slug;
         this.name = name;
-        this._id = _id;
-    }
-    createWorkStation(name) {
-        const loggedinUser = {
-            name: this.currentUser.name,
-            email: this.currentUser.email
-        };
-        const business = this._id;
-        const deleted = false;
-        return new workstation_1.Workstation(name, business, loggedinUser, loggedinUser, deleted);
+        this.id = id;
     }
     setUser(user) {
         for (const entry of this.accounts) {
@@ -24,15 +18,21 @@ class Business {
                 break;
             }
         }
-        if (!this.currentUser)
-            throw new Error(`${user.name} does not belong to ${(this.name)}`);
-        return true;
+        if (!this.currentUser) {
+            throw new Error(`${user.name} does not belong to ${this.name}`);
+        }
+    }
+    getBranches() {
+        return this.branches;
     }
     getId() {
-        return this._id;
+        return this.id;
     }
     getAccounts() {
         return this.accounts;
+    }
+    getSlug() {
+        return this.slug;
     }
     getLogo() {
         return this.logoUrl;
@@ -42,6 +42,12 @@ class Business {
     }
     getUser() {
         return this.currentUser;
+    }
+    isApproved() {
+        return this.approved;
+    }
+    isDeleted() {
+        return this.deleted;
     }
 }
 exports.Business = Business;

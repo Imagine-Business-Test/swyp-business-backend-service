@@ -1,3 +1,4 @@
+/* tslint:disable: variable-name */
 import joi from "joi";
 
 function validateBody(req: any, rule: any) {
@@ -13,7 +14,6 @@ function validateQuery(req: any, rule: any) {
 }
 
 function validate(obj: any, rule: any) {
-
   const result = joi.validate(obj, rule, { abortEarly: false });
   if (result.error) {
     result.error.message = "ValidationError";

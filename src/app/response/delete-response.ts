@@ -1,15 +1,15 @@
-import { ResponseRepository } from "../../contracts/repositories";
+import { IResponseRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
 export class DeleteResponse extends Operation {
-  private responseRepository: ResponseRepository;
+  private responseRepository: IResponseRepository;
 
-  constructor(responseRepository: ResponseRepository) {
+  constructor(responseRepository: IResponseRepository) {
     super();
     this.responseRepository = responseRepository;
   }
 
-  async execute(command: { response: string }) {
+  public async execute(command: { response: string }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {

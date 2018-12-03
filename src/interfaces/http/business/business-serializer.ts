@@ -1,19 +1,17 @@
-import { Account } from "../../../contracts/domain";
+import { IBusinessInterface } from "../../../contracts/infra";
+import { IAccount } from "../../../contracts/domain";
 
 export const BusinessSerializer = {
   serialize(response: any) {
-    let   { business }    = response;
+    let { business } = response;
     const { user, token } = response;
-
-    if (!business) {
-      business = response;
-    }
-
     business = {
-      accounts: pruneSensitiveData(business.getAccounts()),
+      accounts: pruneSensitiveUserData(business.getAccounts()),
       logoUrl: business.getLogo(),
+      branches: business.getBranches(),
       name: business.getName(),
-      _id: business.getId()
+      slug: business.getSlug(),
+      id: business.getId()
     };
 
     if (!user) {
@@ -21,33 +19,50 @@ export const BusinessSerializer = {
     }
     return {
       business,
-      user: pruneSensitiveData(user),
-      token
+      token,
+      user: pruneSensitiveUserData(user)
     };
   },
 
-};
-
-const pruneSensitiveData = (accounts: Account[] | Account ) => {
-  if ( Array.isArray(accounts) ) {
-
-    return accounts.filter((account: Account) => !account.deleted)
-      .map((account: Account ) => {
+  lean(responses: IBusinessInterface[]) {
+    return responses.map(res => {
       return {
-        lastLogIn: account.lastLoginIn,
-        created: account.created,
-        phone: account.phone,
-        email: account.email,
-        name: account.name
+        branches: res.branches,
+        logo: res.logoUrl,
+        name: res.name,
+        slug: res.slug,
+        id: res._id
       };
     });
   }
+};
+
+const pruneSensitiveUserData = (accounts: IAccount[] | IAccount) => {
+  if (Array.isArray(accounts)) {
+    return accounts
+      .filter((account: IAccount) => !account.deleted)
+      .map((account: IAccount) => {
+        return {
+          lastLogIn: account.lastLoginIn,
+          created: account.created,
+          branch: account.branch,
+          email: account.email,
+          phone: account.phone,
+          role: account.role,
+          name: account.name,
+          id: account._id
+        };
+      });
+  }
 
   return {
-    lastLogIn: (<Account>accounts).lastLoginIn,
-    created: (<Account>accounts).created,
-    phone: (<Account>accounts).phone,
-    email: (<Account>accounts).email,
-    name: (<Account>accounts).name
+    lastLogIn: (accounts as IAccount).lastLoginIn,
+    created: (accounts as IAccount).created,
+    branch: (accounts as IAccount).branch,
+    email: (accounts as IAccount).email,
+    phone: (accounts as IAccount).phone,
+    role: (accounts as IAccount).role,
+    name: (accounts as IAccount).name,
+    id: (accounts as IAccount)._id
   };
 };

@@ -7,21 +7,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const operation_1 = require("../operation");
+const domain_1 = require("../../domain");
+const slug_1 = __importDefault(require("slug"));
 class CreateForm extends operation_1.Operation {
-    constructor(formRepository, workstationRepository) {
+    constructor(formRepository, businessRepository, workspaceRepository) {
         super();
-        this.workstationRepository = workstationRepository;
+        this.workspaceRepo = workspaceRepository;
+        this.businessRepo = businessRepository;
         this.formRepository = formRepository;
     }
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             try {
-                const { workstation, name, content, user } = command;
-                const workstationRecord = yield this.workstationRepository.find(workstation);
-                const form = yield this.formRepository.add(workstationRecord.createForm(name, content, user));
+                const { formTypeId, name, elements, user } = command;
+                const workspaceRecord = yield this.workspaceRepo.find(formTypeId);
+                const partner = yield this.businessRepo.findByAccountEmail(user.email);
+                const formtype = {
+                    id: workspaceRecord.getId(),
+                    name: workspaceRecord.getName(),
+                    parent: workspaceRecord.getParent()
+                };
+                const business = {
+                    id: partner.getId(),
+                    slug: partner.getSlug(),
+                    name: partner.getName()
+                };
+                const nameSlug = slug_1.default(name).toLowerCase();
+                const status = "active";
+                const form = yield this.formRepository.add(new domain_1.Form(name, nameSlug, formtype, business, elements, status, user, user, false));
                 return this.emit(SUCCESS, form);
             }
             catch (ex) {

@@ -1,19 +1,23 @@
-import { ResponseRepository } from "../../contracts/repositories";
+import { ILoggedInUser } from "../../contracts/interfaces";
+import { IResponseRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
-
 export class ProcessResponse extends Operation {
-  private responseRepository: ResponseRepository;
+  private responseRepository: IResponseRepository;
 
-  constructor(responseRepository: ResponseRepository) {
+  constructor(responseRepository: IResponseRepository) {
     super();
     this.responseRepository = responseRepository;
   }
 
-  async execute(command: { response: string }) {
+  public async execute(command: {
+    response: string;
+    processor: ILoggedInUser;
+  }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
+    const { response, processor } = command;
     try {
-      await this.responseRepository.makeAsprocessed(command.response);
+      await this.responseRepository.makeAsprocessed(response, processor);
       return this.emit(SUCCESS, { processed: true });
       // emit response processed event
     } catch (ex) {

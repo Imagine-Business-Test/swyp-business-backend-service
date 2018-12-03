@@ -1,9 +1,7 @@
-import { Config as Interface } from "../../contracts/config";
-import { commons } from "../components";
-import { web } from "../components";
-import { db } from "../components";
-import { mail } from "../components";
 import path from "path";
+import { IConfig as Interface } from "../../contracts/config";
+import { commons, db, mail, web } from "../components";
+
 const logPath = path.join(__dirname, "../../../logs/development.log");
 
 const config: Interface = {

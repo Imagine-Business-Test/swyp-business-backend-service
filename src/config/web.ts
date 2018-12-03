@@ -1,9 +1,14 @@
-import path from "path";
+/* tslint:disable: no-var-requires prefer-conditional-expression */
 
-const NODE_ENV = <string>process.env.NODE_ENV;
+import path from "path";
+const NODE_ENV = process.env.NODE_ENV as string;
+
+let result = "";
 
 if (NODE_ENV === "test") {
-  module.exports = require(path.join(__dirname, "environments", "production"));
+  result = require(path.join(__dirname, "environments", "production"));
 } else {
-  module.exports = require(path.join(__dirname, "environments", "development"));
+  result = require(path.join(__dirname, "environments", "development"));
 }
+
+module.exports = result;

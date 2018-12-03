@@ -16,18 +16,25 @@ class Mailer {
             }
         }));
     }
-    configureMailOPtion() {
-        return {
-            from: "'Swyp 👻' <foo@example.com>",
-            to: "",
-            subject: "",
-            "h:Reply-To": "info@naijachamps.com",
-            text: ""
-        };
-    }
     sendPasswordChanged(name, email) {
         const text = `Hello ${name} . \n Your password on swyp app was changed.`;
         this.send(text, "Password Changed", email);
+    }
+    welcome(name, creator, businessName, email, link) {
+        const text = `Hello ${name[0].toUpperCase()}${name.slice(1)}.
+    \n A Swyp business account has been created on your behalf by ${creator}
+    for ${businessName}. \n\n
+    Use the link below to update your password and start using your account. \n
+    ${link}`;
+        this.send(text, "Welcome To Swyp", email);
+    }
+    welcomeAdmin(businessName, userName, email) {
+        const text = `Dear ${userName[0].toUpperCase()}${userName.slice(1)}.
+    \n Welcome to swyp, you and ${businessName} have just began a journey of endless possibilities.
+    \nPlease take a little time to setup your account fully.\n
+     Our statistics show that businesses with good logo art work, clean forms, quick form processing time recieves more user interactions than those with poor art work, confusing forms, and long form processing time.\n You can add more users to your team to help you get your create beautiful forms for your users.\n\n
+     Happy Swyping!!`;
+        this.send(text, "Welcome To Swyp", email);
     }
     sendPasswordRequest(name, email, resetUrl) {
         const text = `Hello ${name}. \n click on the link below to complete your password reset.
@@ -47,6 +54,15 @@ class Mailer {
                 this.logger.info(" Mail sent, Response: " + JSON.stringify(info, undefined, 2));
             }
         });
+    }
+    configureMailOPtion() {
+        return {
+            from: "'Swyp 👻' <foo@example.com>",
+            to: "",
+            subject: "",
+            "h:Reply-To": "info@naijachamps.com",
+            text: ""
+        };
     }
 }
 exports.Mailer = Mailer;

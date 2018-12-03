@@ -1,28 +1,66 @@
-import { FormRepository, WorkstationRepository } from "../../contracts/repositories";
-import { LoggedInUser } from "../../contracts/interfaces";
+import { IWorkspace, IBusiness, Ielement } from "../../contracts/domain";
+import { ILoggedInUser } from "../../contracts/interfaces";
 import { Operation } from "../operation";
+import {
+  IFormRepository,
+  IBusinessRepository,
+  IWorkspaceRepository
+} from "../../contracts/repositories";
+import { Form } from "../../domain";
+import slug from "slug";
 
 export class CreateForm extends Operation {
-  private formRepository: FormRepository;
-  private workstationRepository: WorkstationRepository;
+  private formRepository: IFormRepository;
+  private businessRepo: IBusinessRepository;
+  private workspaceRepo: IWorkspaceRepository;
 
-  constructor(formRepository: FormRepository, workstationRepository: WorkstationRepository) {
+  constructor(
+    formRepository: IFormRepository,
+    businessRepository: IBusinessRepository,
+    workspaceRepository: IWorkspaceRepository
+  ) {
     super();
-    this.workstationRepository = workstationRepository;
-    this.formRepository        = formRepository;
+    this.workspaceRepo = workspaceRepository;
+    this.businessRepo = businessRepository;
+    this.formRepository = formRepository;
   }
 
-  async execute(
-    command: { workstation: string, name: string, content: string, user: LoggedInUser}
-  ) {
-
+  public async execute(command: {
+    name: string;
+    elements: [Ielement];
+    formTypeId: string;
+    elementCount: number;
+    user: ILoggedInUser;
+  }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     try {
-      const { workstation, name, content, user } = command;
-
-      const workstationRecord = await this.workstationRepository.find(workstation);
-      const form        = await this.formRepository.add(
-        workstationRecord.createForm(name, content, user)
+      const { formTypeId, name, elements, user } = command;
+      const workspaceRecord = await this.workspaceRepo.find(formTypeId);
+      const partner = await this.businessRepo.findByAccountEmail(user.email);
+      const formtype: IWorkspace = {
+        id: workspaceRecord.getId(),
+        name: workspaceRecord.getName(),
+        parent: workspaceRecord.getParent()
+      };
+      const business: IBusiness = {
+        id: partner.getId(),
+        slug: partner.getSlug(),
+        name: partner.getName()
+      };
+      const nameSlug = slug(name).toLowerCase();
+      const status = "active";
+      const form = await this.formRepository.add(
+        new Form(
+          name,
+          nameSlug,
+          formtype,
+          business,
+          elements,
+          status,
+          user,
+          user,
+          false
+        )
       );
 
       return this.emit(SUCCESS, form);

@@ -1,23 +1,55 @@
-import { BusinessModel, BusinessInterface } from "../../contracts/infra";
-import { BusinessRepository } from "../../contracts/repositories";
+import { BusinessModel, IBusinessInterface } from "../../contracts/infra";
+import { IBusinessRepository } from "../../contracts/repositories";
 import { MongoBusinessMapper } from "./mongo-business-mapper";
-import { LoggedInUser } from "../../contracts/interfaces";
-import { Account } from "../../contracts/domain";
+import { ILoggedInUser } from "../../contracts/interfaces";
+import { IAccount } from "../../contracts/domain";
 import { Business } from "../../domain";
+import mongoose from "mongoose";
 
-
-export class MongoBusinessRepository implements BusinessRepository {
+export class MongoBusinessRepository implements IBusinessRepository {
   private model: BusinessModel;
 
   constructor(businessModel: BusinessModel) {
     this.model = businessModel;
   }
 
-  async add(business: Business): Promise<Business> {
+  public async findByPasswordResetToken(token: string): Promise<Business> {
+    const doc = await this.fetchOne({
+      "accounts.passwordResetToken": token
+    });
 
+    const currentUser = this.processCurrentUser(doc.accounts, "", token);
+
+    return MongoBusinessMapper.toEntity(doc, currentUser);
+  }
+
+  public async findByAccountEmail(email: string): Promise<Business> {
+    const doc = await this.fetchOne({
+      "accounts.email": email,
+      "accounts.deleted": false
+    });
+
+    const currentUser = this.processCurrentUser(doc.accounts, email);
+    await this.updateLastLogin(currentUser);
+    return MongoBusinessMapper.toEntity(doc, currentUser);
+  }
+
+  public async deleteAccount(email: string, modifer: ILoggedInUser) {
+    await this.accountRelatedUpdate(
+      {
+        $set: {
+          "accounts.$[element].deleted": true,
+          "accounts.$[element].deletedBy": modifer
+        }
+      },
+      { arrayFilters: [{ "element.email": email, "element.deleted": false }] }
+    );
+  }
+
+  public async add(business: Business): Promise<Business> {
     try {
       const data = MongoBusinessMapper.toDatabase(business);
-      const doc: BusinessInterface = await this.model.create(data);
+      const doc: IBusinessInterface = await this.model.create(data);
       return MongoBusinessMapper.toEntity(doc, doc.accounts[0]);
     } catch (ex) {
       ex.details = ex.message;
@@ -26,19 +58,72 @@ export class MongoBusinessRepository implements BusinessRepository {
     }
   }
 
-  async addAccount(businessId: string, account: Account): Promise<Business> {
+  public async updateBranch(userId: string, newBranch: string) {
+    await this.accountRelatedUpdate(
+      {
+        $set: {
+          "accounts.$[element].branch": newBranch
+        }
+      },
+      {
+        arrayFilters: [{ "element._id": mongoose.Types.ObjectId(userId) }]
+      }
+    );
+  }
 
+  public async updatePassword(email: string, password: string) {
+    await this.accountRelatedUpdate(
+      {
+        $set: {
+          "accounts.$[element].password": password,
+          "accounts.$[element].passwordResetExpires": null,
+          "accounts.$[element].passwordResetToken": null
+        }
+      },
+      { arrayFilters: [{ "element.email": email, "element.deleted": false }] }
+    );
+  }
+
+  public async requestPasswordReset(
+    email: string,
+    token: string,
+    expires: Date
+  ) {
+    await this.accountRelatedUpdate(
+      {
+        $set: {
+          "accounts.$[element].passwordResetExpires": expires,
+          "accounts.$[element].passwordResetToken": token
+        }
+      },
+      { arrayFilters: [{ "element.email": email, "element.deleted": false }] }
+    );
+  }
+
+  public async addAccount(
+    businessId: string,
+    account: IAccount
+  ): Promise<Business> {
     try {
-      let doc = await this.model.findOne({ "accounts.email": account.email });
-      if (doc)
+      let doc = await this.model.findOne({
+        "accounts.email": account.email,
+        "accounts.deleted": false
+      });
+      if (doc && doc.deleted) {
         throw new Error(`Account with the provided email already exist`);
+      }
 
-      doc = await this.model.findByIdAndUpdate(businessId,
-        { $addToSet: { accounts: account } }, { new: true }
+      doc = await this.model.findByIdAndUpdate(
+        businessId,
+        {
+          $addToSet: { accounts: account }
+        },
+        { new: true }
       );
 
-      if (!doc)
+      if (!doc) {
         throw new Error(`Account not found`);
+      }
       return MongoBusinessMapper.toEntity(doc, account);
     } catch (ex) {
       ex.details = ex.message;
@@ -47,19 +132,30 @@ export class MongoBusinessRepository implements BusinessRepository {
     }
   }
 
-  async findByAccountEmail(email: string): Promise<Business>  {
+  public fetchAll() {
+    return this.model.find({});
+  }
 
+  private async updateLastLogin(user: IAccount) {
+    return this.accountRelatedUpdate(
+      { $set: { "accounts.$[element].lastLogIn": new Date() } },
+      {
+        arrayFilters: [
+          { "element.email": user.email, "element.deleted": false }
+        ]
+      }
+    );
+  }
+
+  private async fetchOne(condition: {
+    [key: string]: any;
+  }): Promise<IBusinessInterface> {
     try {
-      const doc = await this.model.findOne({ "accounts.email": email });
-
+      const doc = await this.model.findOne(condition);
       if (!doc) {
         throw new Error(`Account not found`);
       }
-
-      const currentUser = this.processCurrentUser(doc.accounts, email);
-
-      await this.updateLastLogin(currentUser);
-      return MongoBusinessMapper.toEntity(doc, currentUser);
+      return doc;
     } catch (ex) {
       ex.details = ex.message;
       ex.message = "DatabaseError";
@@ -67,32 +163,14 @@ export class MongoBusinessRepository implements BusinessRepository {
     }
   }
 
-  async findByPasswordResetToken(email: string, token: string): Promise<Business> {
-    const doc = await this.model.findOne({
-      "accounts.email": email,
-      "accounts.passwordResetToken": token
-    });
-    if (!doc) {
-      throw new Error(`Account not found`);
-    }
-
-    const currentUser = this.processCurrentUser(doc.accounts, email);
-
-    return MongoBusinessMapper.toEntity(doc, currentUser);
-  }
-
-  async requestPasswordReset(email: string, token: string, expires: Date) {
+  private async accountRelatedUpdate(
+    update: { [key: string]: { [key: string]: any } },
+    arrayCondition: { [key: string]: any }
+  ) {
     try {
-      const result = await this.model.updateOne(
-        {},
-        { $set: {
-          "accounts.$[elem].passwordResetToken": token,
-          "accounts.$[elem].passwordResetExpires": expires}
-        },
-        { arrayFilters: [ { "elem.email": email } ] }
-      );
+      const result = await this.model.updateOne({}, update, arrayCondition);
       if (result.nModified !== 1 || result.nMatched === 1) {
-        throw  new Error(`Error updating account: ${result.nModified } updated `);
+        throw new Error("Update operation failed");
       }
     } catch (ex) {
       ex.details = ex.message;
@@ -101,65 +179,26 @@ export class MongoBusinessRepository implements BusinessRepository {
     }
   }
 
-  async updatePassword(email: string, password: string) {
-    try {
-      const result = await this.model.updateOne(
-        {},
-        { $set: {
-          "accounts.$[elem].password": password,
-          "accounts.$[elem].passwordResetToken": null,
-          "accounts.$[elem].passwordResetExpires": null
-        } },
-        { arrayFilters: [ { "elem.email": email } ] }
-      );
-      if (result.nModified !== 1 || result.nMatched === 1) {
-        throw  new Error(`Error updating account: ${result.nModified } updated `);
-      }
-    } catch (ex) {
-      ex.details = ex.message;
-      ex.message = "DatabaseError";
-      throw ex;
+  private processCurrentUser(
+    users: IAccount[],
+    email: string,
+    token?: string
+  ): IAccount {
+    // Current user can either be identified by reset password token or an account email
+    let currentUser;
+    if (token) {
+      currentUser = users.find(
+        user => user.passwordResetToken === token && user.deleted === false
+      ) as IAccount;
+    } else {
+      currentUser = users.find(
+        user => user.email === email && user.deleted === false
+      ) as IAccount;
     }
-  }
 
-  async deleteAccount(email: string, modifer: LoggedInUser) {
-
-    try {
-      const result = await this.model.updateOne(
-        {},
-        { $set: {
-          "accounts.$[elem].deleted": true,
-          "accounts.$[elem].deletedBy": modifer
-        }},
-        { arrayFilters: [ { "elem.email": email } ] }
-      );
-      if (result.nModified !== 1 || result.nMatched === 1) {
-        throw  new Error(`Error deleting account: ${result.nModified } deleted `);
-      }
-    } catch (ex) {
-      ex.details = ex.message;
-      ex.message = "DatabaseError";
-      throw ex;
-    }
-  }
-
-  private processCurrentUser(users: Account[], email: string): Account {
-
-    const currentUser = <Account>users.find(account => {
-      return account.email === email;
-    });
-
-    if (currentUser.deleted) {
+    if (!currentUser) {
       throw new Error("Account disabled");
     }
     return currentUser;
-  }
-
-  private async updateLastLogin(user: Account) {
-    return this.model.updateOne(
-      { },
-      { $set: { "accounts.$[element].lastLogIn": new Date()}},
-      { arrayFilters: [ { "element.email": user.email} ] }
-    );
   }
 }

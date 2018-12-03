@@ -1,17 +1,20 @@
-import { FormRepository } from "../../contracts/repositories";
-import { LoggedInUser } from "../../contracts/interfaces";
+import { ILoggedInUser } from "../../contracts/interfaces";
+import { IFormRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
-
 export class UpdateFormContent extends Operation {
-  private formRepository: FormRepository;
+  private formRepository: IFormRepository;
 
-  constructor(formRepository: FormRepository) {
+  constructor(formRepository: IFormRepository) {
     super();
     this.formRepository = formRepository;
   }
 
-  async execute(command: {form: string, content: string, modifier: LoggedInUser}) {
+  public async execute(command: {
+    form: string;
+    content: string;
+    modifier: ILoggedInUser;
+  }) {
     const { SUCCESS, ERROR, DATABSE_ERROR } = this.outputs;
 
     try {

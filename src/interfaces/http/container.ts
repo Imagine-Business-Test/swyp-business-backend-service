@@ -1,26 +1,25 @@
-import { MongoWorkstationRepository } from "../../infra/workstation";
-import { MongoResponseRepository } from "../../infra/response";
+import { MongoWorkspaceRepository } from "../../infra/workspace";
 import { MongoBusinessRepository } from "../../infra/business";
+import { MongoResponseRepository } from "../../infra/response";
 import { MongoFormRepository } from "../../infra/form";
-import { WorkStationSerializer } from "./workstation";
 import { Application } from "../../app/application";
 import mongoDB from "../../infra/database/mongodb";
-import { scopePerRequest } from  "awilix-express";
-import { ResponseSerializer } from "./response";
+import { WorkspaceSerializer } from "./workspace";
+import { scopePerRequest } from "awilix-express";
 import { BusinessSerializer } from "./business";
+import { ResponseSerializer } from "./response";
 import { Logger } from "../../infra/logging";
-import { HttpServer } from "./server";
-import  config from "../../config";
 import { Mailer } from "../../services";
 import { FormSerializer } from "./form";
-
+import { HttpServer } from "./server";
+import config from "../../config";
 import router from "./router";
 
 import {
-  WorkstationModel,
   BusinessModel,
   ResponseModel,
-  FormModel,
+  WorkspaceModel,
+  FormModel
 } from "../../infra/database/models";
 
 import {
@@ -28,56 +27,62 @@ import {
   InjectionMode,
   asFunction,
   asClass,
-  asValue,
+  asValue
 } from "awilix";
 
 import {
-  validator,
-  errorHandler,
-  logMiddleware,
-  devErrorHandler,
   configMiddleware,
+  devErrorHandler,
+  logMiddleware,
+  errorHandler,
+  validator
 } from "./middleware";
 
 import {
+  GetBusinessUserActivityStats,
   RequestPasswordReset,
   DeleteBusinessUser,
-  AddBusinessUser,
   LoginBusinessUser,
+  UpdateUserBranch,
+  AddBusinessUser,
   CreateBusiness,
+  GetBusinesses,
   ResetPassword
 } from "../../app/business";
 
 import {
-  CreateWorkstation,
-  DeleteWorkstation,
-  GetBusinessWorkstations,
-} from "../../app/workstation";
+  CreateWorkspace,
+  DeleteWorkspace,
+  GetWorkspaces
+} from "../../app/workspace";
 
 import {
-  RecordResponse,
-  GetFormResponses,
   UpdateResponseContent,
+  GetResponseByStatus,
+  AddNoteToResponse,
+  GetFormResponses,
   ProcessResponse,
-  DeleteResponse,
+  RecordResponse,
+  DeleteResponse
 } from "../../app/response";
 
 import {
-  GetWorkstationForms,
-  DisableForm,
-  DeleteForm,
+  GetWorkspaceForms,
+  UpdateFormContent,
+  GetBusinessForms,
+  GetFormContent,
   CreateForm,
-  UpdateFormContent
+  DeleteForm,
+  DisableForm
 } from "../../app/form";
-
-
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
 });
 
 let ErrorHandler: any;
-ErrorHandler = config.process.env === "production" ? errorHandler : devErrorHandler;
+ErrorHandler =
+  config.process.env === "production" ? errorHandler : devErrorHandler;
 
 // System
 container.register({
@@ -91,7 +96,7 @@ container.register({
 
 // Data Models
 container.register({
-  workstationModel: asValue(WorkstationModel),
+  workspaceModel: asValue(WorkspaceModel),
   businessModel: asValue(BusinessModel),
   responseModel: asValue(ResponseModel),
   formModel: asValue(FormModel)
@@ -99,12 +104,11 @@ container.register({
 
 // Repositories
 container.register({
-  workstationRepository: asClass(MongoWorkstationRepository).singleton(),
+  workspaceRepository: asClass(MongoWorkspaceRepository).singleton(),
   responseRepository: asClass(MongoResponseRepository).singleton(),
   businessRepository: asClass(MongoBusinessRepository).singleton(),
   formRepository: asClass(MongoFormRepository).singleton()
 });
-
 
 // Middleware
 container.register({
@@ -112,45 +116,50 @@ container.register({
   logMiddleware: asFunction(logMiddleware).singleton(),
   container: asValue(scopePerRequest(container)),
   errorHandler: asValue(ErrorHandler),
-  validator: asValue(validator),
+  validator: asValue(validator)
 });
-
 
 // Operations
 
 container.register({
-  getBusinessWorkstations: asClass(GetBusinessWorkstations),
   requestPasswordReset: asClass(RequestPasswordReset),
   deleteBusinessUser: asClass(DeleteBusinessUser),
   loginBusinessUser: asClass(LoginBusinessUser),
+  updateUserBranch: asClass(UpdateUserBranch),
   addBusinessUser: asClass(AddBusinessUser),
   createBusiness: asClass(CreateBusiness),
   resetPassword: asClass(ResetPassword),
+  getBusinesses: asClass(GetBusinesses),
+  getWorkspaces: asClass(GetWorkspaces),
 
-  createWorkstation: asClass(CreateWorkstation),
-  deleteWorkstation: asClass(DeleteWorkstation),
+  createWorkspace: asClass(CreateWorkspace),
+  deleteWorkspace: asClass(DeleteWorkspace),
 
   updateResponseContent: asClass(UpdateResponseContent),
+  getResponseByStatus: asClass(GetResponseByStatus),
+  addNoteToResponse: asClass(AddNoteToResponse),
   getFormResponses: asClass(GetFormResponses),
   processResponse: asClass(ProcessResponse),
   recordResponse: asClass(RecordResponse),
+  getFormContent: asClass(GetFormContent),
   deleteResponse: asClass(DeleteResponse),
 
-  getWorkstationForms: asClass(GetWorkstationForms),
+  getBusinessUserActivityStats: asClass(GetBusinessUserActivityStats),
+  getWorkspaceForms: asClass(GetWorkspaceForms),
   updateFormContent: asClass(UpdateFormContent),
+  getBusinessForms: asClass(GetBusinessForms),
   disableForm: asClass(DisableForm),
   deleteForm: asClass(DeleteForm),
   createForm: asClass(CreateForm)
 });
 
-
- // Serializers
+// Serializers
 
 container.register({
-  workstationSerializer: asValue(WorkStationSerializer),
+  workspaceSerializer: asValue(WorkspaceSerializer),
   responseSerializer: asValue(ResponseSerializer),
   businessSerializer: asValue(BusinessSerializer),
-  formSerializer: asValue(FormSerializer),
+  formSerializer: asValue(FormSerializer)
 });
 
 // Services

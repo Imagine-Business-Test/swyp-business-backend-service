@@ -4,6 +4,8 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./update-response-content"));
+__export(require("./get-response-by-status"));
+__export(require("./add-note-to-response"));
 __export(require("./get-form-responses"));
 __export(require("./record-response"));
 __export(require("./process-response"));

@@ -13,7 +13,7 @@ exports.errorHandler = (err, _req, res, _next) => {
     }
     res.status(http_status_1.default.INTERNAL_SERVER_ERROR).json({
         type: "InternalServerError",
-        message: "The server failed to handle the request",
+        message: "The server failed to handle the request"
     });
 };
 //# sourceMappingURL=error-handler.js.map

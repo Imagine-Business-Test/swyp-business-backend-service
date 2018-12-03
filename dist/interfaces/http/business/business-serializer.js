@@ -4,44 +4,61 @@ exports.BusinessSerializer = {
     serialize(response) {
         let { business } = response;
         const { user, token } = response;
-        if (!business) {
-            business = response;
-        }
         business = {
-            accounts: pruneSensitiveData(business.getAccounts()),
+            accounts: pruneSensitiveUserData(business.getAccounts()),
             logoUrl: business.getLogo(),
+            branches: business.getBranches(),
             name: business.getName(),
-            _id: business.getId()
+            slug: business.getSlug(),
+            id: business.getId()
         };
         if (!user) {
             return business;
         }
         return {
             business,
-            user: pruneSensitiveData(user),
-            token
+            token,
+            user: pruneSensitiveUserData(user)
         };
     },
+    lean(responses) {
+        return responses.map(res => {
+            return {
+                branches: res.branches,
+                logo: res.logoUrl,
+                name: res.name,
+                slug: res.slug,
+                id: res._id
+            };
+        });
+    }
 };
-const pruneSensitiveData = (accounts) => {
+const pruneSensitiveUserData = (accounts) => {
     if (Array.isArray(accounts)) {
-        return accounts.filter((account) => !account.deleted)
+        return accounts
+            .filter((account) => !account.deleted)
             .map((account) => {
             return {
                 lastLogIn: account.lastLoginIn,
                 created: account.created,
-                phone: account.phone,
+                branch: account.branch,
                 email: account.email,
-                name: account.name
+                phone: account.phone,
+                role: account.role,
+                name: account.name,
+                id: account._id
             };
         });
     }
     return {
         lastLogIn: accounts.lastLoginIn,
         created: accounts.created,
-        phone: accounts.phone,
+        branch: accounts.branch,
         email: accounts.email,
-        name: accounts.name
+        phone: accounts.phone,
+        role: accounts.role,
+        name: accounts.name,
+        id: accounts._id
     };
 };
 //# sourceMappingURL=business-serializer.js.map

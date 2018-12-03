@@ -1,3 +1,3 @@
-export interface Commons {
-  process: { port: string, env: string, type: string };
+export interface ICommons {
+  process: { port: string; env: string; type: string };
 }

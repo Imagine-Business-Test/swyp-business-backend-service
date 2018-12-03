@@ -1,25 +1,50 @@
 import mongoose from "mongoose";
 
 const Schema = new mongoose.Schema({
-  form: { type: mongoose.Schema.Types.ObjectId, required: true },
+  form: {
+    workspace: { type: mongoose.Schema.Types.ObjectId, required: true },
+    id: { type: mongoose.Schema.Types.ObjectId, required: true },
+    business: { type: mongoose.Schema.Types.ObjectId, required: true },
+    name: { type: String, required: true }
+  },
+  branch: { type: String, required: true },
   createdAt: { type: Date, required: true, default: new Date() },
-  content: { type: String, required: true},
+  content: [
+    { questionType: { type: String, required: true } },
+    { question: { type: String, required: true } },
+    { position: { type: Number, required: true } },
+    { answer: { type: String, required: true } }
+  ],
+  note: String,
+  notes: [
+    {
+      notedBy: {
+        email: { type: String, email: true },
+        name: String
+      },
+      note: String
+    }
+  ],
   respondant: {
-    _id: { type: mongoose.Schema.Types.ObjectId, required: true },
-    email: { type: String, email: true, required: true },
+    id: { type: mongoose.Schema.Types.ObjectId, required: true },
+    email: { type: String, email: true },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
-    middlename: { type: String},
-    phone: { type: String, required: true }
+    middlename: { type: String },
+    phone: { type: String }
+  },
+
+  processor: {
+    email: { type: String, email: true },
+    name: String
   },
   updatedAt: { type: Date, required: true, default: new Date() },
   deleted: { type: Boolean, default: false },
-  status: { type: String, enum: ["pending", "processed"], default: "pending" }
-});
-
-Schema.pre("update", function(next) {
-  this.update({}, {$set: { updatedAt: new Date() } });
-  next();
+  status: {
+    type: String,
+    enum: ["pending", "processed", "noted"],
+    default: "pending"
+  }
 });
 
 export const ResponseModel = mongoose.model("responses", Schema);

@@ -1,8 +1,5 @@
-import { Config as Interface } from "../../contracts/config";
-import { commons } from "../components";
-import { mail } from "../components";
-import { web } from "../components";
-import { db } from "../components";
+import { IConfig as Interface } from "../../contracts/config";
+import { commons, db, mail, web } from "../components";
 
 const config: Interface = {
   ...commons,
@@ -11,7 +8,7 @@ const config: Interface = {
   mail,
   logging: {
     appenders: {
-      "out": { type: "stdout" }
+      out: { type: "stdout" }
     },
     categories: {
       default: { appenders: ["out"], level: "all" }
@@ -20,4 +17,3 @@ const config: Interface = {
 };
 
 module.exports = config;
-

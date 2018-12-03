@@ -1,12 +1,29 @@
+import { IAccount } from "../../contracts/domain";
+import { IBusinessInterface } from "../../contracts/infra";
 import { Business } from "../../domain";
-import { BusinessInterface } from "../../contracts/infra";
-import { Account } from "../../contracts/domain";
 
 export const MongoBusinessMapper = {
-  toEntity(dbRow: BusinessInterface, currentUser?: Account): Business {
-    const { _id, name, logoUrl, accounts } = dbRow;
-    const business = new Business(name, logoUrl, accounts, _id);
-
+  toEntity(dbRow: IBusinessInterface, currentUser?: IAccount): Business {
+    const {
+      _id,
+      name,
+      slug,
+      logoUrl,
+      approved,
+      deleted,
+      accounts,
+      branches
+    } = dbRow;
+    const business = new Business(
+      name,
+      slug,
+      approved,
+      deleted,
+      accounts,
+      branches,
+      logoUrl,
+      _id
+    );
     if (currentUser) {
       business.setUser(currentUser);
     }
@@ -15,9 +32,11 @@ export const MongoBusinessMapper = {
 
   toDatabase(business: Business) {
     return {
-      name: business.getName(),
+      accounts: business.getAccounts(),
+      branches: business.getBranches(),
       logoUrl: business.getLogo(),
-      accounts: business.getAccounts()
+      name: business.getName(),
+      slug: business.getSlug()
     };
   }
 };

@@ -10,11 +10,13 @@ const http_status_1 = __importDefault(require("http-status"));
 exports.FormController = {
     get router() {
         const router = express_1.Router();
-        router.post("/", middleware_1.auth, this.create)
-            .get("/workstations/:workstation", middleware_1.auth, this.getWorkStationForms)
-            .put("/:form", middleware_1.auth, this.updateContent)
+        router
+            .get("/workspaces/:workspace", this.getWorkspaceForms)
+            .get("/businesses/:business/:formtype", this.getBusinessForms)
+            .get("/:biz/:parent/:formType/:form", this.getFormContent)
             .put("/disable/:form", middleware_1.auth, this.disable)
-            .delete("/:form", middleware_1.auth, this.delete);
+            .delete("/:form", middleware_1.auth, this.delete)
+            .post("/", middleware_1.auth, this.create);
         return router;
     },
     create(req, res, next) {
@@ -22,37 +24,9 @@ exports.FormController = {
         const handler = req.container.resolve("createForm");
         const serializer = req.container.resolve("formSerializer");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, form => {
+        handler
+            .on(SUCCESS, form => {
             res.status(http_status_1.default.CREATED).json(serializer.serialize(form));
-        })
-            .on(DATABASE_ERROR, error => {
-            res.status(http_status_1.default.BAD_GATEWAY).json({
-                type: "DatabaseErrorMe",
-                details: error.details
-            });
-        })
-            .on(ERROR, next);
-        const command = Object.assign({}, req.body, { user: req.user });
-        handler.execute(command);
-    },
-    getWorkStationForms(req, res, next) {
-        req.validateParams(validation_1.FormRules.getWorkstationForms);
-        const handler = req.container.resolve("getWorkstationForms");
-        const serializer = req.container.resolve("formSerializer");
-        const { SUCCESS, ERROR } = handler.outputs;
-        handler.on(SUCCESS, workstation => {
-            res.status(http_status_1.default.OK).json(serializer.serialize(workstation));
-        })
-            .on(ERROR, next);
-        handler.execute(req.params);
-    },
-    updateContent(req, res, next) {
-        req.validateBody(validation_1.FormRules.updateContent.content);
-        req.validateParams(validation_1.FormRules.updateContent.form);
-        const handler = req.container.resolve("updateFormContent");
-        const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, () => {
-            res.status(http_status_1.default.OK).json({ updated: true });
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.BAD_GATEWAY).json({
@@ -61,14 +35,63 @@ exports.FormController = {
             });
         })
             .on(ERROR, next);
-        const command = { form: req.params.form, content: req.body.content, modifier: req.user };
+        const command = Object.assign({}, req.body, { user: req.user });
+        handler.execute(command);
+    },
+    getWorkspaceForms(req, res, next) {
+        req.validateParams(validation_1.FormRules.getWorkspaceForms);
+        const handler = req.container.resolve("getWorkspaceForms");
+        const serializer = req.container.resolve("formSerializer");
+        const { SUCCESS, ERROR } = handler.outputs;
+        handler
+            .on(SUCCESS, forms => {
+            res.status(http_status_1.default.OK).json(serializer.serialize(forms));
+        })
+            .on(ERROR, next);
+        handler.execute(req.params);
+    },
+    getBusinessForms(req, res, next) {
+        req.validateParams(validation_1.FormRules.getABusinessForms);
+        const handler = req.container.resolve("getBusinessForms");
+        const serializer = req.container.resolve("formSerializer");
+        const { SUCCESS, ERROR } = handler.outputs;
+        handler
+            .on(SUCCESS, forms => {
+            res.status(http_status_1.default.OK).json(serializer.serialize(forms));
+        })
+            .on(ERROR, next);
+        handler.execute(req.params);
+    },
+    getFormContent(req, res, next) {
+        req.validateParams(validation_1.FormRules.getContentOf);
+        const handler = req.container.resolve("getFormContent");
+        const serializer = req.container.resolve("formSerializer");
+        const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+        handler
+            .on(SUCCESS, form => {
+            res.status(http_status_1.default.OK).json(serializer.forBusiness(form));
+        })
+            .on(DATABASE_ERROR, error => {
+            res.status(http_status_1.default.BAD_GATEWAY).json({
+                type: "DatabaseError",
+                details: error.details
+            });
+        })
+            .on(ERROR, next);
+        const command = {
+            formTypeParent: req.params.parent,
+            formType: req.params.formType,
+            businessSlug: req.params.biz,
+            formSlug: req.params.form
+        };
         handler.execute(command);
     },
     disable(req, res, next) {
         req.validateParams(validation_1.FormRules.disableForm);
         const handler = req.container.resolve("disableForm");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, () => {
+        handler
+            .on(SUCCESS, () => {
             res.status(http_status_1.default.OK).json({ updated: true });
         })
             .on(DATABASE_ERROR, error => {
@@ -84,7 +107,8 @@ exports.FormController = {
         req.validateParams(validation_1.FormRules.disableForm);
         const handler = req.container.resolve("deleteForm");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-        handler.on(SUCCESS, () => {
+        handler
+            .on(SUCCESS, () => {
             res.status(http_status_1.default.OK).json({ deleted: true });
         })
             .on(DATABASE_ERROR, error => {

@@ -1,7 +1,8 @@
+/* tslint:disable: no-var-requires */
+
 import config from "./config";
 // const pkg = require("../package.json");
 // import semver from "semver";
-
 
 // const runtime = {
 //   expected: <string>semver.validRange(pkg.engines.node),
@@ -21,7 +22,5 @@ if (config.process.type === "web") {
 } else if (config.process.type === "worker") {
   require("./interfaces/worker");
 } else {
-  throw new Error(`${ config.process.type } is not supported.`);
+  throw new Error(`${config.process.type} is not supported.`);
 }
-
-

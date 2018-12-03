@@ -1,15 +1,15 @@
+import { IResponseRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
-import { ResponseRepository } from "../../contracts/repositories";
 
 export class UpdateResponseContent extends Operation {
-  private responseRepository: ResponseRepository;
+  private responseRepository: IResponseRepository;
 
-  constructor(responseRepository: ResponseRepository) {
+  constructor(responseRepository: IResponseRepository) {
     super();
     this.responseRepository = responseRepository;
   }
 
-  async execute(command: {response: string, content: string }) {
+  public async execute(command: { response: string; content: string }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {

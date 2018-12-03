@@ -1,19 +1,19 @@
-import { Server } from "../contracts/interfaces";
+import { IApp } from "../contracts/app";
 import { Logger } from "../contracts/infra";
-import { App } from "../contracts/app";
+import { IServer } from "../contracts/interfaces";
 
-export class Application implements App {
-  private server: Server;
+export class Application implements IApp {
+  private server: IServer;
   private database: any;
   private logger: Logger;
 
-  constructor(server: Server, database: any, logger: Logger) {
+  constructor(server: IServer, database: any, logger: Logger) {
     this.database = database;
-    this.logger   = logger;
-    this.server   = server;
+    this.logger = logger;
+    this.server = server;
   }
 
-  async start() {
+  public async start() {
     try {
       await this.server.start();
       if (this.database) {
@@ -25,8 +25,6 @@ export class Application implements App {
   }
 
   private logError(error: Error): void {
-
     this.logger.error(error.stack!);
   }
-
 }

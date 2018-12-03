@@ -1,6 +1,6 @@
+import { IApp } from "../../contracts/app";
 import container from "./container";
-import { App } from "../../contracts/app";
 
-const app: App = <App>container.resolve("app");
+const app: IApp = container.resolve("app") as IApp;
 
 app.start();

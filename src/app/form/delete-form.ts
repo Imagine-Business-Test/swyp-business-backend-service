@@ -1,21 +1,21 @@
-import { FormRepository } from "../../contracts/repositories";
-import { LoggedInUser } from "../../contracts/interfaces";
+import { ILoggedInUser } from "../../contracts/interfaces";
+import { IFormRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
-export class DeleteForm  extends Operation {
-  private formRepository: FormRepository;
+export class DeleteForm extends Operation {
+  private formRepository: IFormRepository;
 
-  constructor(formRepository: FormRepository) {
+  constructor(formRepository: IFormRepository) {
     super();
     this.formRepository = formRepository;
   }
 
-  async execute(command: {form: string, user: LoggedInUser }) {
+  public async execute(command: { form: string; user: ILoggedInUser }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {
       await this.formRepository.delete(command.form, command.user);
-      return this.emit(SUCCESS, { deleted: true});
+      return this.emit(SUCCESS, { deleted: true });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
         return this.emit(DATABASE_ERROR, ex);

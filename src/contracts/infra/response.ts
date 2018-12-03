@@ -1,14 +1,19 @@
+import { IForm, IUser, IResponseContent } from "../domain";
+import { ILoggedInUser } from "../interfaces";
 import mongoose from "mongoose";
-import { User } from "../domain";
 
 export type ResponseInterface = mongoose.Document & {
-  deleted: Boolean;
-  respondant: User;
-  updatedAt?: Date;
-  createdAt?: Date;
-  content: string;
+  processor: ILoggedInUser;
+  notedBy: ILoggedInUser;
+  branch: string;
+  respondant: IUser;
+  deleted: boolean;
+  updatedAt: Date;
+  createdAt: Date;
+  content: [IResponseContent];
   status: string;
-  form: string;
+  notes: [string];
+  form: IForm;
   _id: string;
 };
 

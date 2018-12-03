@@ -1,47 +1,71 @@
-import { Response } from "../../../src/domain";
-import { Form } from "../../../src/domain";
+/* tslint:disable: no-shadowed-variable */
+import { Form, Response } from "../../../src/domain";
+import { Ielement, IResponseContent } from "../../../src/contracts/domain";
 
-const loggedInUser = { name: "Ossaija ThankGod", email: "codebugsolved@gmail.com" };
-const content = "<h1>Hello world</h1>";
+const loggedInUser = {
+  name: "Ossaija ThankGod",
+  email: "codebugsolved@gmail.com"
+};
+
+const branch = "Apapa";
+
+const elements: [Ielement] = [
+  { name: "new form", position: 0, children: ["jel"], validationRules: ["me"] }
+];
 const date = new Date();
+const business = { id: "1234", name: "firstbank", slug: "firstbank" };
+const workspace = { id: "1233", name: "Account Opening", parent: "Corprate" };
 const form = new Form(
-  "Open Account", "1234", content, "active", loggedInUser, loggedInUser, false, "4321", date, date
+  "Open Account",
+  "Open-Account",
+  workspace,
+  business,
+  elements,
+  "active",
+  loggedInUser,
+  loggedInUser,
+  false,
+  "4321",
+  date,
+  date
 );
 
 describe("Domain :: Form", () => {
   describe("#constructor", () => {
     test("It is a constructor function", () => {
-      expect( typeof Form).toBe("function");
+      expect(typeof Form).toBe("function");
     });
   });
 
   describe("#createResponse", () => {
     test("It record new form respnse", () => {
-      const content = "<p>Ok thanks for the form</p>";
+      const content: [IResponseContent] = [
+        {
+          question: "how are you",
+          answer: "fine",
+          position: 1,
+          questionType: "simple"
+        }
+      ];
       const respondant = {
         firstname: "ThankGod",
         lastname: "Ossaija",
         email: "codebugsolved@gmail.com",
         phone: "08136868448",
-        _id: "123456"
+        id: "123456"
       };
 
-      const response = form.createResponse(content, respondant);
+      const response = form.createResponse(content, respondant, branch);
 
       expect(response instanceof Response).toBeTruthy();
-      expect(response).toEqual(expect.objectContaining({
-        content,
-        respondant,
-        form: "4321",
-        status: "pending",
-        deleted: false
-      }));
     });
   });
 
   describe("#lastModifier", () => {
     test("It return the last user to modify a form", () => {
-      expect(form.getLastModifier()).toEqual(expect.objectContaining(loggedInUser));
+      expect(form.getLastModifier()).toEqual(
+        expect.objectContaining(loggedInUser)
+      );
     });
   });
 
@@ -65,7 +89,7 @@ describe("Domain :: Form", () => {
 
   describe("#getWorkstation", () => {
     test("It return the workstation of the form ", () => {
-      expect(form.getWorkstationId()).toBe("1234");
+      expect(form.getWorkspace()).toEqual(expect.objectContaining(workspace));
     });
   });
 
@@ -83,7 +107,7 @@ describe("Domain :: Form", () => {
 
   describe("#getContent", () => {
     test("It return the workstation of the form ", () => {
-      expect(form.getContent()).toBe(content);
+      expect(form.getElements()).toEqual(expect.objectContaining(elements));
     });
   });
 

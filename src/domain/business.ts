@@ -1,65 +1,82 @@
-import { Workstation } from "./workstation";
-import { Account } from "../contracts/domain";
-
+import { IAccount } from "../contracts/domain";
+import { IBranch } from "../contracts/infra";
 
 export class Business {
-  private currentUser?: Account;
-  private accounts: Account[];
+  private currentUser?: IAccount;
+  private accounts: IAccount[];
+  private branches?: IBranch[];
+  private approved: boolean;
+  private deleted: boolean;
+  private logoUrl?: string;
   private name: string;
-  logoUrl: string;
-  private _id?: string;
+  private slug: string;
+  private id?: string;
 
-  constructor(name: string, logoUrl: string, accounts: Account[], _id?: string) {
-
+  constructor(
+    name: string,
+    slug: string,
+    approved: boolean,
+    deleted: boolean,
+    accounts: IAccount[],
+    branches?: IBranch[],
+    logoUrl?: string,
+    id?: string
+  ) {
     this.accounts = accounts;
-    this.logoUrl  = logoUrl;
-    this.name     = name;
-    this._id      = _id;
-  }
-  createWorkStation(name: string): Workstation {
-
-    const loggedinUser = {
-      name: <string>this.currentUser!.name,
-      email: <string>this.currentUser!.email
-    };
-
-    const business = this._id!;
-    const deleted = false;
-    return new Workstation(name, business, loggedinUser, loggedinUser, deleted);
+    this.approved = approved;
+    this.branches = branches;
+    this.deleted = deleted;
+    this.logoUrl = logoUrl;
+    this.slug = slug;
+    this.name = name;
+    this.id = id;
   }
 
-  setUser(user: Account): Boolean {
-
-    for (const entry of <Account[]>this.accounts) {
+  public setUser(user: IAccount) {
+    for (const entry of this.accounts as IAccount[]) {
       if (entry.email === user.email) {
         this.currentUser = user;
         break;
       }
     }
-    if (!this.currentUser)
-      throw new Error(`${user.name} does not belong to ${(this.name)}`);
-
-    return true;
+    if (!this.currentUser) {
+      throw new Error(`${user.name} does not belong to ${this.name}`);
+    }
   }
 
-  getId() {
-    return this._id;
+  public getBranches(): IBranch[] {
+    return this.branches!;
   }
 
-  getAccounts() {
+  public getId(): string {
+    return this.id!;
+  }
+
+  public getAccounts(): IAccount[] {
     return this.accounts;
   }
 
-  getLogo() {
-    return this.logoUrl;
+  public getSlug(): string {
+    return this.slug;
   }
 
-  getName() {
+  public getLogo(): string {
+    return this.logoUrl!;
+  }
+
+  public getName(): string {
     return this.name;
   }
 
-  getUser(): Account {
-
+  public getUser(): IAccount {
     return this.currentUser!;
+  }
+
+  public isApproved(): boolean {
+    return this.approved;
+  }
+
+  public isDeleted(): boolean {
+    return this.deleted;
   }
 }

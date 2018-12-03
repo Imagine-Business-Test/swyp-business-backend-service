@@ -19,10 +19,10 @@ class RecordResponse extends operation_1.Operation {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             try {
-                const { content, user } = command;
+                const { content, user, branch } = command;
                 const form = yield this.formResponse.find(command.form);
-                const response = yield this.responseRepository.add(form.createResponse(content, user));
-                return this.emit(SUCCESS, response);
+                yield this.responseRepository.add(form.createResponse(content, user, branch));
+                return this.emit(SUCCESS, { created: true });
             }
             catch (ex) {
                 if (ex.message === "DatabaseError") {

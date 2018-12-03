@@ -15,8 +15,7 @@ class HttpServer {
     }
     start() {
         return new Promise(resolve => {
-            const http = this.express
-                .listen(this.config.process.port, () => {
+            const http = this.express.listen(this.config.process.port, () => {
                 const { port } = http.address();
                 this.logger.info(`[P ${process.pid}] Listening at port ${port}`);
                 resolve();

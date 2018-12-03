@@ -1,40 +1,50 @@
-import { BusinessRepository } from "../../contracts/repositories";
-import { Account } from "../../contracts/domain";
-import { Config } from "../../contracts/config";
+import { IBusinessRepository } from "../../contracts/repositories";
+import { ILoggedInUser } from "../../contracts/interfaces";
+import { IAccount } from "../../contracts/domain";
 import { Operation } from "../operation";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import { Mailer } from "../../services";
+import uuid4 from "uuid/v4";
 
 export class AddBusinessUser extends Operation {
+  private businessRepository: IBusinessRepository;
+  private mailer: Mailer;
 
-  private businessRepository: BusinessRepository;
-  private config: Config;
-
-  constructor(businessRepository: BusinessRepository, config: Config) {
+  constructor(businessRepository: IBusinessRepository, mailer: Mailer) {
     super();
     this.businessRepository = businessRepository;
-    this.config             = config;
+    this.mailer = mailer;
   }
 
-  async execute(command: { businessId: string, account: Account}) {
-
-    const {SUCCESS, ERROR, DATABASE_ERROR} = this.outputs;
+  public async execute(command: {
+    businessId: string;
+    account: IAccount;
+    origin: string;
+    user: ILoggedInUser;
+  }) {
+    const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {
-      const { businessId, account }  = command;
-      account.password       = await bcrypt.hash(account.password, 10);
+      const { businessId, account } = command;
+      const urlToken = uuid4();
 
-      const business = await this.businessRepository.addAccount(businessId, account);
-      const user     = business.getUser();
-      const token = jwt.sign({
-        email: user.email,
-        name: user.name,
-        isBusiness: true
-      }, this.config.web.json_secret, {expiresIn: "24h"});
+      const business = await this.businessRepository.addAccount(
+        businessId,
+        account
+      );
+      const user = business.getUser();
+
+      const link = command.origin + `?token=${urlToken}`;
 
       // new account created event
+      this.mailer.welcome(
+        user.name,
+        command.user.name,
+        business.getName(),
+        user.email,
+        link
+      );
 
-      return this.emit(SUCCESS, { business, user, token });
+      return this.emit(SUCCESS, { business });
     } catch (ex) {
       if (ex.message === "DatabaseError") {
         return this.emit(DATABASE_ERROR, ex);
@@ -45,5 +55,3 @@ export class AddBusinessUser extends Operation {
 }
 
 AddBusinessUser.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
-
-

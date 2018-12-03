@@ -1,58 +1,92 @@
-import { User } from "../contracts/domain";
-
+import { IForm, IUser, IResponseContent } from "../contracts/domain";
+import { ILoggedInUser } from "../contracts/interfaces";
 export class Response {
-  private deleted: Boolean;
-  private respondant: User;
+  private processor?: ILoggedInUser;
+  private notedBy?: ILoggedInUser;
+  private deleted: boolean;
+  private respondant: IUser;
   private updatedAt?: Date;
   private createdAt?: Date;
-  private content: string;
+  private content: [IResponseContent];
   private status: string;
-  private form: string;
-  private _id?: string;
+  private id?: string;
+  private form: IForm;
+  private notes?: [string];
+  private branch: string;
 
   constructor(
-    respondant: User, form: string, content: string, status: string, deleted: Boolean,
-     _id?: string, createdAt?: Date, updatedAt?: Date,
+    respondant: IUser,
+    branch: string,
+    form: IForm,
+    content: [IResponseContent],
+    status: string,
+    deleted: boolean,
+    id?: string,
+    notes?: [string],
+    processor?: ILoggedInUser,
+    notedBy?: ILoggedInUser,
+    createdAt?: Date,
+    updatedAt?: Date
   ) {
+    this.processor = processor;
     this.respondant = respondant;
-    this.createdAt  = createdAt;
-    this.updatedAt  = updatedAt;
-    this.deleted    = deleted;
-    this.content    = content;
-    this.status     = status;
-    this.form       = form;
-    this._id        = _id;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.branch = branch;
+    this.deleted = deleted;
+    this.content = content;
+    this.notedBy = notedBy;
+    this.status = status;
+    this.form = form;
+    this.notes = notes;
+    this.id = id;
   }
 
-  isDeleted(): Boolean {
-    return this.deleted;
-  }
-
-  getLastMoficationDate(): Date {
+  public getLastMoficationDate(): Date {
     return this.updatedAt!;
   }
 
-  getRespondant(): User {
+  public getProcessor(): ILoggedInUser {
+    return this.processor!;
+  }
+
+  public getNoter(): ILoggedInUser {
+    return this.notedBy!;
+  }
+
+  public getNote(): [string] {
+    return this.notes!;
+  }
+
+  public isDeleted(): boolean {
+    return this.deleted;
+  }
+
+  public getRespondant(): IUser {
     return this.respondant;
   }
 
-  getCreationDate(): Date {
+  public getCreationDate(): Date {
     return this.createdAt!;
   }
 
-  getContent(): string {
+  public getContent(): [IResponseContent] {
     return this.content;
   }
 
-  getStatus(): string {
+  public getStatus(): string {
     return this.status;
   }
 
-  getFormId(): string {
+  public getForm(): IForm {
     return this.form;
   }
 
-  getId(): string {
-    return this._id!;
+  public getBranch(): string {
+    return this.branch;
+  }
+
+  public getId(): string {
+    return this.id!;
   }
 }

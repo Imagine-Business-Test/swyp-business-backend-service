@@ -4,22 +4,45 @@ import { Response } from "../../domain";
 export const MongoResponseMapper = {
   toEntity(doc: ResponseInterface): Response {
     const {
-      _id, respondant, deleted, content, status, updatedAt, createdAt, form
+      _id,
+      respondant,
+      deleted,
+      content,
+      branch,
+      status,
+      updatedAt,
+      createdAt,
+      form,
+      notes,
+      notedBy,
+      processor
     } = doc;
     return new Response(
-      respondant, form, content, status, deleted, _id, createdAt, updatedAt
+      respondant,
+      branch,
+      form,
+      content,
+      status,
+      deleted,
+      _id,
+      notes,
+      processor,
+      notedBy,
+      createdAt,
+      updatedAt
     );
   },
 
   toDatabase(response: Response) {
     return {
       respondant: response.getRespondant(),
-      form      : response.getFormId(),
-      content   : response.getContent(),
-      status    : response.getStatus(),
-      deleted   : response.isDeleted(),
-      createdAt : response.getCreationDate(),
-      updatedAt : response.getLastMoficationDate()
+      form: response.getForm(),
+      branch: response.getBranch(),
+      content: response.getContent(),
+      status: response.getStatus(),
+      deleted: response.isDeleted(),
+      createdAt: response.getCreationDate(),
+      updatedAt: response.getLastMoficationDate()
     };
   }
 };

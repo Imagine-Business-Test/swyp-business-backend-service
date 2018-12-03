@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const domain_1 = require("../../domain");
 exports.MongoBusinessMapper = {
     toEntity(dbRow, currentUser) {
-        const { _id, name, logoUrl, accounts } = dbRow;
-        const business = new domain_1.Business(name, logoUrl, accounts, _id);
+        const { _id, name, slug, logoUrl, approved, deleted, accounts, branches } = dbRow;
+        const business = new domain_1.Business(name, slug, approved, deleted, accounts, branches, logoUrl, _id);
         if (currentUser) {
             business.setUser(currentUser);
         }
@@ -12,9 +12,11 @@ exports.MongoBusinessMapper = {
     },
     toDatabase(business) {
         return {
-            name: business.getName(),
+            accounts: business.getAccounts(),
+            branches: business.getBranches(),
             logoUrl: business.getLogo(),
-            accounts: business.getAccounts()
+            name: business.getName(),
+            slug: business.getSlug()
         };
     }
 };

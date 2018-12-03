@@ -16,7 +16,7 @@ exports.ResponseSerializer = {
             });
         }
         return {
-            form: response.getFormId(),
+            form: response.getForm(),
             content: response.getContent(),
             respondant: response.getRespondant(),
             status: response.getStatus(),
