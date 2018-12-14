@@ -25,7 +25,7 @@ class MongoResponseRepository {
             try {
                 const result = yield this.model.updateOne({ _id: id }, {
                     $addToSet: { notes: { note, notedBy } },
-                    $set: { status: "noted", updatedAt: new Date() }
+                    $set: { updatedAt: new Date() }
                 });
                 if (result.nModified !== 1 || result.nMatched === 1) {
                     throw new Error(`Error updating response: ${result.nModified} updated `);
@@ -88,10 +88,9 @@ class MongoResponseRepository {
             yield this.update({ _id: id }, { $set: { deleted: true, updatedAt: new Date() } });
         });
     }
-    findByStatus(business, branch, status, page = 1, limit = 10, from, to) {
+    findByStatus(business, branch, status, page = 1, limit = 25, from, to) {
         return __awaiter(this, void 0, void 0, function* () {
             const skip = page * limit - limit;
-            const countPromise = this.model.count({ status });
             const fromDate = new Date(from);
             const toDate = new Date(to);
             toDate.setDate(toDate.getDate() + 1);
@@ -108,6 +107,7 @@ class MongoResponseRepository {
                 .skip(skip)
                 .limit(limit)
                 .sort({ createdAt: -1 });
+            const countPromise = this.model.count(condition);
             const [result, count] = yield Promise.all([queryPromise, countPromise]);
             const pages = Math.ceil(count / limit);
             return { result, count, pages };

@@ -27,7 +27,7 @@ export class MongoResponseRepository implements IResponseRepository {
         { _id: id },
         {
           $addToSet: { notes: { note, notedBy } },
-          $set: { status: "noted", updatedAt: new Date() }
+          $set: { updatedAt: new Date() }
         }
       );
       if (result.nModified !== 1 || result.nMatched === 1) {
@@ -97,12 +97,11 @@ export class MongoResponseRepository implements IResponseRepository {
     branch: string,
     status: string,
     page: number = 1,
-    limit: number = 10,
+    limit: number = 25,
     from?: Date,
     to?: Date
   ) {
     const skip = page * limit - limit;
-    const countPromise = this.model.count({ status });
     const fromDate = new Date(from!);
     const toDate = new Date(to!);
     toDate.setDate(toDate.getDate() + 1);
@@ -121,6 +120,8 @@ export class MongoResponseRepository implements IResponseRepository {
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });
+
+    const countPromise = this.model.count(condition);
     // @ts-ignore
     const [result, count] = await Promise.all([queryPromise, countPromise]);
     const pages = Math.ceil(count / limit);
