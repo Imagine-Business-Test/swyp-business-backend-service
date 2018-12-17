@@ -19,8 +19,8 @@ class AddNoteToResponse extends operation_1.Operation {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             const { response, note, user } = command;
             try {
-                yield this.responseRepository.addNote(response, note, user);
-                return this.emit(SUCCESS, { updated: true });
+                const updatedResponse = yield this.responseRepository.addNote(response, note, user);
+                return this.emit(SUCCESS, updatedResponse);
             }
             catch (error) {
                 if (error.message === "DatabaseError") {

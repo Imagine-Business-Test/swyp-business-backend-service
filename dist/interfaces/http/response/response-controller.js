@@ -53,6 +53,7 @@ exports.ResponseController = {
         req.validateParams(validation_1.ResponseRule.byStatus.params);
         req.validateQuery(validation_1.ResponseRule.byStatus.query);
         const handler = req.container.resolve("getResponseByStatus");
+        const serializer = req.container.resolve("responseSerializer");
         const { SUCCESS, ERROR } = handler.outputs;
         const { business, from, to } = req.query;
         const command = from && to
@@ -74,7 +75,7 @@ exports.ResponseController = {
             };
         handler
             .on(SUCCESS, data => {
-            res.status(http_status_1.default.OK).json(data);
+            res.status(http_status_1.default.OK).json(serializer.serializeResult(data));
         })
             .on(ERROR, next);
         handler.execute(command);
@@ -82,6 +83,7 @@ exports.ResponseController = {
     addNote(req, res, next) {
         req.validateParams(validation_1.ResponseRule.addNotes.params);
         req.validateBody(validation_1.ResponseRule.addNotes.body);
+        const serializer = req.container.resolve("responseSerializer");
         const handler = req.container.resolve("addNoteToResponse");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
         const command = {
@@ -91,7 +93,7 @@ exports.ResponseController = {
         };
         handler
             .on(SUCCESS, data => {
-            res.status(http_status_1.default.OK).json(data);
+            res.status(http_status_1.default.OK).json(serializer.serialize(data));
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.INTERNAL_SERVER_ERROR).json({

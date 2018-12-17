@@ -14,7 +14,6 @@ export const MongoResponseMapper = {
       createdAt,
       form,
       notes,
-      notedBy,
       processor
     } = doc;
     return new Response(
@@ -27,7 +26,6 @@ export const MongoResponseMapper = {
       _id,
       notes,
       processor,
-      notedBy,
       createdAt,
       updatedAt
     );

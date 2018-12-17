@@ -1,5 +1,5 @@
-import { ILoggedInUser } from "../../contracts/interfaces";
 import { IResponseRepository } from "../../contracts/repositories";
+import { ILoggedInUser } from "../../contracts/interfaces";
 import { Operation } from "../operation";
 
 export class AddNoteToResponse extends Operation {
@@ -18,8 +18,12 @@ export class AddNoteToResponse extends Operation {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
     const { response, note, user } = command;
     try {
-      await this.responseRepository.addNote(response, note, user);
-      return this.emit(SUCCESS, { updated: true });
+      const updatedResponse = await this.responseRepository.addNote(
+        response,
+        note,
+        user
+      );
+      return this.emit(SUCCESS, updatedResponse);
     } catch (error) {
       if (error.message === "DatabaseError") {
         return this.emit(DATABASE_ERROR, error);

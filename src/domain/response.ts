@@ -1,8 +1,7 @@
-import { IForm, IUser, IResponseContent } from "../contracts/domain";
+import { IForm, IUser, IResponseContent, INote } from "../contracts/domain";
 import { ILoggedInUser } from "../contracts/interfaces";
 export class Response {
   private processor?: ILoggedInUser;
-  private notedBy?: ILoggedInUser;
   private deleted: boolean;
   private respondant: IUser;
   private updatedAt?: Date;
@@ -11,7 +10,7 @@ export class Response {
   private status: string;
   private id?: string;
   private form: IForm;
-  private notes?: [string];
+  private notes?: [INote];
   private branch: string;
 
   constructor(
@@ -22,9 +21,8 @@ export class Response {
     status: string,
     deleted: boolean,
     id?: string,
-    notes?: [string],
+    notes?: [INote],
     processor?: ILoggedInUser,
-    notedBy?: ILoggedInUser,
     createdAt?: Date,
     updatedAt?: Date
   ) {
@@ -35,7 +33,6 @@ export class Response {
     this.branch = branch;
     this.deleted = deleted;
     this.content = content;
-    this.notedBy = notedBy;
     this.status = status;
     this.form = form;
     this.notes = notes;
@@ -50,11 +47,7 @@ export class Response {
     return this.processor!;
   }
 
-  public getNoter(): ILoggedInUser {
-    return this.notedBy!;
-  }
-
-  public getNote(): [string] {
+  public getNotes(): [INote] {
     return this.notes!;
   }
 

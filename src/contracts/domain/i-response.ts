@@ -10,3 +10,9 @@ export interface IResponseContent {
   question: string;
   answer: string;
 }
+
+export interface INote {
+  note: string;
+  date: Date;
+  notedBy: { email: string; name: string };
+}

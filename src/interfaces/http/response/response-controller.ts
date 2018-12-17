@@ -70,6 +70,7 @@ export const ResponseController = {
     const handler = req.container.resolve(
       "getResponseByStatus"
     ) as GetResponseByStatus;
+    const serializer = req.container.resolve("responseSerializer");
     const { SUCCESS, ERROR } = handler.outputs;
     const { business, from, to } = req.query;
     const command =
@@ -93,7 +94,7 @@ export const ResponseController = {
 
     handler
       .on(SUCCESS, data => {
-        res.status(Status.OK).json(data);
+        res.status(Status.OK).json(serializer.serializeResult(data));
       })
       .on(ERROR, next);
 
@@ -103,6 +104,7 @@ export const ResponseController = {
   addNote(req: any, res: Response, next: any) {
     req.validateParams(ResponseRule.addNotes.params);
     req.validateBody(ResponseRule.addNotes.body);
+    const serializer = req.container.resolve("responseSerializer");
     const handler = req.container.resolve(
       "addNoteToResponse"
     ) as AddNoteToResponse;
@@ -115,7 +117,7 @@ export const ResponseController = {
     };
     handler
       .on(SUCCESS, data => {
-        res.status(Status.OK).json(data);
+        res.status(Status.OK).json(serializer.serialize(data));
       })
       .on(DATABASE_ERROR, error => {
         res.status(Status.INTERNAL_SERVER_ERROR).json({
