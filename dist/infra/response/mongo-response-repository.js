@@ -23,13 +23,13 @@ class MongoResponseRepository {
     addNote(id, note, notedBy) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.model.updateOne({ _id: id }, {
-                    $addToSet: { notes: { note, notedBy } },
+                const doc = yield this.model.findOneAndUpdate({ _id: id }, {
+                    $addToSet: { notes: { note, notedBy, date: new Date() } },
                     $set: { updatedAt: new Date() }
+                }, {
+                    new: true
                 });
-                if (result.nModified !== 1 || result.nMatched === 1) {
-                    throw new Error(`Error updating response: ${result.nModified} updated `);
-                }
+                return mongo_response_mapper_1.MongoResponseMapper.toEntity(doc);
             }
             catch (ex) {
                 ex.details = ex.message;

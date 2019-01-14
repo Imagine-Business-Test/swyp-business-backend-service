@@ -23,18 +23,19 @@ export class MongoResponseRepository implements IResponseRepository {
 
   public async addNote(id: string, note: string, notedBy: ILoggedInUser) {
     try {
-      const result = await this.model.updateOne(
+      // @ts-ignore
+      const doc: ResponseInterface = await this.model.findOneAndUpdate(
         { _id: id },
         {
-          $addToSet: { notes: { note, notedBy } },
+          $addToSet: { notes: { note, notedBy, date: new Date() } },
           $set: { updatedAt: new Date() }
+        },
+        {
+          new: true
         }
       );
-      if (result.nModified !== 1 || result.nMatched === 1) {
-        throw new Error(
-          `Error updating response: ${result.nModified} updated `
-        );
-      }
+
+      return MongoResponseMapper.toEntity(doc);
     } catch (ex) {
       ex.details = ex.message;
       ex.message = "DatabaseError";

@@ -1,5 +1,12 @@
 import { Response } from "../../../src/domain";
-const content = "<p>Ok thanks for the form</p>";
+import { IResponseContent, INote } from "../../../src/contracts/domain";
+const content: IResponseContent = {
+  position: 1,
+  questionType: "string",
+  question: "string",
+  answer: "Ok thanks for the form"
+};
+
 const branch = "Apapa";
 
 const respondant = {
@@ -15,6 +22,12 @@ const loggedInUser = {
   email: "codebugsolved@gmail.com"
 };
 
+const note: INote = {
+  note: "New Note",
+  notedBy: loggedInUser,
+  date: new Date()
+};
+
 const form = {
   id: "13223i23",
   business: "12345",
@@ -27,12 +40,11 @@ const res = new Response(
   respondant,
   branch,
   form,
-  content,
+  [content],
   "pending",
   false,
   "4321",
-  ["new note"],
-  loggedInUser,
+  [note],
   loggedInUser,
   date,
   date
@@ -77,7 +89,7 @@ describe("Domain :: Response", () => {
 
   describe("#getContent", () => {
     test("Return the respondant that submitted the response", () => {
-      expect(res.getContent()).toBe(content);
+      expect(res.getContent()).toEqual(expect.arrayContaining([content]));
     });
   });
 

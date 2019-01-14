@@ -10,10 +10,12 @@ const Schema = new mongoose.Schema({
   branch: { type: String, required: true },
   createdAt: { type: Date, required: true, default: new Date() },
   content: [
-    { questionType: { type: String, required: true } },
-    { question: { type: String, required: true } },
-    { position: { type: Number, required: true } },
-    { answer: { type: String, required: true } }
+    {
+      questionType: { type: String, required: true },
+      question: { type: String, required: true },
+      position: { type: Number, required: true },
+      answer: { type: String, required: true }
+    }
   ],
   note: String,
   notes: [
@@ -22,7 +24,8 @@ const Schema = new mongoose.Schema({
         email: { type: String, email: true },
         name: String
       },
-      note: String
+      note: String,
+      date: { type: String, required: true }
     }
   ],
   respondant: {

@@ -1,7 +1,6 @@
 import { IResponseRepository } from "../../contracts/repositories";
 import { IAuthenticatedUser } from "../../contracts/interfaces";
 import { Operation } from "../operation";
-
 export class GetResponseByStatus extends Operation {
   private responseRepository: IResponseRepository;
 
