@@ -1,5 +1,6 @@
-import { Response } from "../../../src/domain";
 import { IResponseContent, INote } from "../../../src/contracts/domain";
+import { Response } from "../../../src/domain";
+
 const content: IResponseContent = {
   position: 1,
   questionType: "string",
