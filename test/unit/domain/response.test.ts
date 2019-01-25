@@ -2,7 +2,7 @@ import { IResponseContent, INote } from "../../../src/contracts/domain";
 import { Response } from "../../../src/domain";
 
 const content: IResponseContent = {
-  position: 1,
+  questionId: "dhdhd",
   questionType: "string",
   question: "string",
   answer: "Ok thanks for the form"

@@ -12,8 +12,8 @@ const Schema = new mongoose.Schema({
   content: [
     {
       questionType: { type: String, required: true },
+      questionId: { type: String, required: true },
       question: { type: String, required: true },
-      position: { type: Number, required: true },
       answer: { type: String, required: true }
     }
   ],

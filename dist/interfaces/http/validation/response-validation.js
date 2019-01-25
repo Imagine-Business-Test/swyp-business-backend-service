@@ -10,7 +10,7 @@ exports.ResponseRule = {
         .keys({
         content: joi_1.default.array().items(joi_1.default.object().keys({
             questionType: joi_1.default.string().required(),
-            position: joi_1.default.number().required(),
+            questionId: joi_1.default.string().required(),
             question: joi_1.default.string().required(),
             answer: joi_1.default.string().required()
         })),

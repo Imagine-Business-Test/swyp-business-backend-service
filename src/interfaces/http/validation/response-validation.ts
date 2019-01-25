@@ -7,7 +7,7 @@ export const ResponseRule = {
       content: joi.array().items(
         joi.object().keys({
           questionType: joi.string().required(),
-          position: joi.number().required(),
+          questionId: joi.string().required(),
           question: joi.string().required(),
           answer: joi.string().required()
         })

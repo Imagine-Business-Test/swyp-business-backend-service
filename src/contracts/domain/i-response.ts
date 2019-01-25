@@ -6,7 +6,7 @@ export interface IForm {
 
 export interface IResponseContent {
   questionType: string;
-  position: number;
+  questionId: string;
   question: string;
   answer: string;
 }
