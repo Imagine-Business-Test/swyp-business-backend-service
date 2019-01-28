@@ -5,6 +5,7 @@ export class Business {
   private currentUser?: IAccount;
   private accounts: IAccount[];
   private branches?: IBranch[];
+  private description?: string;
   private approved: boolean;
   private deleted: boolean;
   private logoUrl?: string;
@@ -20,8 +21,10 @@ export class Business {
     accounts: IAccount[],
     branches?: IBranch[],
     logoUrl?: string,
+    description?: string,
     id?: string
   ) {
+    this.description = description;
     this.accounts = accounts;
     this.approved = approved;
     this.branches = branches;
@@ -42,6 +45,10 @@ export class Business {
     if (!this.currentUser) {
       throw new Error(`${user.name} does not belong to ${this.name}`);
     }
+  }
+
+  public getDiscription(): string {
+    return this.description!;
   }
 
   public getBranches(): IBranch[] {

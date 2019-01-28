@@ -12,7 +12,8 @@ export const MongoBusinessMapper = {
       approved,
       deleted,
       accounts,
-      branches
+      branches,
+      description
     } = dbRow;
     const business = new Business(
       name,
@@ -22,6 +23,7 @@ export const MongoBusinessMapper = {
       accounts,
       branches,
       logoUrl,
+      description,
       _id
     );
     if (currentUser) {
@@ -33,8 +35,6 @@ export const MongoBusinessMapper = {
   toDatabase(business: Business) {
     return {
       accounts: business.getAccounts(),
-      branches: business.getBranches(),
-      logoUrl: business.getLogo(),
       name: business.getName(),
       slug: business.getSlug()
     };

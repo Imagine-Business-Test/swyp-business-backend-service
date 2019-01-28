@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Business {
-    constructor(name, slug, approved, deleted, accounts, branches, logoUrl, id) {
+    constructor(name, slug, approved, deleted, accounts, branches, logoUrl, description, id) {
+        this.description = description;
         this.accounts = accounts;
         this.approved = approved;
         this.branches = branches;
@@ -21,6 +22,9 @@ class Business {
         if (!this.currentUser) {
             throw new Error(`${user.name} does not belong to ${this.name}`);
         }
+    }
+    getDiscription() {
+        return this.description;
     }
     getBranches() {
         return this.branches;

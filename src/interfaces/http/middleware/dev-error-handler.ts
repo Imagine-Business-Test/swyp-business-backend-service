@@ -8,7 +8,6 @@ export const devErrorHandler = (
   _next: any
 ): void => {
   if (err.message === "ValidationError") {
-    console.log(err);
     return res.status(Status.BAD_REQUEST).json({
       type: "ValidationError",
       message: err.details

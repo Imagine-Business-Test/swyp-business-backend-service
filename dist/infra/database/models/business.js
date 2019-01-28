@@ -38,6 +38,7 @@ const Schema = new mongoose_1.default.Schema({
     slug: { type: String, required: true, unique: true },
     approved: { type: Boolean, default: false },
     deleted: { type: Boolean, default: false },
+    description: String,
     logoUrl: String
 });
 exports.BusinessModel = mongoose_1.default.model("businesses", Schema);

@@ -8,6 +8,7 @@ export interface IBranch {
   address: string;
 }
 export type IBusinessInterface = mongoose.Document & {
+  description: string;
   accounts: IAccount[];
   branches: IBranch[];
   approved: boolean;
