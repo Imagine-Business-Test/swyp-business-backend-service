@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const http_status_1 = __importDefault(require("http-status"));
 exports.devErrorHandler = (err, _req, res, _next) => {
     if (err.message === "ValidationError") {
-        console.log(err);
         return res.status(http_status_1.default.BAD_REQUEST).json({
             type: "ValidationError",
             message: err.details
