@@ -26,6 +26,7 @@ const business_3 = require("../../app/business");
 const workspace_3 = require("../../app/workspace");
 const response_3 = require("../../app/response");
 const form_3 = require("../../app/form");
+const S3_1 = require("../../app/S3");
 const container = awilix_1.createContainer({
     injectionMode: awilix_1.InjectionMode.CLASSIC
 });
@@ -60,6 +61,7 @@ container.register({
     validator: awilix_1.asValue(middleware_1.validator)
 });
 container.register({
+    updateBusinessDetails: awilix_1.asClass(business_3.UpdateBusinessDetails),
     requestPasswordReset: awilix_1.asClass(business_3.RequestPasswordReset),
     deleteBusinessUser: awilix_1.asClass(business_3.DeleteBusinessUser),
     loginBusinessUser: awilix_1.asClass(business_3.LoginBusinessUser),
@@ -83,6 +85,7 @@ container.register({
     getWorkspaceForms: awilix_1.asClass(form_3.GetWorkspaceForms),
     updateFormContent: awilix_1.asClass(form_3.UpdateFormContent),
     getBusinessForms: awilix_1.asClass(form_3.GetBusinessForms),
+    S3Uploader: awilix_1.asClass(S3_1.FileUploader),
     disableForm: awilix_1.asClass(form_3.DisableForm),
     deleteForm: awilix_1.asClass(form_3.DeleteForm),
     createForm: awilix_1.asClass(form_3.CreateForm)

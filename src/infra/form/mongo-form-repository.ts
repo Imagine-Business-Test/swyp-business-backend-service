@@ -82,9 +82,13 @@ export class MongoFormRepository implements IFormRepository {
       .select("name slug workspace elements _id");
   }
 
-  public async fetchByWorkspace(workspace: string): Promise<FormInterface[]> {
+  public async fetchByWorkspace(
+    workspace: string,
+    businessId: string
+  ): Promise<FormInterface[]> {
     return this.model.find({
       "workspace.id": workspace,
+      "business.id": businessId,
       status: "active",
       deleted: false
     });
@@ -100,7 +104,7 @@ export class MongoFormRepository implements IFormRepository {
         { _id: id },
         { $set: { content, lastModifier: modifier } }
       );
-      if (result.nModified !== 1 || result.nMatched === 1) {
+      if (result.nModified !== 1) {
         throw new Error(`Error updating content ${result.nModified} updated`);
       }
     } catch (ex) {
@@ -116,7 +120,7 @@ export class MongoFormRepository implements IFormRepository {
         { _id: id },
         { $set: { status: "disabled", lastUpdatedBy: modifier } }
       );
-      if (result.nModified !== 1 || result.nMatched === 1) {
+      if (result.nModified !== 1) {
         throw new Error(`Error disabling form: ${result.nModified} affected `);
       }
     } catch (ex) {
@@ -132,7 +136,7 @@ export class MongoFormRepository implements IFormRepository {
         { _id: id },
         { $set: { deleted: true, lastUpdatedBy: user } }
       );
-      if (result.nModified !== 1 || result.nMatched === 1) {
+      if (result.nModified !== 1) {
         throw new Error(`Error deleting form: ${result.nModified} deleted `);
       }
     } catch (ex) {

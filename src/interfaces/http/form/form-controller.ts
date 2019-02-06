@@ -15,7 +15,7 @@ export const FormController = {
   get router() {
     const router = Router();
     router
-      .get("/workspaces/:workspace", this.getWorkspaceForms)
+      .get("/workspaces/:workspace/:businessId", this.getWorkspaceForms)
       .get("/businesses/:business/:formtype", this.getBusinessForms)
       // .put("/:form", auth, this.updateContent)
       .get("/:biz/:parent/:formType/:form", this.getFormContent)

@@ -1,8 +1,13 @@
+import { ILoggedInUser } from "../interfaces";
 import { Business } from "../../domain";
 import { IAccount } from "../domain";
-import { ILoggedInUser } from "../interfaces";
 
 export interface IBusinessRepository {
+  updateDetails: (
+    businessId: string,
+    logoUrl: string,
+    description: string
+  ) => void;
   requestPasswordReset: (email: string, token: string, expires: Date) => void;
   addAccount: (business: string, account: IAccount) => Promise<Business>;
   deleteAccount: (email: string, modifier: ILoggedInUser) => void;

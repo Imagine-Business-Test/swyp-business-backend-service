@@ -40,6 +40,7 @@ import {
 
 import {
   GetBusinessUserActivityStats,
+  UpdateBusinessDetails,
   RequestPasswordReset,
   DeleteBusinessUser,
   LoginBusinessUser,
@@ -75,6 +76,8 @@ import {
   DeleteForm,
   DisableForm
 } from "../../app/form";
+
+import { FileUploader } from "../../app/S3";
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -122,6 +125,7 @@ container.register({
 // Operations
 
 container.register({
+  updateBusinessDetails: asClass(UpdateBusinessDetails),
   requestPasswordReset: asClass(RequestPasswordReset),
   deleteBusinessUser: asClass(DeleteBusinessUser),
   loginBusinessUser: asClass(LoginBusinessUser),
@@ -148,6 +152,7 @@ container.register({
   getWorkspaceForms: asClass(GetWorkspaceForms),
   updateFormContent: asClass(UpdateFormContent),
   getBusinessForms: asClass(GetBusinessForms),
+  S3Uploader: asClass(FileUploader),
   disableForm: asClass(DisableForm),
   deleteForm: asClass(DeleteForm),
   createForm: asClass(CreateForm)

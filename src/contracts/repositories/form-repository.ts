@@ -4,7 +4,10 @@ import { ILoggedInUser } from "../interfaces";
 
 export interface IFormRepository {
   updateContent: (id: string, content: string, modifier: ILoggedInUser) => void;
-  fetchByWorkspace: (workspace: string) => Promise<FormInterface[]>;
+  fetchByWorkspace: (
+    workspace: string,
+    businessId: string
+  ) => Promise<FormInterface[]>;
   disable: (id: string, modifier: ILoggedInUser) => void;
   delete: (id: string, user: ILoggedInUser) => void;
   find: (id: string) => Promise<Form>;

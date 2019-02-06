@@ -27,6 +27,7 @@ export const BusinessSerializer = {
   lean(responses: IBusinessInterface[]) {
     return responses.map(res => {
       return {
+        description: res.description,
         branches: res.branches,
         logo: res.logoUrl,
         name: res.name,

@@ -11,7 +11,7 @@ exports.FormController = {
     get router() {
         const router = express_1.Router();
         router
-            .get("/workspaces/:workspace", this.getWorkspaceForms)
+            .get("/workspaces/:workspace/:businessId", this.getWorkspaceForms)
             .get("/businesses/:business/:formtype", this.getBusinessForms)
             .get("/:biz/:parent/:formType/:form", this.getFormContent)
             .put("/disable/:form", middleware_1.auth, this.disable)

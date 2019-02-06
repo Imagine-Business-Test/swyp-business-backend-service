@@ -3,14 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const body_parser_1 = __importDefault(require("body-parser"));
-const compression_1 = __importDefault(require("compression"));
-const cors_1 = __importDefault(require("cors"));
-const express_1 = require("express");
+const file_upload_1 = require("./file-upload");
+const workspace_1 = require("./workspace");
+const response_1 = require("./response");
 const business_1 = require("./business");
 const form_1 = require("./form");
-const response_1 = require("./response");
-const workspace_1 = require("./workspace");
+const user_1 = require("./user");
+const compression_1 = __importDefault(require("compression"));
+const body_parser_1 = __importDefault(require("body-parser"));
+const express_1 = require("express");
+const cors_1 = __importDefault(require("cors"));
 exports.default = (logMiddleware, errorHandler, container, validator, configMiddleware) => {
     const router = express_1.Router();
     router.use(logMiddleware);
@@ -28,6 +30,8 @@ exports.default = (logMiddleware, errorHandler, container, validator, configMidd
         .use("/workspaces", workspace_1.WorkspaceController.router)
         .use("/businesses", business_1.BusinessController.router)
         .use("/responses", response_1.ResponseController.router)
+        .use("/upload", file_upload_1.FileUploadController.router)
+        .use("/user", user_1.UserController.router)
         .use("/forms", form_1.FormController.router);
     router.use("/api/v1", apiRouter).use(errorHandler);
     return router;

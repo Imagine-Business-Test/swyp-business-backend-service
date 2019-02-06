@@ -19,7 +19,6 @@ export class MongoBusinessRepository implements IBusinessRepository {
     });
 
     const currentUser = this.processCurrentUser(doc.accounts, "", token);
-
     return MongoBusinessMapper.toEntity(doc, currentUser);
   }
 
@@ -51,6 +50,26 @@ export class MongoBusinessRepository implements IBusinessRepository {
       const data = MongoBusinessMapper.toDatabase(business);
       const doc: IBusinessInterface = await this.model.create(data);
       return MongoBusinessMapper.toEntity(doc, doc.accounts[0]);
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
+  }
+
+  public async updateDetails(
+    businessId: string,
+    logoUrl: string,
+    description: string
+  ) {
+    try {
+      const result = await this.model.updateOne(
+        { _id: businessId },
+        { $set: { logoUrl, description } }
+      );
+      if (result.nModified !== 1) {
+        throw new Error(`Error updating content ${result.nModified} updated`);
+      }
     } catch (ex) {
       ex.details = ex.message;
       ex.message = "DatabaseError";
@@ -133,7 +152,7 @@ export class MongoBusinessRepository implements IBusinessRepository {
   }
 
   public fetchAll() {
-    return this.model.find({});
+    return this.model.find({ approved: true });
   }
 
   private async updateLastLogin(user: IAccount) {
@@ -169,7 +188,7 @@ export class MongoBusinessRepository implements IBusinessRepository {
   ) {
     try {
       const result = await this.model.updateOne({}, update, arrayCondition);
-      if (result.nModified !== 1 || result.nMatched === 1) {
+      if (result.nModified !== 1) {
         throw new Error("Update operation failed");
       }
     } catch (ex) {

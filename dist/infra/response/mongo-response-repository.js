@@ -93,15 +93,16 @@ class MongoResponseRepository {
             const skip = page * limit - limit;
             const fromDate = new Date(from);
             const toDate = new Date(to);
-            toDate.setDate(toDate.getDate() + 1);
             const condition = from && to
                 ? {
                     "form.business": business,
-                    branch,
                     status,
                     createdAt: { $gte: fromDate, $lte: toDate }
                 }
-                : { "form.business": business, branch, status };
+                : { "form.business": business, status };
+            if (this.shouldUseBranchCondition(branch)) {
+                condition.branch = branch;
+            }
             const queryPromise = this.model
                 .find(condition)
                 .skip(skip)
@@ -113,11 +114,14 @@ class MongoResponseRepository {
             return { result, count, pages };
         });
     }
+    shouldUseBranchCondition(branch) {
+        return branch === "HQ" ? false : true;
+    }
     update(condition, update) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield this.model.updateOne(condition, update);
-                if (result.nModified !== 1 || result.nMatched === 1) {
+                if (result.nModified !== 1) {
                     throw new Error(`Error updating response: ${result.nModified} updated `);
                 }
             }

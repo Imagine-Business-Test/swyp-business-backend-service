@@ -58,7 +58,7 @@ class MongoWorkspaceRepository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield this.model.updateOne({ _id: id }, { $set: { deleted: true, lastUpdatedBy: user } });
-                if (result.nModified !== 1 || result.nMatched === 1) {
+                if (result.nModified !== 1) {
                     throw new Error(`Error deleting workspace: ${result.nModified} deleted `);
                 }
             }

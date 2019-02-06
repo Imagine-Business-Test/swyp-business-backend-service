@@ -18,7 +18,7 @@ class GetWorkspaceForms extends operation_1.Operation {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR } = this.outputs;
             try {
-                const forms = yield this.formRepository.fetchByWorkspace(command.workspace);
+                const forms = yield this.formRepository.fetchByWorkspace(command.workspace, command.businessId);
                 return this.emit(SUCCESS, forms);
             }
             catch (ex) {

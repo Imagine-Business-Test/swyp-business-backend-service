@@ -38,38 +38,6 @@ exports.BusinessRule = {
         }))
     })
         .required(),
-    resetPassword: joi_1.default
-        .object()
-        .keys({
-        password: joi_1.default
-            .string()
-            .min(8)
-            .required(),
-        token: joi_1.default.string().required()
-    })
-        .required(),
-    addBusinessUser: joi_1.default
-        .object()
-        .keys({
-        business: joi_1.default.string().required(),
-        branch: joi_1.default.string().required(),
-        role: joi_1.default
-            .string()
-            .required()
-            .allow(["admin", "worker"])
-            .label("User role"),
-        email: joi_1.default
-            .string()
-            .email()
-            .required(),
-        origin: joi_1.default
-            .string()
-            .required()
-            .label("Url to redirect user"),
-        name: joi_1.default.string().required(),
-        phone: joi_1.default.string().required()
-    })
-        .required(),
     updateBranch: joi_1.default
         .object()
         .keys({
@@ -77,39 +45,12 @@ exports.BusinessRule = {
         branch: joi_1.default.string().required()
     })
         .required(),
-    deleteBusinessUser: joi_1.default
+    updateDetails: joi_1.default
         .object()
         .keys({
-        email: joi_1.default
-            .string()
-            .email()
-            .required()
-    })
-        .required(),
-    loginBusinessUser: joi_1.default
-        .object()
-        .keys({
-        email: joi_1.default
-            .string()
-            .email()
-            .required(),
-        password: joi_1.default
-            .string()
-            .min(8)
-            .required()
-    })
-        .required(),
-    requestPasswordReset: joi_1.default
-        .object()
-        .keys({
-        email: joi_1.default
-            .string()
-            .email()
-            .required(),
-        origin: joi_1.default
-            .string()
-            .required()
-            .label("Origin to redirect user is missing")
+        id: joi_1.default.string().required(),
+        logoUrl: joi_1.default.string().required(),
+        description: joi_1.default.string().required()
     })
         .required()
 };

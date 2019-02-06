@@ -9,11 +9,12 @@ export class GetWorkspaceForms extends Operation {
     this.formRepository = formRepository;
   }
 
-  public async execute(command: { workspace: string }) {
+  public async execute(command: { workspace: string; businessId: string }) {
     const { SUCCESS, ERROR } = this.outputs;
     try {
       const forms = await this.formRepository.fetchByWorkspace(
-        command.workspace
+        command.workspace,
+        command.businessId
       );
       return this.emit(SUCCESS, forms);
     } catch (ex) {

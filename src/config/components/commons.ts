@@ -1,5 +1,5 @@
-import joi from "joi";
 import { ICommons as Interface } from "../../contracts/config";
+import joi from "joi";
 
 const schema = joi
   .object()

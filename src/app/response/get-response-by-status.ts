@@ -37,5 +37,4 @@ export class GetResponseByStatus extends Operation {
     }
   }
 }
-
 GetResponseByStatus.setOutputs(["SUCCESS", "ERROR"]);

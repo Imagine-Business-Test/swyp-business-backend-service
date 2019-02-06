@@ -24,6 +24,7 @@ exports.BusinessSerializer = {
     lean(responses) {
         return responses.map(res => {
             return {
+                description: res.description,
                 branches: res.branches,
                 logo: res.logoUrl,
                 name: res.name,

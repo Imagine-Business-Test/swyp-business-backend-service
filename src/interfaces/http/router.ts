@@ -1,12 +1,14 @@
 /* tslint:disable: variable-name */
-import bodyParser from "body-parser";
-import compression from "compression";
-import cors from "cors";
-import { Router } from "express";
+import { FileUploadController } from "./file-upload";
+import { WorkspaceController } from "./workspace";
+import { ResponseController } from "./response";
 import { BusinessController } from "./business";
 import { FormController } from "./form";
-import { ResponseController } from "./response";
-import { WorkspaceController } from "./workspace";
+import { UserController } from "./user";
+import compression from "compression";
+import bodyParser from "body-parser";
+import { Router } from "express";
+import cors from "cors";
 
 export default (
   logMiddleware: any,
@@ -33,6 +35,8 @@ export default (
     .use("/workspaces", WorkspaceController.router)
     .use("/businesses", BusinessController.router)
     .use("/responses", ResponseController.router)
+    .use("/upload", FileUploadController.router)
+    .use("/user", UserController.router)
     .use("/forms", FormController.router);
 
   router.use("/api/v1", apiRouter).use(errorHandler);

@@ -61,6 +61,21 @@ class MongoBusinessRepository {
             }
         });
     }
+    updateDetails(businessId, logoUrl, description) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.model.updateOne({ _id: businessId }, { $set: { logoUrl, description } });
+                if (result.nModified !== 1) {
+                    throw new Error(`Error updating content ${result.nModified} updated`);
+                }
+            }
+            catch (ex) {
+                ex.details = ex.message;
+                ex.message = "DatabaseError";
+                throw ex;
+            }
+        });
+    }
     updateBranch(userId, newBranch) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.accountRelatedUpdate({
@@ -119,7 +134,7 @@ class MongoBusinessRepository {
         });
     }
     fetchAll() {
-        return this.model.find({});
+        return this.model.find({ approved: true });
     }
     updateLastLogin(user) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -150,7 +165,7 @@ class MongoBusinessRepository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield this.model.updateOne({}, update, arrayCondition);
-                if (result.nModified !== 1 || result.nMatched === 1) {
+                if (result.nModified !== 1) {
                     throw new Error("Update operation failed");
                 }
             }

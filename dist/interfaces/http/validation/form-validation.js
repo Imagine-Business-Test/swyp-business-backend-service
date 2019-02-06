@@ -44,7 +44,8 @@ exports.FormRules = {
     getWorkspaceForms: joi_1.default
         .object()
         .keys({
-        workspace: joi_1.default.string().required()
+        workspace: joi_1.default.string().required(),
+        businessId: joi_1.default.string().required()
     })
         .required()
 };

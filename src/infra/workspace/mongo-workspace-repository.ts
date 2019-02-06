@@ -55,7 +55,7 @@ export class MongoWorkspaceRepository implements IWorkspaceRepository {
         { _id: id },
         { $set: { deleted: true, lastUpdatedBy: user } }
       );
-      if (result.nModified !== 1 || result.nMatched === 1) {
+      if (result.nModified !== 1) {
         throw new Error(
           `Error deleting workspace: ${result.nModified} deleted `
         );

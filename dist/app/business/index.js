@@ -4,6 +4,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./get-business-user-activity-stats"));
+__export(require("./update-business-details"));
 __export(require("./request-password-reset"));
 __export(require("./delete-business-user"));
 __export(require("./login-business-user"));
