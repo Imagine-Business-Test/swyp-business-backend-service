@@ -28,22 +28,6 @@ export const ResponseRule = {
     })
     .required(),
 
-  updateContent: {
-    content: joi
-      .object()
-      .keys({
-        content: joi.string().required()
-      })
-      .required(),
-
-    response: joi
-      .object()
-      .keys({
-        response: joi.string().required()
-      })
-      .required()
-  },
-
   getFormResponse: joi
     .object()
     .keys({
@@ -51,14 +35,14 @@ export const ResponseRule = {
     })
     .required(),
 
-  processResponse: joi
+  signOffOfficially: joi
     .object()
     .keys({
-      response: joi.string().required()
+      signatureUrl: joi.string().required()
     })
     .required(),
 
-  deleteResponse: joi
+  id: joi
     .object()
     .keys({
       response: joi.string().required()

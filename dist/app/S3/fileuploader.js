@@ -19,6 +19,7 @@ class FileUploader extends operation_1.Operation {
     constructor(config) {
         super();
         aws_sdk_1.default.config.update({
+            region: "eu-central-1",
             accessKeyId: config.AWS.accessKeyId,
             secretAccessKey: config.AWS.secretAccessKey
         });

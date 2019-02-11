@@ -1,12 +1,13 @@
+import { ILoggedInUser } from "../interfaces";
 import mongoose from "mongoose";
 
 export type WorkspaceInterface = mongoose.Document & {
-  lastModifier: { email: string; name: string };
-  creator: { email: string; name: string };
-  parent: string;
+  lastModifier: ILoggedInUser;
+  creator: ILoggedInUser;
+  deleted: boolean;
   createdAt: Date;
   updatedAt: Date;
-  deleted: boolean;
+  parent: string;
   name: string;
   _id: string;
 };

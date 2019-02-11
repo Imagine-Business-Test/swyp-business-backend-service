@@ -58,11 +58,10 @@ import {
 } from "../../app/workspace";
 
 import {
-  UpdateResponseContent,
   GetResponseByStatus,
   AddNoteToResponse,
   GetFormResponses,
-  ProcessResponse,
+  OfficialSignoff,
   RecordResponse,
   DeleteResponse
 } from "../../app/response";
@@ -125,6 +124,15 @@ container.register({
 // Operations
 
 container.register({
+  getBusinessUserActivityStats: asClass(GetBusinessUserActivityStats),
+  getWorkspaceForms: asClass(GetWorkspaceForms),
+  updateFormContent: asClass(UpdateFormContent),
+  getBusinessForms: asClass(GetBusinessForms),
+  S3Uploader: asClass(FileUploader),
+  disableForm: asClass(DisableForm),
+  deleteForm: asClass(DeleteForm),
+  createForm: asClass(CreateForm),
+
   updateBusinessDetails: asClass(UpdateBusinessDetails),
   requestPasswordReset: asClass(RequestPasswordReset),
   deleteBusinessUser: asClass(DeleteBusinessUser),
@@ -136,30 +144,19 @@ container.register({
   getBusinesses: asClass(GetBusinesses),
   getWorkspaces: asClass(GetWorkspaces),
 
-  createWorkspace: asClass(CreateWorkspace),
-  deleteWorkspace: asClass(DeleteWorkspace),
-
-  updateResponseContent: asClass(UpdateResponseContent),
   getResponseByStatus: asClass(GetResponseByStatus),
   addNoteToResponse: asClass(AddNoteToResponse),
   getFormResponses: asClass(GetFormResponses),
-  processResponse: asClass(ProcessResponse),
+  officialSignoff: asClass(OfficialSignoff),
   recordResponse: asClass(RecordResponse),
   getFormContent: asClass(GetFormContent),
   deleteResponse: asClass(DeleteResponse),
 
-  getBusinessUserActivityStats: asClass(GetBusinessUserActivityStats),
-  getWorkspaceForms: asClass(GetWorkspaceForms),
-  updateFormContent: asClass(UpdateFormContent),
-  getBusinessForms: asClass(GetBusinessForms),
-  S3Uploader: asClass(FileUploader),
-  disableForm: asClass(DisableForm),
-  deleteForm: asClass(DeleteForm),
-  createForm: asClass(CreateForm)
+  createWorkspace: asClass(CreateWorkspace),
+  deleteWorkspace: asClass(DeleteWorkspace)
 });
 
 // Serializers
-
 container.register({
   workspaceSerializer: asValue(WorkspaceSerializer),
   responseSerializer: asValue(ResponseSerializer),

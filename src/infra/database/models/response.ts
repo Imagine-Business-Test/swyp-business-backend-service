@@ -36,16 +36,25 @@ const Schema = new mongoose.Schema({
     middlename: { type: String },
     phone: { type: String }
   },
-
-  processor: {
-    email: { type: String, email: true },
-    name: String
+  processors: {
+    worker: {
+      email: { type: String, email: true },
+      signatureUrl: String,
+      name: String,
+      role: String
+    },
+    manager: {
+      email: { type: String, email: true },
+      signatureUrl: String,
+      role: String,
+      name: String
+    }
   },
   updatedAt: { type: Date, required: true, default: new Date() },
   deleted: { type: Boolean, default: false },
   status: {
     type: String,
-    enum: ["pending", "processed", "noted"],
+    enum: ["pending", "processed", "partiallyprocessed"],
     default: "pending"
   }
 });

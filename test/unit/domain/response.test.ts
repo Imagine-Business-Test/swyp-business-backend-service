@@ -1,4 +1,8 @@
-import { IResponseContent, INote } from "../../../src/contracts/domain";
+import {
+  IResponseContent,
+  INote,
+  IProcessors
+} from "../../../src/contracts/domain";
 import { Response } from "../../../src/domain";
 
 const content: IResponseContent = {
@@ -16,6 +20,21 @@ const respondant = {
   email: "codebugsolved@gmail.com",
   phone: "08136868448",
   id: "123456"
+};
+
+const processors: IProcessors = {
+  worker: {
+    name: "Ossaija Thankgod",
+    email: "codebugsolved@gmail.com",
+    role: "worker",
+    signatureUrl: "signature.com"
+  },
+  manager: {
+    name: "Ossaija Thankgod",
+    email: "codebugsolved@gmail.com",
+    role: "manager",
+    signatureUrl: "signature.com"
+  }
 };
 
 const loggedInUser = {
@@ -46,7 +65,7 @@ const res = new Response(
   false,
   "4321",
   [note],
-  loggedInUser,
+  processors,
   date,
   date
 );
@@ -85,6 +104,12 @@ describe("Domain :: Response", () => {
   describe("#getBranch", () => {
     test("Return the branch where response should be processed", () => {
       expect(res.getBranch()).toBe(branch);
+    });
+  });
+
+  describe("#getgetProcessors", () => {
+    test("Return details about the individuals who signed off on the response", () => {
+      expect(res.getProcessors()).toEqual(expect.objectContaining(processors));
     });
   });
 

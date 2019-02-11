@@ -1,9 +1,20 @@
 import { IForm, IUser, IResponseContent, INote } from "../domain";
-import { ILoggedInUser } from "../interfaces";
 import mongoose from "mongoose";
 
+export interface IProcessor {
+  name: string;
+  role: string;
+  email: string;
+  signatureUrl: string;
+}
+
+interface IProcessors {
+  manager: IProcessor;
+  worker: IProcessor;
+}
+
 export type ResponseInterface = mongoose.Document & {
-  processor: ILoggedInUser;
+  processors: IProcessors;
   branch: string;
   respondant: IUser;
   deleted: boolean;

@@ -15,11 +15,13 @@ const Schema = new mongoose_1.default.Schema({
     updatedAt: { type: Date, default: new Date() },
     creator: {
         email: { type: String, email: true, required: true },
-        name: { type: String, required: true }
+        name: { type: String, required: true },
+        role: { type: String, required: true }
     },
     lastModifier: {
         email: { type: String, email: true, required: true },
-        name: { type: String, required: true }
+        name: { type: String, required: true },
+        role: { type: String, required: true }
     },
     deleted: { type: Boolean, default: false }
 });

@@ -7,41 +7,19 @@ exports.FileUploadController = {
     get router() {
         const router = express_1.Router();
         router
-            .post("/passport/:bankname/:name", this.uploadPassport)
-            .post("/signature/:bankname/:name", this.uploadSignature)
+            .post("/:assetType/:bankname/:name", this.uploadAsset)
             .post("/logos/:name", middleware_1.auth, this.uploadLogos);
         return router;
     },
-    uploadPassport(req, res, next) {
-        req.validateParams(validation_1.FileUploadRule.passportSignature);
+    uploadAsset(req, res, next) {
+        req.validateParams(validation_1.FileUploadRule.newAsset);
         const handler = req.container.resolve("S3Uploader");
-        const path = `${req.params.bankname}/passport`;
+        const path = `${req.params.bankname}/${req.params.assetType}`;
         const { SUCCESS, ERROR } = handler.outputs;
         const name = req.params.name;
         handler
             .on(SUCCESS, uploader => {
-            const singleUpload = uploader.single("passport");
-            singleUpload(req, res, (err) => {
-                if (err) {
-                    return res
-                        .status(422)
-                        .json({ type: "ImageUploadError", details: err.message });
-                }
-                return res.json({ imageUrl: req.file.location });
-            });
-        })
-            .on(ERROR, next);
-        handler.execute({ path, name });
-    },
-    uploadSignature(req, res, next) {
-        req.validateParams(validation_1.FileUploadRule.passportSignature);
-        const handler = req.container.resolve("S3Uploader");
-        const path = `${req.params.bankname}/signature`;
-        const { SUCCESS, ERROR } = handler.outputs;
-        const name = req.params.name;
-        handler
-            .on(SUCCESS, uploader => {
-            const singleUpload = uploader.single("signature");
+            const singleUpload = uploader.single("asset");
             singleUpload(req, res, (err) => {
                 if (err) {
                     return res
@@ -57,7 +35,7 @@ exports.FileUploadController = {
     uploadLogos(req, res, next) {
         req.validateParams(validation_1.FileUploadRule.logo);
         const handler = req.container.resolve("S3Uploader");
-        const path = `/logos`;
+        const path = `logos`;
         const { SUCCESS, ERROR } = handler.outputs;
         const name = req.params.name;
         handler

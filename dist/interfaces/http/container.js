@@ -61,6 +61,14 @@ container.register({
     validator: awilix_1.asValue(middleware_1.validator)
 });
 container.register({
+    getBusinessUserActivityStats: awilix_1.asClass(business_3.GetBusinessUserActivityStats),
+    getWorkspaceForms: awilix_1.asClass(form_3.GetWorkspaceForms),
+    updateFormContent: awilix_1.asClass(form_3.UpdateFormContent),
+    getBusinessForms: awilix_1.asClass(form_3.GetBusinessForms),
+    S3Uploader: awilix_1.asClass(S3_1.FileUploader),
+    disableForm: awilix_1.asClass(form_3.DisableForm),
+    deleteForm: awilix_1.asClass(form_3.DeleteForm),
+    createForm: awilix_1.asClass(form_3.CreateForm),
     updateBusinessDetails: awilix_1.asClass(business_3.UpdateBusinessDetails),
     requestPasswordReset: awilix_1.asClass(business_3.RequestPasswordReset),
     deleteBusinessUser: awilix_1.asClass(business_3.DeleteBusinessUser),
@@ -71,24 +79,15 @@ container.register({
     resetPassword: awilix_1.asClass(business_3.ResetPassword),
     getBusinesses: awilix_1.asClass(business_3.GetBusinesses),
     getWorkspaces: awilix_1.asClass(workspace_3.GetWorkspaces),
-    createWorkspace: awilix_1.asClass(workspace_3.CreateWorkspace),
-    deleteWorkspace: awilix_1.asClass(workspace_3.DeleteWorkspace),
-    updateResponseContent: awilix_1.asClass(response_3.UpdateResponseContent),
     getResponseByStatus: awilix_1.asClass(response_3.GetResponseByStatus),
     addNoteToResponse: awilix_1.asClass(response_3.AddNoteToResponse),
     getFormResponses: awilix_1.asClass(response_3.GetFormResponses),
-    processResponse: awilix_1.asClass(response_3.ProcessResponse),
+    officialSignoff: awilix_1.asClass(response_3.OfficialSignoff),
     recordResponse: awilix_1.asClass(response_3.RecordResponse),
     getFormContent: awilix_1.asClass(form_3.GetFormContent),
     deleteResponse: awilix_1.asClass(response_3.DeleteResponse),
-    getBusinessUserActivityStats: awilix_1.asClass(business_3.GetBusinessUserActivityStats),
-    getWorkspaceForms: awilix_1.asClass(form_3.GetWorkspaceForms),
-    updateFormContent: awilix_1.asClass(form_3.UpdateFormContent),
-    getBusinessForms: awilix_1.asClass(form_3.GetBusinessForms),
-    S3Uploader: awilix_1.asClass(S3_1.FileUploader),
-    disableForm: awilix_1.asClass(form_3.DisableForm),
-    deleteForm: awilix_1.asClass(form_3.DeleteForm),
-    createForm: awilix_1.asClass(form_3.CreateForm)
+    createWorkspace: awilix_1.asClass(workspace_3.CreateWorkspace),
+    deleteWorkspace: awilix_1.asClass(workspace_3.DeleteWorkspace)
 });
 container.register({
     workspaceSerializer: awilix_1.asValue(workspace_2.WorkspaceSerializer),

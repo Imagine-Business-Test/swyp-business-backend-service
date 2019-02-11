@@ -24,7 +24,7 @@ exports.BusinessRule = {
             phone: joi_1.default.string().required(),
             role: joi_1.default
                 .string()
-                .allow(["admin", "worker", "manager"])
+                .valid(["admin", "worker", "manager"])
                 .label("User role")
                 .required()
         })

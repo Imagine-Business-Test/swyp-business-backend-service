@@ -38,9 +38,20 @@ class MongoResponseRepository {
             }
         });
     }
-    makeAsprocessed(id, processor) {
+    updateProcessors(id, processor) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.update({ _id: id }, { $set: { status: "processed", processor, updatedAt: new Date() } });
+            const processorType = String(processor.role).toLocaleLowerCase();
+            const processors = {};
+            let status = "";
+            if (processorType === "worker") {
+                processors.worker = processor;
+                status = "partiallyprocessed";
+            }
+            else {
+                processors.manager = processor;
+                status = "processed";
+            }
+            yield this.update({ _id: id }, { $set: { status, processors, updatedAt: new Date() } });
         });
     }
     count(field) {
@@ -62,11 +73,6 @@ class MongoResponseRepository {
                 ex.message = "DatabaseError";
                 throw ex;
             }
-        });
-    }
-    updateContent(id, content) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.update({ _id: id }, { $set: { content } });
         });
     }
     getProcessingActivityStats() {

@@ -1,7 +1,14 @@
+import { IProcessor } from "../infra";
+
 export interface IForm {
   id: string;
   name: string;
   business: string;
+}
+
+export interface IProcessors {
+  manager: IProcessor;
+  worker: IProcessor;
 }
 
 export interface IResponseContent {

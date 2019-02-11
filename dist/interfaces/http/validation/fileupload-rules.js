@@ -5,9 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const joi_1 = __importDefault(require("joi"));
 exports.FileUploadRule = {
-    passportSignature: joi_1.default
+    newAsset: joi_1.default
         .object()
         .keys({
+        assetType: joi_1.default
+            .string()
+            .valid(["signatures", "passports", "official-signatures"])
+            .required(),
         bankname: joi_1.default.string().required(),
         name: joi_1.default.string().required()
     })

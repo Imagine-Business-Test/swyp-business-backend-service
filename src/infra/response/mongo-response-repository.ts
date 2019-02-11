@@ -4,7 +4,8 @@ import { ILoggedInUser } from "../../contracts/interfaces";
 import { Response } from "../../domain";
 import {
   ResponseInterface,
-  ResponseModel
+  ResponseModel,
+  IProcessor
 } from "../../contracts/infra/response";
 
 export class MongoResponseRepository implements IResponseRepository {
@@ -42,10 +43,20 @@ export class MongoResponseRepository implements IResponseRepository {
     }
   }
 
-  public async makeAsprocessed(id: string, processor: ILoggedInUser) {
+  public async updateProcessors(id: string, processor: IProcessor) {
+    const processorType = String(processor.role).toLocaleLowerCase();
+    const processors: { worker?: IProcessor; manager?: IProcessor } = {};
+    let status: string = "";
+    if (processorType === "worker") {
+      processors.worker = processor;
+      status = "partiallyprocessed";
+    } else {
+      processors.manager = processor;
+      status = "processed";
+    }
     await this.update(
       { _id: id },
-      { $set: { status: "processed", processor, updatedAt: new Date() } }
+      { $set: { status, processors, updatedAt: new Date() } }
     );
   }
 
@@ -67,10 +78,6 @@ export class MongoResponseRepository implements IResponseRepository {
       ex.message = "DatabaseError";
       throw ex;
     }
-  }
-
-  public async updateContent(id: string, content: string) {
-    await this.update({ _id: id }, { $set: { content } });
   }
 
   public async getProcessingActivityStats() {

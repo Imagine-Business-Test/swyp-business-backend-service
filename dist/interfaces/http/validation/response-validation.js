@@ -29,33 +29,19 @@ exports.ResponseRule = {
             .required()
     })
         .required(),
-    updateContent: {
-        content: joi_1.default
-            .object()
-            .keys({
-            content: joi_1.default.string().required()
-        })
-            .required(),
-        response: joi_1.default
-            .object()
-            .keys({
-            response: joi_1.default.string().required()
-        })
-            .required()
-    },
     getFormResponse: joi_1.default
         .object()
         .keys({
         form: joi_1.default.string().required()
     })
         .required(),
-    processResponse: joi_1.default
+    signOffOfficially: joi_1.default
         .object()
         .keys({
-        response: joi_1.default.string().required()
+        signatureUrl: joi_1.default.string().required()
     })
         .required(),
-    deleteResponse: joi_1.default
+    id: joi_1.default
         .object()
         .keys({
         response: joi_1.default.string().required()

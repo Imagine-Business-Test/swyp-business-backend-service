@@ -1,13 +1,12 @@
 import { Response, Router } from "express";
 import Status from "http-status";
 import {
-  AddNoteToResponse,
-  DeleteResponse,
-  GetFormResponses,
   GetResponseByStatus,
-  ProcessResponse,
+  AddNoteToResponse,
+  GetFormResponses,
+  DeleteResponse,
   RecordResponse,
-  UpdateResponseContent
+  OfficialSignoff
 } from "../../../app/response";
 import { auth } from "../middleware";
 import { ResponseRule } from "../validation";
@@ -18,9 +17,8 @@ export const ResponseController = {
     router
       .get("/bystatus/:status", auth, this.getByStatus)
       .get("/forms/:form", auth, this.getFormResponses)
-      .put("/process/:response", auth, this.process)
       .post("/addnote/:response", auth, this.addNote)
-      .put("/:response", auth, this.updateContent)
+      .put("/signoff/:response", auth, this.signOff)
       .delete("/:response", auth, this.delete)
       .post("/", this.record);
 
@@ -62,6 +60,31 @@ export const ResponseController = {
       .on(ERROR, next);
 
     handler.execute(req.params);
+  },
+
+  signOff(req: any, res: Response, next: any) {
+    req.validateBody(ResponseRule.signOffOfficially);
+    req.validateParams(ResponseRule.id);
+    const handler = req.container.resolve("officialSignoff") as OfficialSignoff;
+    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+    const command = {
+      user: req.user,
+      id: req.params.response,
+      signatureUrl: req.body.signatureUrl
+    };
+    handler
+      .on(SUCCESS, response => {
+        res.status(Status.OK).json(response);
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.INTERNAL_SERVER_ERROR).json({
+          details: error.details,
+          type: "DatabaseError"
+        });
+      })
+      .on(ERROR, next);
+
+    handler.execute(command);
   },
 
   getByStatus(req: any, res: Response, next: any) {
@@ -130,57 +153,8 @@ export const ResponseController = {
     handler.execute(command);
   },
 
-  updateContent(req: any, res: Response, next: any) {
-    req.validateParams(ResponseRule.updateContent.response);
-    req.validateBody(ResponseRule.updateContent.content);
-    const handler = req.container.resolve(
-      "updateResponseContent"
-    ) as UpdateResponseContent;
-    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-
-    handler
-      .on(SUCCESS, () => {
-        res.status(Status.OK).json({ updated: true });
-      })
-      .on(DATABASE_ERROR, error => {
-        res.status(Status.BAD_REQUEST).json({
-          details: error.details,
-          type: "DatabaseError"
-        });
-      })
-      .on(ERROR, next);
-    const command = {
-      content: req.body.content,
-      response: req.params.response
-    };
-    handler.execute(command);
-  },
-
-  process(req: any, res: Response, next: any) {
-    req.validateParams(ResponseRule.processResponse);
-    const handler = req.container.resolve("processResponse") as ProcessResponse;
-    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-
-    handler
-      .on(SUCCESS, () => {
-        res.status(Status.OK).json({ updated: true });
-      })
-      .on(DATABASE_ERROR, error => {
-        res.status(Status.BAD_REQUEST).json({
-          details: error.details,
-          type: "DatabaseError"
-        });
-      })
-      .on(ERROR, next);
-    const command = {
-      processor: req.user,
-      response: req.params.response
-    };
-    handler.execute(command);
-  },
-
   delete(req: any, res: Response, next: any) {
-    req.validateParams(ResponseRule.processResponse);
+    req.validateParams(ResponseRule.id);
     const handler = req.container.resolve("deleteResponse") as DeleteResponse;
     const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
 

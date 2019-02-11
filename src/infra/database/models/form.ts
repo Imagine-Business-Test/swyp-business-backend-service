@@ -18,14 +18,17 @@ const Schema = new mongoose.Schema({
   elements: { type: Array, required: true },
   creator: {
     email: { type: String, email: true, required: true },
-    name: { type: String, required: true }
+    name: { type: String, required: true },
+    role: { type: String, required: true }
   },
   lastModifier: {
     email: { type: String, email: true, required: true },
-    name: { type: String, required: true }
+    name: { type: String, required: true },
+    role: { type: String, required: true }
   },
   name: { type: String, required: true },
-  slug: { type: String, required: true }
+  slug: { type: String, required: true },
+  role: { type: String, required: true }
 });
 
 Schema.pre("update", function update(next) {

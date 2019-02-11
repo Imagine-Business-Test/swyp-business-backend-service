@@ -1,5 +1,6 @@
 export interface ILoggedInUser {
   email: string;
+  role: string;
   name: string;
 }
 export interface IAuthenticatedUser {

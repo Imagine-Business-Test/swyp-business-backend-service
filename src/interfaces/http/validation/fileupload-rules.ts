@@ -1,9 +1,13 @@
 import joi from "joi";
 
 export const FileUploadRule = {
-  passportSignature: joi
+  newAsset: joi
     .object()
     .keys({
+      assetType: joi
+        .string()
+        .valid(["signatures", "passports", "official-signatures"])
+        .required(),
       bankname: joi.string().required(),
       name: joi.string().required()
     })

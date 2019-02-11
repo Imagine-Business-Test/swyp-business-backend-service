@@ -1,7 +1,12 @@
-import { IForm, IUser, IResponseContent, INote } from "../contracts/domain";
-import { ILoggedInUser } from "../contracts/interfaces";
+import {
+  IResponseContent,
+  IProcessors,
+  IForm,
+  IUser,
+  INote
+} from "../contracts/domain";
 export class Response {
-  private processor?: ILoggedInUser;
+  private processors?: IProcessors;
   private deleted: boolean;
   private respondant: IUser;
   private updatedAt?: Date;
@@ -22,11 +27,11 @@ export class Response {
     deleted: boolean,
     id?: string,
     notes?: [INote],
-    processor?: ILoggedInUser,
+    processors?: IProcessors,
     createdAt?: Date,
     updatedAt?: Date
   ) {
-    this.processor = processor;
+    this.processors = processors;
     this.respondant = respondant;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
@@ -43,8 +48,8 @@ export class Response {
     return this.updatedAt!;
   }
 
-  public getProcessor(): ILoggedInUser {
-    return this.processor!;
+  public getProcessors(): IProcessors {
+    return this.processors!;
   }
 
   public getNotes(): [INote] {

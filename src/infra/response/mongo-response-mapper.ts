@@ -14,7 +14,7 @@ export const MongoResponseMapper = {
       createdAt,
       form,
       notes,
-      processor
+      processors
     } = doc;
     return new Response(
       respondant,
@@ -25,7 +25,7 @@ export const MongoResponseMapper = {
       deleted,
       _id,
       notes,
-      processor,
+      processors,
       createdAt,
       updatedAt
     );
@@ -33,14 +33,14 @@ export const MongoResponseMapper = {
 
   toDatabase(response: Response) {
     return {
-      respondant: response.getRespondant(),
-      form: response.getForm(),
-      branch: response.getBranch(),
-      content: response.getContent(),
-      status: response.getStatus(),
-      deleted: response.isDeleted(),
+      updatedAt: response.getLastMoficationDate(),
       createdAt: response.getCreationDate(),
-      updatedAt: response.getLastMoficationDate()
+      respondant: response.getRespondant(),
+      content: response.getContent(),
+      branch: response.getBranch(),
+      deleted: response.isDeleted(),
+      status: response.getStatus(),
+      form: response.getForm()
     };
   }
 };

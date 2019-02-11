@@ -10,6 +10,7 @@ export class FileUploader extends Operation {
   constructor(config: IConfig) {
     super();
     AWS.config.update({
+      region: "eu-central-1",
       accessKeyId: config.AWS.accessKeyId,
       secretAccessKey: config.AWS.secretAccessKey
     });
