@@ -20,16 +20,15 @@ class Mailer {
         const text = `Hello ${name} . \n Your password on swyp app was changed.`;
         this.send(text, "Password Changed", email);
     }
-    welcome(name, creator, businessName, email, link) {
-        const text = `Hello ${name[0].toUpperCase()}${name.slice(1)}.
-    \n A Swyp business account has been created on your behalf by ${creator}
-    for ${businessName}. \n\n
+    welcome(name, creator, email, link) {
+        const text = `Hello ${name[0].toUpperCase()}${name.slice(1)}
+    \n A Swyp business account has been created for you by ${creator}. \n\n
     Use the link below to update your password and start using your account. \n
     ${link}`;
         this.send(text, "Welcome To Swyp", email);
     }
     welcomeAdmin(businessName, userName, email) {
-        const text = `Dear ${userName[0].toUpperCase()}${userName.slice(1)}.
+        const text = `Hello ${userName[0].toUpperCase()}${userName.slice(1)}
     \n Welcome to swyp, you and ${businessName} have just began a journey of endless possibilities.
     \nPlease take a little time to setup your account fully.\n
      Our statistics show that businesses with good logo art work, clean forms, quick form processing time recieves more user interactions than those with poor art work, confusing forms, and long form processing time.\n You can add more users to your team to help you get your create beautiful forms for your users.\n\n
@@ -57,10 +56,10 @@ class Mailer {
     }
     configureMailOPtion() {
         return {
-            from: "'Swyp 👻' <foo@example.com>",
+            from: "'Swyp' <info@swyp.com>",
             to: "",
             subject: "",
-            "h:Reply-To": "info@naijachamps.com",
+            "h:Reply-To": "info@swyp.com",
             text: ""
         };
     }

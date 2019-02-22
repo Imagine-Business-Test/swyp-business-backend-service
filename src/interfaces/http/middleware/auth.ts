@@ -20,7 +20,6 @@ export const auth = (req: any, res: Response, next: any) => {
       token,
       req.config.web.json_secret
     ) as IAuthenticatedUser);
-
     if (!user.isBusiness) {
       throw new Error("AuthorizationError");
     }

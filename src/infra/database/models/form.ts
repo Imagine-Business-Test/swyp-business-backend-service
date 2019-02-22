@@ -27,8 +27,7 @@ const Schema = new mongoose.Schema({
     role: { type: String, required: true }
   },
   name: { type: String, required: true },
-  slug: { type: String, required: true },
-  role: { type: String, required: true }
+  slug: { type: String, required: true }
 });
 
 Schema.pre("update", function update(next) {

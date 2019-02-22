@@ -31,8 +31,7 @@ const Schema = new mongoose_1.default.Schema({
         role: { type: String, required: true }
     },
     name: { type: String, required: true },
-    slug: { type: String, required: true },
-    role: { type: String, required: true }
+    slug: { type: String, required: true }
 });
 Schema.pre("update", function update(next) {
     this.update({}, { $set: { updatedAt: new Date() } });

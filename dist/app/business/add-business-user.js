@@ -28,7 +28,7 @@ class AddBusinessUser extends operation_1.Operation {
                 const business = yield this.businessRepository.addAccount(businessId, account);
                 const user = business.getUser();
                 const link = command.origin + `?token=${urlToken}`;
-                this.mailer.welcome(user.name, command.user.name, business.getName(), user.email, link);
+                this.mailer.welcome(user.name, command.user.name, user.email, link);
                 return this.emit(SUCCESS, { business });
             }
             catch (ex) {
