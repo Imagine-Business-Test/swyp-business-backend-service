@@ -25,11 +25,12 @@ const Schema = new mongoose.Schema({
       role: {
         type: String,
         required: true,
-        enum: ["admin", "worker", "manager"]
+        enum: ["admin", "initiator", "approver"]
       },
       updatedAt: { type: Date, default: new Date() }
     }
   ],
+
   name: { type: String, required: true, unique: true },
   slug: { type: String, required: true, unique: true },
   approved: { type: Boolean, default: false },

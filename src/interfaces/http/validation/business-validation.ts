@@ -20,7 +20,7 @@ export const BusinessRule = {
           phone: joi.string().required(),
           role: joi
             .string()
-            .valid(["admin", "worker", "manager"])
+            .valid(["admin", "initiator", "approver"])
             .label("User role")
             .required()
         })

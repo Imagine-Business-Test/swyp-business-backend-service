@@ -29,7 +29,7 @@ const Schema = new mongoose_1.default.Schema({
             role: {
                 type: String,
                 required: true,
-                enum: ["admin", "worker", "manager"]
+                enum: ["admin", "initiator", "approver"]
             },
             updatedAt: { type: Date, default: new Date() }
         }
