@@ -35,9 +35,10 @@ const tranformData = (response: ResponseInterface[]) => {
       status: res.status,
       branche: res.branch,
       content: res.content,
-      createdAt: res.createdAt,
       updatedAt: res.updatedAt,
-      respondant: res.respondant
+      createdAt: res.createdAt,
+      respondant: res.respondant,
+      processors: res.processors
     };
   });
 };

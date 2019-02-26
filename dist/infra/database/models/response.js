@@ -41,14 +41,16 @@ const Schema = new mongoose_1.default.Schema({
         phone: { type: String }
     },
     processors: {
-        worker: {
+        initiator: {
             email: { type: String, email: true },
+            dateOfApproval: Date,
             signatureUrl: String,
             name: String,
             role: String
         },
-        manager: {
+        approver: {
             email: { type: String, email: true },
+            dateOfApproval: Date,
             signatureUrl: String,
             role: String,
             name: String

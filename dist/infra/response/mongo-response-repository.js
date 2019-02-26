@@ -41,14 +41,15 @@ class MongoResponseRepository {
     updateProcessors(id, processor) {
         return __awaiter(this, void 0, void 0, function* () {
             const processorType = String(processor.role).toLocaleLowerCase();
+            processor.dateOfApproval = new Date();
             const processors = {};
             let status = "";
-            if (processorType === "worker") {
-                processors.worker = processor;
+            if (processorType === "initiator") {
+                processors.initiator = processor;
                 status = "partiallyprocessed";
             }
             else {
-                processors.manager = processor;
+                processors.approver = processor;
                 status = "processed";
             }
             yield this.update({ _id: id }, { $set: { status, processors, updatedAt: new Date() } });

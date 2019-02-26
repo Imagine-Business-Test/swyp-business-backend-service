@@ -45,13 +45,14 @@ export class MongoResponseRepository implements IResponseRepository {
 
   public async updateProcessors(id: string, processor: IProcessor) {
     const processorType = String(processor.role).toLocaleLowerCase();
-    const processors: { worker?: IProcessor; manager?: IProcessor } = {};
+    processor.dateOfApproval = new Date();
+    const processors: { initiator?: IProcessor; approver?: IProcessor } = {};
     let status: string = "";
-    if (processorType === "worker") {
-      processors.worker = processor;
+    if (processorType === "initiator") {
+      processors.initiator = processor;
       status = "partiallyprocessed";
     } else {
-      processors.manager = processor;
+      processors.approver = processor;
       status = "processed";
     }
     await this.update(

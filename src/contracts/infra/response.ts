@@ -5,6 +5,7 @@ export interface IProcessor {
   name: string;
   role: string;
   email: string;
+  dateOfApproval?: Date;
   signatureUrl: string;
 }
 
