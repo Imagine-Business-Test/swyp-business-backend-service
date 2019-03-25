@@ -19,15 +19,23 @@ exports.FileUploadController = {
         const name = req.params.name;
         handler
             .on(SUCCESS, uploader => {
-            const singleUpload = uploader.single("asset");
-            singleUpload(req, res, (err) => {
-                if (err) {
-                    return res
-                        .status(422)
-                        .json({ type: "ImageUploadError", details: err.message });
-                }
-                return res.json({ imageUrl: req.file.location });
-            });
+            try {
+                const singleUpload = uploader.single("asset");
+                singleUpload(req, res, (err) => {
+                    if (err) {
+                        return res
+                            .status(422)
+                            .json({ type: "ImageUploadError", details: err.message });
+                    }
+                    return res.json({ assetUrl: req.file.location });
+                });
+                return null;
+            }
+            catch (error) {
+                return res
+                    .status(422)
+                    .json({ type: "ImageUploadError", details: error.message });
+            }
         })
             .on(ERROR, next);
         handler.execute({ path, name });

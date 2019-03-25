@@ -6,7 +6,13 @@ export const FileUploadRule = {
     .keys({
       assetType: joi
         .string()
-        .valid(["signatures", "passports", "official-signatures"])
+        .valid([
+          "official-signatures",
+          "signatures",
+          "passports",
+          "videos",
+          "pictures"
+        ])
         .required(),
       bankname: joi.string().required(),
       name: joi.string().required()

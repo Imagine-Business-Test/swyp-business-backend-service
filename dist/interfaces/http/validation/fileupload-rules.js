@@ -10,7 +10,13 @@ exports.FileUploadRule = {
         .keys({
         assetType: joi_1.default
             .string()
-            .valid(["signatures", "passports", "official-signatures"])
+            .valid([
+            "official-signatures",
+            "signatures",
+            "passports",
+            "videos",
+            "pictures"
+        ])
             .required(),
         bankname: joi_1.default.string().required(),
         name: joi_1.default.string().required()
