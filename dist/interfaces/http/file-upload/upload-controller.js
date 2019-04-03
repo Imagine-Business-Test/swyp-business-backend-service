@@ -12,6 +12,7 @@ exports.FileUploadController = {
         return router;
     },
     uploadAsset(req, res, next) {
+        console.log("request started");
         req.validateParams(validation_1.FileUploadRule.newAsset);
         const handler = req.container.resolve("S3Uploader");
         const path = `${req.params.bankname}/${req.params.assetType}`;
@@ -22,6 +23,7 @@ exports.FileUploadController = {
             try {
                 const singleUpload = uploader.single("asset");
                 singleUpload(req, res, (err) => {
+                    console.log("making actual request");
                     if (err) {
                         return res
                             .status(422)
