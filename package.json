@@ -7,7 +7,8 @@
   "license": "None",
   "scripts": {
     "start": "node dist/index.js",
-    "build": "yarn format && yarn build-ts && yarn test",
+    "build": "yarn start",
+    "build:dev": "yarn format && yarn build-ts && yarn test",
     "watch-node": "nodemon dist/index.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "test": "jest --forceExit --coverage --verbose",
@@ -89,8 +90,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run build",
-      "pre-push": "npm run build"
+      "pre-commit": "npm run build:dev",
+      "pre-push": "npm run build:dev"
     }
   },
   "lint-staged": {
