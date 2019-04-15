@@ -51,6 +51,7 @@ exports.ResponseController = {
     signOff(req, res, next) {
         req.validateBody(validation_1.ResponseRule.signOffOfficially);
         req.validateParams(validation_1.ResponseRule.id);
+        const serializer = req.container.resolve("responseSerializer");
         const handler = req.container.resolve("officialSignoff");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
         const command = {
@@ -60,7 +61,7 @@ exports.ResponseController = {
         };
         handler
             .on(SUCCESS, response => {
-            res.status(http_status_1.default.OK).json(response);
+            res.status(http_status_1.default.OK).json(serializer.serialize(response));
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.INTERNAL_SERVER_ERROR).json({

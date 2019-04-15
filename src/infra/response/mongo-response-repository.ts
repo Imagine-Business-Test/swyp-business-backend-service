@@ -21,7 +21,11 @@ export class MongoResponseRepository implements IResponseRepository {
       .sort({ createdAt: -1 });
   }
 
-  public async addNote(id: string, note: string, notedBy: ILoggedInUser) {
+  public async addNote(
+    id: string,
+    note: string,
+    notedBy: ILoggedInUser
+  ): Promise<Response> {
     try {
       // @ts-ignore
       const doc: ResponseInterface = await this.model.findOneAndUpdate(
@@ -43,7 +47,10 @@ export class MongoResponseRepository implements IResponseRepository {
     }
   }
 
-  public async updateProcessors(id: string, processor: IProcessor) {
+  public async updateProcessors(
+    id: string,
+    processor: IProcessor
+  ): Promise<Response> {
     const processorType = String(processor.role).toLocaleLowerCase();
     processor.dateOfApproval = new Date();
     const processors: { initiator?: IProcessor; approver?: IProcessor } = {};
@@ -55,10 +62,20 @@ export class MongoResponseRepository implements IResponseRepository {
       processors.approver = processor;
       status = "processed";
     }
-    await this.update(
-      { _id: id },
-      { $set: { status, processors, updatedAt: new Date() } }
-    );
+
+    try {
+      // @ts-ignore
+      const doc: ResponseInterface = await this.model.findOneAndUpdate(
+        { _id: id },
+        { $set: { status, processors, updatedAt: new Date() } },
+        { new: true }
+      );
+      return MongoResponseMapper.toEntity(doc);
+    } catch (ex) {
+      ex.details = ex.message;
+      ex.message = "DatabaseError";
+      throw ex;
+    }
   }
 
   public async count(field?: { [name: string]: string }) {

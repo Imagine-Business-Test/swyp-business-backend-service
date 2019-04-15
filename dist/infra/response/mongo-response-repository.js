@@ -52,7 +52,15 @@ class MongoResponseRepository {
                 processors.approver = processor;
                 status = "processed";
             }
-            yield this.update({ _id: id }, { $set: { status, processors, updatedAt: new Date() } });
+            try {
+                const doc = yield this.model.findOneAndUpdate({ _id: id }, { $set: { status, processors, updatedAt: new Date() } }, { new: true });
+                return mongo_response_mapper_1.MongoResponseMapper.toEntity(doc);
+            }
+            catch (ex) {
+                ex.details = ex.message;
+                ex.message = "DatabaseError";
+                throw ex;
+            }
         });
     }
     count(field) {

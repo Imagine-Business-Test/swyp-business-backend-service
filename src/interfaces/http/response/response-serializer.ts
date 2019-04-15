@@ -19,6 +19,7 @@ export const ResponseSerializer = {
       notes: response.getNotes(),
       status: response.getStatus(),
       content: response.getContent(),
+      processors: response.getProcessors(),
       respondant: response.getRespondant(),
       createdAt: response.getCreationDate(),
       updatedAt: response.getLastMoficationDate()

@@ -24,8 +24,8 @@ export class OfficialSignoff extends Operation {
         ...user,
         signatureUrl
       };
-      await this.repository.updateProcessors(id, processor);
-      return this.emit(SUCCESS, { updated: true });
+      const doc = await this.repository.updateProcessors(id, processor);
+      return this.emit(SUCCESS, doc);
     } catch (error) {
       if (error.message === "DatabaseError") {
         return this.emit(DATABASE_ERROR, error);

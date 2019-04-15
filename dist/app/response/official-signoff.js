@@ -20,8 +20,8 @@ class OfficialSignoff extends operation_1.Operation {
             try {
                 const { user, signatureUrl, id } = command;
                 const processor = Object.assign({}, user, { signatureUrl });
-                yield this.repository.updateProcessors(id, processor);
-                return this.emit(SUCCESS, { updated: true });
+                const doc = yield this.repository.updateProcessors(id, processor);
+                return this.emit(SUCCESS, doc);
             }
             catch (error) {
                 if (error.message === "DatabaseError") {
