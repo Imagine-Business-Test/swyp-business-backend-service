@@ -7,5 +7,6 @@ module.exports = {
     "ts",
     "js"
   ],
-  "collectCoverage": true
+  "collectCoverage": true,
+  "testURL":"http://localhost"
 }
