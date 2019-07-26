@@ -69,16 +69,18 @@ export class MongoFormRepository implements IFormRepository {
 
   public async fetchByBusiness(
     business: string,
-    formType: string
+    formType: string,
+    formTypeParent: string
   ): Promise<FormInterface[]> {
     return this.model
       .find({
         "business.id": business,
         "workspace.name": formType,
+        "workspace.parent": formTypeParent,
         status: "active",
         deleted: false
       })
-      .limit(10)
+      .limit(50)
       .select("name slug workspace elements _id");
   }
 

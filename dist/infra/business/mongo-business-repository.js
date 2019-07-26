@@ -47,6 +47,16 @@ class MongoBusinessRepository {
             }, { arrayFilters: [{ "element.email": email, "element.deleted": false }] });
         });
     }
+    deleteBranch(name, modifer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.accountRelatedUpdate({
+                $set: {
+                    "branches.$[element].deleted": true,
+                    "branches.$[element].deletedBy": modifer
+                }
+            }, { arrayFilters: [{ "element.name": name, "element.deleted": false }] });
+        });
+    }
     add(business) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -125,6 +135,31 @@ class MongoBusinessRepository {
                     throw new Error(`Account not found`);
                 }
                 return mongo_business_mapper_1.MongoBusinessMapper.toEntity(doc, account);
+            }
+            catch (ex) {
+                ex.details = ex.message;
+                ex.message = "DatabaseError";
+                throw ex;
+            }
+        });
+    }
+    addBranch(businessId, branch) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let doc = yield this.model.findOne({
+                    "branch.name": branch.name,
+                    "branch.deleted": false
+                });
+                if (doc && doc.deleted) {
+                    throw new Error(`Branch with the provided name already exist`);
+                }
+                doc = yield this.model.findByIdAndUpdate(businessId, {
+                    $addToSet: { branches: branch }
+                }, { new: true });
+                if (!doc) {
+                    throw new Error(`Branch not found`);
+                }
+                return mongo_business_mapper_1.MongoBusinessMapper.toEntity(doc);
             }
             catch (ex) {
                 ex.details = ex.message;

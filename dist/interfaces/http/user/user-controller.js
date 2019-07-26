@@ -16,6 +16,7 @@ exports.UserController = {
             .post("/resetpassword", this.resetPassword)
             .post("/add", middleware_1.auth, middleware_1.admin, this.addUser)
             .get("/stats", middleware_1.auth, this.getStats)
+            .get("/completesignup", this.completeSignup)
             .post("/login", this.loginUser);
         return router;
     },
@@ -63,6 +64,8 @@ exports.UserController = {
                 phone: req.body.phone,
                 email: req.body.email,
                 name: req.body.name,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
                 role: req.body.role
             },
             origin: req.body.origin,
@@ -73,6 +76,26 @@ exports.UserController = {
     },
     loginUser(req, res, next) {
         req.validateBody(validation_1.UserRules.loginUser);
+        const handler = req.container.resolve("loginBusinessUser");
+        const serializer = req.container.resolve("businessSerializer");
+        const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+        handler
+            .on(SUCCESS, response => {
+            res.status(http_status_1.default.OK).json(serializer.serialize(response));
+        })
+            .on(DATABASE_ERROR, error => {
+            res.status(http_status_1.default.BAD_REQUEST).json({
+                details: error.details,
+                type: "DatabaseError"
+            });
+        })
+            .on(ERROR, next);
+        handler.execute(req.body);
+    },
+    completeSignup(req, res, next) {
+        res.send(req);
+        return;
+        req.validateBody(validation_1.UserRules.completeSignup);
         const handler = req.container.resolve("loginBusinessUser");
         const serializer = req.container.resolve("businessSerializer");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;

@@ -1,6 +1,7 @@
 import { ILoggedInUser } from "../interfaces";
 import { Business } from "../../domain";
 import { IAccount } from "../domain";
+import { IBranch } from "../infra";
 
 export interface IBusinessRepository {
   updateDetails: (
@@ -10,7 +11,9 @@ export interface IBusinessRepository {
   ) => void;
   requestPasswordReset: (email: string, token: string, expires: Date) => void;
   addAccount: (business: string, account: IAccount) => Promise<Business>;
+  addBranch: (business: string, branch: IBranch) => Promise<Business>;
   deleteAccount: (email: string, modifier: ILoggedInUser) => void;
+  deleteBranch: (name: string, modifier: ILoggedInUser) => void;
   findByPasswordResetToken: (token: string) => Promise<Business>;
   updatePassword: (email: string, password: string) => void;
   updateBranch: (userId: string, newBranch: string) => void;

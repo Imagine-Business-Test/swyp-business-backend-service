@@ -9,7 +9,7 @@ export const errorHandler = (
 ): void => {
   if (err.message === "ValidationError") {
     return res.status(Status.BAD_REQUEST).json({
-      type: "ValidationError",
+      type: "ehValidationError",
       message: err.details
     });
   }

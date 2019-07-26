@@ -5,6 +5,7 @@ import { ResponseController } from "./response";
 import { BusinessController } from "./business";
 import { FormController } from "./form";
 import { UserController } from "./user";
+import { BranchController } from "./branch";
 import compression from "compression";
 import bodyParser from "body-parser";
 import { Router } from "express";
@@ -37,6 +38,8 @@ export default (
     .use("/responses", ResponseController.router)
     .use("/upload", FileUploadController.router)
     .use("/user", UserController.router)
+    // .use("/completesignup", UserController.router)
+    .use("/branch", BranchController.router)
     .use("/forms", FormController.router);
 
   router.use("/api/v1", apiRouter).use(errorHandler);

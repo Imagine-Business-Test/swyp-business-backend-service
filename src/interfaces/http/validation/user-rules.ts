@@ -1,6 +1,8 @@
 import joi from "joi";
 
 export const UserRules = {
+  completeSignup: joi.string().required(),
+
   resetPassword: joi
     .object()
     .keys({
@@ -31,6 +33,8 @@ export const UserRules = {
         .required()
         .label("Url to redirect user"),
       name: joi.string().required(),
+      firstname: joi.string().required(),
+      lastname: joi.string().required(),
       phone: joi.string().required()
     })
     .required(),

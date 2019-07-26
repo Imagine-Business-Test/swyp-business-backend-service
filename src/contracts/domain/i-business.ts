@@ -11,6 +11,8 @@ export interface IAccount {
   phone: string;
   email: string;
   name: string;
+  firstname: string;
+  lastname: string;
   role: string;
 }
 

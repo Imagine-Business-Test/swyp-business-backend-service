@@ -11,17 +11,16 @@ export interface IFormRepository {
   disable: (id: string, modifier: ILoggedInUser) => void;
   delete: (id: string, user: ILoggedInUser) => void;
   find: (id: string) => Promise<Form>;
-  fetchContentOf: (
-    options: {
-      formSlug: string;
-      formType: string;
-      formTypeParent: string;
-      businessSlug: string;
-    }
-  ) => Promise<Form>;
+  fetchContentOf: (options: {
+    formSlug: string;
+    formType: string;
+    formTypeParent: string;
+    businessSlug: string;
+  }) => Promise<Form>;
   fetchByBusiness: (
     business: string,
-    formType: string
+    formType: string,
+    formTypeParent: string
   ) => Promise<FormInterface[]>;
   add: (form: Form) => Promise<Form>;
 }

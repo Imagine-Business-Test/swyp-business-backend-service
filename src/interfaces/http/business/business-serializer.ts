@@ -51,6 +51,8 @@ const pruneSensitiveUserData = (accounts: IAccount[] | IAccount) => {
           phone: account.phone,
           role: account.role,
           name: account.name,
+          firstname: account.firstname,
+          lastname: account.lastname,
           id: account._id
         };
       });
@@ -64,6 +66,8 @@ const pruneSensitiveUserData = (accounts: IAccount[] | IAccount) => {
     phone: (accounts as IAccount).phone,
     role: (accounts as IAccount).role,
     name: (accounts as IAccount).name,
+    firstname: (accounts as IAccount).firstname,
+    lastname: (accounts as IAccount).lastname,
     id: (accounts as IAccount)._id
   };
 };

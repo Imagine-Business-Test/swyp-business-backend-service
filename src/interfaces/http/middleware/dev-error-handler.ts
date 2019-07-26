@@ -9,7 +9,7 @@ export const devErrorHandler = (
 ): void => {
   if (err.message === "ValidationError") {
     return res.status(Status.BAD_REQUEST).json({
-      type: "ValidationError",
+      type: "dehValidationError",
       message: err.details
     });
   }

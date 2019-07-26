@@ -7,7 +7,7 @@ const http_status_1 = __importDefault(require("http-status"));
 exports.devErrorHandler = (err, _req, res, _next) => {
     if (err.message === "ValidationError") {
         return res.status(http_status_1.default.BAD_REQUEST).json({
-            type: "ValidationError",
+            type: "dehValidationError",
             message: err.details
         });
     }

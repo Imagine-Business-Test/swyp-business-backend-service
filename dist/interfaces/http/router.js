@@ -9,6 +9,7 @@ const response_1 = require("./response");
 const business_1 = require("./business");
 const form_1 = require("./form");
 const user_1 = require("./user");
+const branch_1 = require("./branch");
 const compression_1 = __importDefault(require("compression"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const express_1 = require("express");
@@ -32,6 +33,7 @@ exports.default = (logMiddleware, errorHandler, container, validator, configMidd
         .use("/responses", response_1.ResponseController.router)
         .use("/upload", file_upload_1.FileUploadController.router)
         .use("/user", user_1.UserController.router)
+        .use("/branch", branch_1.BranchController.router)
         .use("/forms", form_1.FormController.router);
     router.use("/api/v1", apiRouter).use(errorHandler);
     return router;

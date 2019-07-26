@@ -12,6 +12,8 @@ export const BusinessRule = {
             .email()
             .required(),
           name: joi.string().required(),
+          firstname: joi.string().required(),
+          lastname: joi.string().required(),
           branch: joi.string().required(),
           password: joi
             .string()

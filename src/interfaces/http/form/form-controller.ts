@@ -16,7 +16,7 @@ export const FormController = {
     const router = Router();
     router
       .get("/workspaces/:workspace/:businessId", this.getWorkspaceForms)
-      .get("/businesses/:business/:formtype", this.getBusinessForms)
+      .get("/businesses/:business/:parent/:formtype", this.getBusinessForms)
       // .put("/:form", auth, this.updateContent)
       .get("/:biz/:parent/:formType/:form", this.getFormContent)
       .put("/disable/:form", auth, this.disable)

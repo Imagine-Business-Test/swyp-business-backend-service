@@ -16,6 +16,8 @@ exports.BusinessRule = {
                 .email()
                 .required(),
             name: joi_1.default.string().required(),
+            firstname: joi_1.default.string().required(),
+            lastname: joi_1.default.string().required(),
             branch: joi_1.default.string().required(),
             password: joi_1.default
                 .string()

@@ -122,7 +122,7 @@ export class MongoResponseRepository implements IResponseRepository {
     branch: string,
     status: string,
     page: number = 1,
-    limit: number = 25,
+    limit: number = 5,
     from?: Date,
     to?: Date
   ) {
@@ -134,9 +134,10 @@ export class MongoResponseRepository implements IResponseRepository {
         ? {
             "form.business": business,
             status,
-            createdAt: { $gte: fromDate, $lte: toDate }
+            createdAt: { $gte: fromDate, $lte: toDate },
+            branch
           }
-        : { "form.business": business, status };
+        : { "form.business": business, status, branch };
     if (this.shouldUseBranchCondition(branch)) {
       // @ts-ignore
       condition.branch = branch;
@@ -144,7 +145,7 @@ export class MongoResponseRepository implements IResponseRepository {
     const queryPromise = this.model
       .find(condition)
       .skip(skip)
-      .limit(limit)
+      // .limit(limit)
       .sort({ createdAt: -1 });
 
     const countPromise = this.model.count(condition);

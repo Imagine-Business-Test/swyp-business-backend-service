@@ -47,6 +47,8 @@ const pruneSensitiveUserData = (accounts) => {
                 phone: account.phone,
                 role: account.role,
                 name: account.name,
+                firstname: account.firstname,
+                lastname: account.lastname,
                 id: account._id
             };
         });
@@ -59,6 +61,8 @@ const pruneSensitiveUserData = (accounts) => {
         phone: accounts.phone,
         role: accounts.role,
         name: accounts.name,
+        firstname: accounts.firstname,
+        lastname: accounts.lastname,
         id: accounts._id
     };
 };

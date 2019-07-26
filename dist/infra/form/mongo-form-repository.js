@@ -64,16 +64,17 @@ class MongoFormRepository {
             }
         });
     }
-    fetchByBusiness(business, formType) {
+    fetchByBusiness(business, formType, formTypeParent) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.model
                 .find({
                 "business.id": business,
                 "workspace.name": formType,
+                "workspace.parent": formTypeParent,
                 status: "active",
                 deleted: false
             })
-                .limit(10)
+                .limit(50)
                 .select("name slug workspace elements _id");
         });
     }

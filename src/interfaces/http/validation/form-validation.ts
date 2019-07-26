@@ -38,6 +38,7 @@ export const FormRules = {
     .object()
     .keys({
       business: joi.string().required(),
+      parent: joi.string().required(),
       formtype: joi.string().required()
     })
     .required(),

@@ -10,7 +10,12 @@ const Schema = new mongoose_1.default.Schema({
             name: { type: String, required: true },
             area: { type: String, required: true },
             state: { type: String, required: true },
-            address: { type: String, required: true }
+            stateId: { type: Number, required: true },
+            address: { type: String, required: true },
+            created: { type: Date, default: new Date() },
+            deleted: { type: Boolean, default: false },
+            createdBy: { email: String, name: String },
+            deletedBy: { email: String, name: String }
         }
     ],
     accounts: [
@@ -21,6 +26,8 @@ const Schema = new mongoose_1.default.Schema({
             email: { type: String, required: true, email: true },
             lastLogIn: { type: Date, default: new Date() },
             name: { type: String, required: true },
+            firstname: { type: String, required: true },
+            lastname: { type: String, required: true },
             branch: { type: String, required: true },
             password: { type: String, min: 8 },
             passwordResetExpires: { type: Date },

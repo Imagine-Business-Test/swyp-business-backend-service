@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const joi_1 = __importDefault(require("joi"));
 exports.UserRules = {
+    completeSignup: joi_1.default.string().required(),
     resetPassword: joi_1.default
         .object()
         .keys({
@@ -34,6 +35,8 @@ exports.UserRules = {
             .required()
             .label("Url to redirect user"),
         name: joi_1.default.string().required(),
+        firstname: joi_1.default.string().required(),
+        lastname: joi_1.default.string().required(),
         phone: joi_1.default.string().required()
     })
         .required(),

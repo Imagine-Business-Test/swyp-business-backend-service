@@ -20,6 +20,7 @@ export const UserController = {
       .post("/resetpassword", this.resetPassword)
       .post("/add", auth, admin, this.addUser)
       .get("/stats", auth, this.getStats)
+      .get("/completesignup", this.completeSignup)
       .post("/login", this.loginUser);
     return router;
   },
@@ -81,6 +82,8 @@ export const UserController = {
         phone: req.body.phone,
         email: req.body.email,
         name: req.body.name,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         role: req.body.role
       },
       origin: req.body.origin,
@@ -92,6 +95,32 @@ export const UserController = {
 
   loginUser(req: any, res: Response, next: any) {
     req.validateBody(UserRules.loginUser);
+    const handler = req.container.resolve(
+      "loginBusinessUser"
+    ) as LoginBusinessUser;
+    const serializer = req.container.resolve("businessSerializer");
+
+    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+
+    handler
+      .on(SUCCESS, response => {
+        res.status(Status.OK).json(serializer.serialize(response));
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.BAD_REQUEST).json({
+          details: error.details,
+          type: "DatabaseError"
+        });
+      })
+      .on(ERROR, next);
+
+    handler.execute(req.body);
+  },
+
+  completeSignup(req: any, res: Response, next: any) {
+    res.send(req);
+    return;
+    req.validateBody(UserRules.completeSignup);
     const handler = req.container.resolve(
       "loginBusinessUser"
     ) as LoginBusinessUser;

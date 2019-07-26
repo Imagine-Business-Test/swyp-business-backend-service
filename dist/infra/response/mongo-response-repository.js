@@ -103,7 +103,7 @@ class MongoResponseRepository {
             yield this.update({ _id: id }, { $set: { deleted: true, updatedAt: new Date() } });
         });
     }
-    findByStatus(business, branch, status, page = 1, limit = 25, from, to) {
+    findByStatus(business, branch, status, page = 1, limit = 5, from, to) {
         return __awaiter(this, void 0, void 0, function* () {
             const skip = page * limit - limit;
             const fromDate = new Date(from);
@@ -112,16 +112,16 @@ class MongoResponseRepository {
                 ? {
                     "form.business": business,
                     status,
-                    createdAt: { $gte: fromDate, $lte: toDate }
+                    createdAt: { $gte: fromDate, $lte: toDate },
+                    branch
                 }
-                : { "form.business": business, status };
+                : { "form.business": business, status, branch };
             if (this.shouldUseBranchCondition(branch)) {
                 condition.branch = branch;
             }
             const queryPromise = this.model
                 .find(condition)
                 .skip(skip)
-                .limit(limit)
                 .sort({ createdAt: -1 });
             const countPromise = this.model.count(condition);
             const [result, count] = yield Promise.all([queryPromise, countPromise]);

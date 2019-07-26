@@ -9,15 +9,22 @@ export class GetBusinessForms extends Operation {
     this.formRepository = formRepository;
   }
 
-  public async execute(command: { business: string; formtype: string }) {
+  public async execute(command: {
+    business: string;
+    formtype: string;
+    parent: string;
+  }) {
     const { SUCCESS, ERROR } = this.outputs;
     const { business } = command;
     let { formtype } = command;
+    let { parent } = command;
     formtype = formtype[0].toUpperCase() + formtype.slice(1);
+    parent = parent[0].toUpperCase() + parent.slice(1);
     try {
       const formRecords = await this.formRepository.fetchByBusiness(
         business,
-        formtype
+        formtype,
+        parent
       );
       this.emit(SUCCESS, formRecords);
     } catch (error) {
