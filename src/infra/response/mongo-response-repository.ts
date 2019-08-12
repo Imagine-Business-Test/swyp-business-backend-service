@@ -67,7 +67,11 @@ export class MongoResponseRepository implements IResponseRepository {
       // @ts-ignore
       const doc: ResponseInterface = await this.model.findOneAndUpdate(
         { _id: id },
-        { $set: { status, processors, updatedAt: new Date() } },
+        {
+          status,
+          [`processors.${processorType}`]: processor,
+          updatedAt: new Date()
+        },
         { new: true }
       );
       return MongoResponseMapper.toEntity(doc);
@@ -120,6 +124,7 @@ export class MongoResponseRepository implements IResponseRepository {
   public async findByStatus(
     business: string,
     branch: string,
+    role: string,
     status: string,
     page: number = 1,
     limit: number = 5,
@@ -134,11 +139,10 @@ export class MongoResponseRepository implements IResponseRepository {
         ? {
             "form.business": business,
             status,
-            createdAt: { $gte: fromDate, $lte: toDate },
-            branch
+            createdAt: { $gte: fromDate, $lte: toDate }
           }
-        : { "form.business": business, status, branch };
-    if (this.shouldUseBranchCondition(branch)) {
+        : { "form.business": business, status };
+    if (this.shouldUseBranchCondition(role)) {
       // @ts-ignore
       condition.branch = branch;
     }
@@ -156,8 +160,13 @@ export class MongoResponseRepository implements IResponseRepository {
     return { result, count, pages };
   }
 
-  private shouldUseBranchCondition(branch: string) {
-    return branch === "HQ" ? false : true;
+  // private shouldUseBranchCondition(branch: string) {
+  //   return branch === "HQ" ? false : true;
+  // }
+  private shouldUseBranchCondition(role: string) {
+    const supers = ["admin", "super_approver", "super_initiator"];
+
+    return supers.includes(role) ? false : true;
   }
 
   private async update(

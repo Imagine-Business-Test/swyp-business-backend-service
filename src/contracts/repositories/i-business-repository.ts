@@ -16,7 +16,7 @@ export interface IBusinessRepository {
   deleteBranch: (name: string, modifier: ILoggedInUser) => void;
   findByPasswordResetToken: (token: string) => Promise<Business>;
   updatePassword: (email: string, password: string) => void;
-  updateBranch: (userId: string, newBranch: string) => void;
+  updateUser: (userId: string, otherInfo: object) => void;
   findByAccountEmail: (email: string) => Promise<Business>;
   add: (business: Business) => Promise<Business>;
   fetchAll: () => void;

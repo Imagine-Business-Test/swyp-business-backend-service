@@ -10,10 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const operation_1 = require("../operation");
 class RecordResponse extends operation_1.Operation {
-    constructor(responseRepository, formRepository) {
+    constructor(responseRepository, formRepository, mailer) {
         super();
         this.responseRepository = responseRepository;
         this.formResponse = formRepository;
+        this.mailer = mailer;
     }
     execute(command) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -22,7 +23,26 @@ class RecordResponse extends operation_1.Operation {
                 const { content, user, branch } = command;
                 const form = yield this.formResponse.find(command.form);
                 yield this.responseRepository.add(form.createResponse(content, user, branch));
-                return this.emit(SUCCESS, { created: true });
+                let hasEmail = false;
+                let email = "", firstname = "", lastname = "";
+                content.forEach((elem) => {
+                    hasEmail = true;
+                    const { questionType, answer } = elem;
+                    if (questionType == "email") {
+                        hasEmail = true;
+                        email = answer;
+                    }
+                    else if (questionType == "firstname") {
+                        firstname = answer;
+                    }
+                    else if (questionType == "lastname") {
+                        lastname = answer;
+                    }
+                });
+                if (hasEmail) {
+                    this.mailer.sendFormSubmitted(`${lastname} ${firstname}`, email);
+                }
+                return this.emit(SUCCESS, { created: "success" });
             }
             catch (ex) {
                 if (ex.message === "DatabaseError") {

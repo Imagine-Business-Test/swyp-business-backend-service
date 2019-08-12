@@ -10,6 +10,16 @@ export const FormRules = {
     })
     .required(),
 
+  updateContent: joi
+    .object()
+    .keys({
+      name: joi.string().required(),
+      elements: joi.array().required(),
+      formTypeId: joi.string().required(),
+      formId: joi.string().required()
+    })
+    .required(),
+
   deleteForm: joi
     .object()
     .keys({

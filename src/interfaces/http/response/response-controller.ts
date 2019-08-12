@@ -31,8 +31,9 @@ export const ResponseController = {
     const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
 
     handler
-      .on(SUCCESS, () => {
-        res.status(Status.CREATED).json({ success: true });
+      .on(SUCCESS, response => {
+        // res.status(Status.CREATED).json({ success: true });
+        res.status(Status.CREATED).json(response);
       })
       .on(DATABASE_ERROR, error => {
         res.status(Status.BAD_REQUEST).json({

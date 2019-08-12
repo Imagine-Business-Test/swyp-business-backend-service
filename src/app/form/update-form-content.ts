@@ -15,7 +15,7 @@ export class UpdateFormContent extends Operation {
     content: string;
     modifier: ILoggedInUser;
   }) {
-    const { SUCCESS, ERROR, DATABSE_ERROR } = this.outputs;
+    const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {
       const { form, content, modifier } = command;
@@ -23,8 +23,8 @@ export class UpdateFormContent extends Operation {
       await this.formRepository.updateContent(form, content, modifier);
       return this.emit(SUCCESS, { updated: true });
     } catch (ex) {
-      if (ex.message === "DatabaseError") {
-        return this.emit(DATABSE_ERROR, ex);
+      if (ex.messa === "DatabaseError") {
+        return this.emit(DATABASE_ERROR, ex);
       }
       return this.emit(ERROR, ex);
     }

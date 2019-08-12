@@ -13,12 +13,25 @@ export class MongoBusinessRepository implements IBusinessRepository {
     this.model = businessModel;
   }
 
+  isTokenValid(tokenDate: Date) {
+    //udor addendum
+    return new Date() > tokenDate ? false : true;
+  }
+
   public async findByPasswordResetToken(token: string): Promise<Business> {
     const doc = await this.fetchOne({
       "accounts.passwordResetToken": token
     });
 
     const currentUser = this.processCurrentUser(doc.accounts, "", token);
+
+    const tokenValid = this.isTokenValid(
+      currentUser.passwordResetExpires as Date
+    );
+
+    if (!tokenValid) {
+      throw new Error(`Token Invalid`);
+    }
     return MongoBusinessMapper.toEntity(doc, currentUser);
   }
 
@@ -89,11 +102,11 @@ export class MongoBusinessRepository implements IBusinessRepository {
     }
   }
 
-  public async updateBranch(userId: string, newBranch: string) {
+  public async updateUser(userId: string, otherInfo: object) {
     await this.accountRelatedUpdate(
       {
         $set: {
-          "accounts.$[element].branch": newBranch
+          "accounts.$[element]": otherInfo
         }
       },
       {

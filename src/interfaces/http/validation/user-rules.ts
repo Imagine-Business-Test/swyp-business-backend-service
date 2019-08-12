@@ -1,7 +1,21 @@
 import joi from "joi";
 
 export const UserRules = {
-  completeSignup: joi.string().required(),
+  completeSignup: joi
+    .object()
+    .required()
+    .keys({
+      token: joi.string().required()
+    }),
+
+  completeSignupSubmit: joi
+    .object()
+    .required()
+    .keys({
+      token: joi.string().required(),
+      email: joi.string().required(),
+      password: joi.string().required()
+    }),
 
   resetPassword: joi
     .object()

@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongo_form_mapper_1 = require("./mongo-form-mapper");
+const fs_1 = require("fs");
 class MongoFormRepository {
     constructor(formModel) {
         this.model = formModel;
@@ -91,14 +92,16 @@ class MongoFormRepository {
     updateContent(id, content, modifier) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.model.updateOne({ _id: id }, { $set: { content, lastModifier: modifier } });
+                const result = yield this.model.updateOne({ _id: id }, { $set: { elements: content, lastModifier: modifier } });
                 if (result.nModified !== 1) {
                     throw new Error(`Error updating content ${result.nModified} updated`);
                 }
             }
             catch (ex) {
                 ex.details = ex.message;
-                ex.message = "DatabaseError";
+                ex.messa = "DatabaseError";
+                let logger = fs_1.createWriteStream("aaa.txt");
+                logger.write(JSON.stringify(ex) + "udor");
                 throw ex;
             }
         });

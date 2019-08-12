@@ -2,6 +2,19 @@ import { IBusinessInterface } from "../../../contracts/infra";
 import { IAccount } from "../../../contracts/domain";
 
 export const BusinessSerializer = {
+  /**
+   * This is only used to get and show few details of a new
+   * user verifying his account.
+   * @param response
+   */
+  serializeMini(response: any) {
+    const { user, token, tokenValid } = response;
+    return {
+      token,
+      user: pruneSensitiveUserData(user),
+      tokenValid
+    };
+  },
   serialize(response: any) {
     let { business } = response;
     const { user, token } = response;

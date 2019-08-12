@@ -4,6 +4,7 @@ import { auth } from "../middleware";
 import Status from "http-status";
 import {
   CreateForm,
+  UpdateFormContent,
   DeleteForm,
   DisableForm,
   GetBusinessForms,
@@ -21,12 +22,35 @@ export const FormController = {
       .get("/:biz/:parent/:formType/:form", this.getFormContent)
       .put("/disable/:form", auth, this.disable)
       .delete("/:form", auth, this.delete)
-      .post("/", auth, this.create);
+      .post("/", auth, this.create)
+      .put("/", auth, this.updateContent);
 
     return router;
   },
 
   create(req: any, res: Response, next: any) {
+    req.validateBody(FormRules.createForm);
+    const handler = req.container.resolve("createForm") as CreateForm;
+    const serializer = req.container.resolve("formSerializer");
+
+    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+
+    handler
+      .on(SUCCESS, form => {
+        res.status(Status.CREATED).json(serializer.serialize(form));
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.BAD_GATEWAY).json({
+          type: "DatabaseError",
+          details: error.details
+        });
+      })
+      .on(ERROR, next);
+    const command = { ...req.body, user: req.user };
+    handler.execute(command);
+  },
+
+  update(req: any, res: Response, next: any) {
     req.validateBody(FormRules.createForm);
     const handler = req.container.resolve("createForm") as CreateForm;
     const serializer = req.container.resolve("formSerializer");
@@ -147,34 +171,35 @@ export const FormController = {
       .on(ERROR, next);
 
     handler.execute(req.params);
+  },
+
+  updateContent(req: any, res: Response, next: any) {
+    // return res.send(JSON.stringify(req.body));
+    req.validateBody(FormRules.updateContent);
+    // req.validateParams(FormRules.updateContent);
+
+    const handler = req.container.resolve(
+      "updateFormContent"
+    ) as UpdateFormContent;
+    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+
+    handler
+      .on(SUCCESS, () => {
+        res.status(Status.OK).json({ updated: true });
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.BAD_GATEWAY).json({
+          type: "DatabaseError",
+          details: error.details
+        });
+      })
+      .on(ERROR, next);
+
+    const command = {
+      form: req.body.formId,
+      content: req.body.elements,
+      modifier: req.user
+    };
+    handler.execute(command);
   }
-
-  // updateContent(req: any, res: Response, next: any) {
-  //   req.validateBody(FormRules.updateContent.content);
-  //   req.validateParams(FormRules.updateContent.form);
-
-  //   const handler = req.container.resolve(
-  //     "updateFormContent"
-  //   ) as UpdateFormContent;
-  //   const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
-
-  //   handler
-  //     .on(SUCCESS, () => {
-  //       res.status(Status.OK).json({ updated: true });
-  //     })
-  //     .on(DATABASE_ERROR, error => {
-  //       res.status(Status.BAD_GATEWAY).json({
-  //         type: "DatabaseError",
-  //         details: error.details
-  //       });
-  //     })
-  //     .on(ERROR, next);
-
-  //   const command = {
-  //     form: req.params.form,
-  //     content: req.body.content,
-  //     modifier: req.user
-  //   };
-  //   handler.execute(command);
-  // },
 };

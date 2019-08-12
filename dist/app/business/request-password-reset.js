@@ -29,7 +29,7 @@ class RequestPasswordReset extends operation_1.Operation {
                 yield this.businessRepository.requestPasswordReset(command.email, token, expires);
                 const business = yield this.businessRepository.findByAccountEmail(command.email);
                 const user = business.getUser();
-                const link = command.origin + `?token=${token}`;
+                const link = command.origin + `/token/${token}`;
                 this.mailer.sendPasswordRequest(user.name, user.email, link);
                 return this.emit(SUCCESS, {
                     message: "check your mail for a reset password link "

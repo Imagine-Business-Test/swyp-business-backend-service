@@ -21,10 +21,12 @@ export class GetResponseByStatus extends Operation {
     const { SUCCESS, ERROR } = this.outputs;
     const { business, user, status, page, limit, from, to } = command;
     const branch = user.branch;
+    const role = user.role;
     try {
       const result = await this.responseRepository.findByStatus(
         business,
         branch,
+        role,
         status,
         page,
         limit,

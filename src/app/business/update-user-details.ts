@@ -2,7 +2,7 @@ import { IBusinessRepository } from "../../contracts/repositories";
 import { ILoggedInUser } from "../../contracts/interfaces";
 import { Operation } from "../operation";
 
-export class UpdateUserBranch extends Operation {
+export class UpdateUserDetails extends Operation {
   private model: IBusinessRepository;
   constructor(businessRepository: IBusinessRepository) {
     super();
@@ -11,13 +11,24 @@ export class UpdateUserBranch extends Operation {
 
   public async execute(command: {
     userId: string;
-    newBranch: string;
+    branch: string;
     user: ILoggedInUser;
+    firstname: string;
+    lastname: string;
+    phone: string;
+    email: string;
+    role: string;
   }) {
     const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
 
     try {
-      await this.model.updateBranch(command.userId, command.newBranch);
+      await this.model.updateUser(command.userId, {
+        ...command,
+        ...{
+          id: command.userId,
+          name: `${command.firstname} ${command.lastname}`
+        }
+      });
       const business = await this.model.findByAccountEmail(command.user.email);
       return this.emit(SUCCESS, { business });
     } catch (ex) {
@@ -29,4 +40,4 @@ export class UpdateUserBranch extends Operation {
   }
 }
 
-UpdateUserBranch.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);
+UpdateUserDetails.setOutputs(["SUCCESS", "ERROR", "DATABASE_ERROR"]);

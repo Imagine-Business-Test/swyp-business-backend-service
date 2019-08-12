@@ -8,7 +8,8 @@ import {
   DeleteBusinessUser,
   LoginBusinessUser,
   AddBusinessUser,
-  ResetPassword
+  ResetPassword,
+  CompleteUserSignup
 } from "../../../app/business";
 
 export const UserController = {
@@ -20,7 +21,8 @@ export const UserController = {
       .post("/resetpassword", this.resetPassword)
       .post("/add", auth, admin, this.addUser)
       .get("/stats", auth, this.getStats)
-      .get("/completesignup", this.completeSignup)
+      .get("/completesignup/:token", this.completeSignupVerify)
+      .post("/completesignup/:token", this.completeSignupVerify)
       .post("/login", this.loginUser);
     return router;
   },
@@ -117,10 +119,8 @@ export const UserController = {
     handler.execute(req.body);
   },
 
-  completeSignup(req: any, res: Response, next: any) {
-    res.send(req);
-    return;
-    req.validateBody(UserRules.completeSignup);
+  confirmUser(req: any, res: Response, next: any) {
+    // req.validateBody(UserRules.loginUser);
     const handler = req.container.resolve(
       "loginBusinessUser"
     ) as LoginBusinessUser;
@@ -131,6 +131,67 @@ export const UserController = {
     handler
       .on(SUCCESS, response => {
         res.status(Status.OK).json(serializer.serialize(response));
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.BAD_REQUEST).json({
+          details: error.details,
+          type: "DatabaseError"
+        });
+      })
+      .on(ERROR, next);
+
+    handler.execute(req.body);
+  },
+
+  completeSignupVerify(req: any, res: Response, next: any) {
+    // res.send(req.params);
+    // return;
+
+    req.validateParams(UserRules.completeSignup);
+    const handler = req.container.resolve(
+      "CompleteUserSignup"
+    ) as CompleteUserSignup;
+    // const serializer = req.container.resolve("businessSerializer");
+
+    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+
+    handler
+      .on(SUCCESS, response => {
+        // res.status(Status.OK).json(serializer.serializeMini(response));
+        // res.send(`${new Date > response.user.created}`)
+        res.status(Status.OK).json(response);
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.BAD_REQUEST).json({
+          details: error.details,
+          type: "DatabaseError"
+        });
+      })
+      .on(ERROR, next);
+
+    req.body.token = req.params.token;
+    handler.execute(req.body);
+  },
+
+  completeSignupSubmit(req: any, res: Response, next: any) {
+    // res.send(req.params);
+    // return;
+
+    req.validateParams(UserRules.completeSignup);
+    req.validateBody(UserRules.completeSignup);
+    const handler = req.container.resolve(
+      "CompleteUserSignup"
+    ) as CompleteUserSignup;
+    // const serializer = req.container.resolve("businessSerializer");
+
+    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+
+    handler
+      .on(SUCCESS, response => {
+        // res.status(Status.OK).json(serializer.serializeMini(response));
+        // res.send(`${new Date > response.user.created}`)
+        // res.status(Status.OK).json(response);
+        res.send(response);
       })
       .on(DATABASE_ERROR, error => {
         res.status(Status.BAD_REQUEST).json({

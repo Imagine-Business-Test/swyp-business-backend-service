@@ -31,7 +31,7 @@ export class RequestPasswordReset extends Operation {
         command.email
       );
       const user = business.getUser();
-      const link = command.origin + `?token=${token}`;
+      const link = command.origin + `/token/${token}`;
 
       this.mailer.sendPasswordRequest(user.name, user.email, link);
       return this.emit(SUCCESS, {

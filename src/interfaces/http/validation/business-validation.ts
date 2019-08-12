@@ -42,8 +42,14 @@ export const BusinessRule = {
   updateBranch: joi
     .object()
     .keys({
-      userId: joi.string().required(),
-      branch: joi.string().required()
+      branch: joi.string().required(),
+      firstname: joi.string().required(),
+      lastname: joi.string().required(),
+      name: joi.string(),
+      id: joi.string(),
+      email: joi.string().required(),
+      phone: joi.string().required(),
+      role: joi.string().required()
     })
     .required(),
 

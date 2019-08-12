@@ -53,7 +53,11 @@ class MongoResponseRepository {
                 status = "processed";
             }
             try {
-                const doc = yield this.model.findOneAndUpdate({ _id: id }, { $set: { status, processors, updatedAt: new Date() } }, { new: true });
+                const doc = yield this.model.findOneAndUpdate({ _id: id }, {
+                    status,
+                    [`processors.${processorType}`]: processor,
+                    updatedAt: new Date()
+                }, { new: true });
                 return mongo_response_mapper_1.MongoResponseMapper.toEntity(doc);
             }
             catch (ex) {
@@ -103,7 +107,7 @@ class MongoResponseRepository {
             yield this.update({ _id: id }, { $set: { deleted: true, updatedAt: new Date() } });
         });
     }
-    findByStatus(business, branch, status, page = 1, limit = 5, from, to) {
+    findByStatus(business, branch, role, status, page = 1, limit = 5, from, to) {
         return __awaiter(this, void 0, void 0, function* () {
             const skip = page * limit - limit;
             const fromDate = new Date(from);
@@ -112,11 +116,10 @@ class MongoResponseRepository {
                 ? {
                     "form.business": business,
                     status,
-                    createdAt: { $gte: fromDate, $lte: toDate },
-                    branch
+                    createdAt: { $gte: fromDate, $lte: toDate }
                 }
-                : { "form.business": business, status, branch };
-            if (this.shouldUseBranchCondition(branch)) {
+                : { "form.business": business, status };
+            if (this.shouldUseBranchCondition(role)) {
                 condition.branch = branch;
             }
             const queryPromise = this.model
@@ -129,8 +132,9 @@ class MongoResponseRepository {
             return { result, count, pages };
         });
     }
-    shouldUseBranchCondition(branch) {
-        return branch === "HQ" ? false : true;
+    shouldUseBranchCondition(role) {
+        const supers = ["admin", "super_approver", "super_initiator"];
+        return supers.includes(role) ? false : true;
     }
     update(condition, update) {
         return __awaiter(this, void 0, void 0, function* () {

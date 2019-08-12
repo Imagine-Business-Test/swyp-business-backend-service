@@ -24,8 +24,8 @@ exports.ResponseController = {
         const handler = req.container.resolve("recordResponse");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
         handler
-            .on(SUCCESS, () => {
-            res.status(http_status_1.default.CREATED).json({ success: true });
+            .on(SUCCESS, response => {
+            res.status(http_status_1.default.CREATED).json(response);
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.BAD_REQUEST).json({

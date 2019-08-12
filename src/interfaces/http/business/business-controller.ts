@@ -4,7 +4,7 @@ import { Response, Router } from "express";
 import Status from "http-status";
 
 import {
-  UpdateUserBranch,
+  UpdateUserDetails,
   CreateBusiness,
   GetBusinesses,
   UpdateBusinessDetails
@@ -15,7 +15,7 @@ export const BusinessController = {
     const router = Router();
     router
       .get("/", this.all)
-      .put("/updatebranch", auth, admin, this.updateBranch)
+      .put("/updateuser", auth, admin, this.updateUser)
       .put("/updatedetails", auth, admin, this.updateDetails)
       .post("/", this.create);
 
@@ -56,11 +56,13 @@ export const BusinessController = {
     handler.execute(req.body);
   },
 
-  updateBranch(req: any, res: Response, next: any) {
+  updateUser(req: any, res: Response, next: any) {
+    // res.send(req.body);
+    // return;
     req.validateBody(BusinessRule.updateBranch);
     const handler = req.container.resolve(
-      "updateUserBranch"
-    ) as UpdateUserBranch;
+      "updateUserDetails"
+    ) as UpdateUserDetails;
     const serializer = req.container.resolve("businessSerializer");
     const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
 
@@ -76,9 +78,14 @@ export const BusinessController = {
       })
       .on(ERROR, next);
     const command = {
-      userId: req.body.userId,
-      newBranch: req.body.branch,
-      user: req.user
+      userId: req.body.id,
+      branch: req.body.branch,
+      user: req.user,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      phone: req.body.phone,
+      email: req.body.email,
+      role: req.body.role
     };
     handler.execute(command);
   },

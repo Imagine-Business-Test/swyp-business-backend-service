@@ -43,8 +43,14 @@ exports.BusinessRule = {
     updateBranch: joi_1.default
         .object()
         .keys({
-        userId: joi_1.default.string().required(),
-        branch: joi_1.default.string().required()
+        branch: joi_1.default.string().required(),
+        firstname: joi_1.default.string().required(),
+        lastname: joi_1.default.string().required(),
+        name: joi_1.default.string(),
+        id: joi_1.default.string(),
+        email: joi_1.default.string().required(),
+        phone: joi_1.default.string().required(),
+        role: joi_1.default.string().required()
     })
         .required(),
     updateDetails: joi_1.default

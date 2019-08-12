@@ -20,6 +20,10 @@ class Mailer {
         const text = `Hello ${name} . \n Your password on swyp app was changed.`;
         this.send(text, "Password Changed", email);
     }
+    sendFormSubmitted(name, email) {
+        const text = `Dear ${name}, \n We have received your form and its in process now. We will get back to you .\n Thanks.`;
+        this.send(text, "Successful Form Submission !", email);
+    }
     welcome(name, creator, email, link) {
         const text = `Hello ${name[0].toUpperCase()}${name.slice(1)}
     \n A Swyp business account has been created for you by ${creator}. \n\n

@@ -16,10 +16,30 @@ exports.FormController = {
             .get("/:biz/:parent/:formType/:form", this.getFormContent)
             .put("/disable/:form", middleware_1.auth, this.disable)
             .delete("/:form", middleware_1.auth, this.delete)
-            .post("/", middleware_1.auth, this.create);
+            .post("/", middleware_1.auth, this.create)
+            .put("/", middleware_1.auth, this.updateContent);
         return router;
     },
     create(req, res, next) {
+        req.validateBody(validation_1.FormRules.createForm);
+        const handler = req.container.resolve("createForm");
+        const serializer = req.container.resolve("formSerializer");
+        const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+        handler
+            .on(SUCCESS, form => {
+            res.status(http_status_1.default.CREATED).json(serializer.serialize(form));
+        })
+            .on(DATABASE_ERROR, error => {
+            res.status(http_status_1.default.BAD_GATEWAY).json({
+                type: "DatabaseError",
+                details: error.details
+            });
+        })
+            .on(ERROR, next);
+        const command = Object.assign({}, req.body, { user: req.user });
+        handler.execute(command);
+    },
+    update(req, res, next) {
         req.validateBody(validation_1.FormRules.createForm);
         const handler = req.container.resolve("createForm");
         const serializer = req.container.resolve("formSerializer");
@@ -119,6 +139,28 @@ exports.FormController = {
         })
             .on(ERROR, next);
         handler.execute(req.params);
+    },
+    updateContent(req, res, next) {
+        req.validateBody(validation_1.FormRules.updateContent);
+        const handler = req.container.resolve("updateFormContent");
+        const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+        handler
+            .on(SUCCESS, () => {
+            res.status(http_status_1.default.OK).json({ updated: true });
+        })
+            .on(DATABASE_ERROR, error => {
+            res.status(http_status_1.default.BAD_GATEWAY).json({
+                type: "DatabaseError",
+                details: error.details
+            });
+        })
+            .on(ERROR, next);
+        const command = {
+            form: req.body.formId,
+            content: req.body.elements,
+            modifier: req.user
+        };
+        handler.execute(command);
     }
 };
 //# sourceMappingURL=form-controller.js.map

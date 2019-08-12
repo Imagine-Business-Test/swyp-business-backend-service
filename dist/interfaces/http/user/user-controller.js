@@ -16,7 +16,8 @@ exports.UserController = {
             .post("/resetpassword", this.resetPassword)
             .post("/add", middleware_1.auth, middleware_1.admin, this.addUser)
             .get("/stats", middleware_1.auth, this.getStats)
-            .get("/completesignup", this.completeSignup)
+            .get("/completesignup/:token", this.completeSignupVerify)
+            .post("/completesignup/:token", this.completeSignupVerify)
             .post("/login", this.loginUser);
         return router;
     },
@@ -92,16 +93,49 @@ exports.UserController = {
             .on(ERROR, next);
         handler.execute(req.body);
     },
-    completeSignup(req, res, next) {
-        res.send(req);
-        return;
-        req.validateBody(validation_1.UserRules.completeSignup);
+    confirmUser(req, res, next) {
         const handler = req.container.resolve("loginBusinessUser");
         const serializer = req.container.resolve("businessSerializer");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
         handler
             .on(SUCCESS, response => {
             res.status(http_status_1.default.OK).json(serializer.serialize(response));
+        })
+            .on(DATABASE_ERROR, error => {
+            res.status(http_status_1.default.BAD_REQUEST).json({
+                details: error.details,
+                type: "DatabaseError"
+            });
+        })
+            .on(ERROR, next);
+        handler.execute(req.body);
+    },
+    completeSignupVerify(req, res, next) {
+        req.validateParams(validation_1.UserRules.completeSignup);
+        const handler = req.container.resolve("CompleteUserSignup");
+        const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+        handler
+            .on(SUCCESS, response => {
+            res.status(http_status_1.default.OK).json(response);
+        })
+            .on(DATABASE_ERROR, error => {
+            res.status(http_status_1.default.BAD_REQUEST).json({
+                details: error.details,
+                type: "DatabaseError"
+            });
+        })
+            .on(ERROR, next);
+        req.body.token = req.params.token;
+        handler.execute(req.body);
+    },
+    completeSignupSubmit(req, res, next) {
+        req.validateParams(validation_1.UserRules.completeSignup);
+        req.validateBody(validation_1.UserRules.completeSignup);
+        const handler = req.container.resolve("CompleteUserSignup");
+        const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+        handler
+            .on(SUCCESS, response => {
+            res.send(response);
         })
             .on(DATABASE_ERROR, error => {
             res.status(http_status_1.default.BAD_REQUEST).json({

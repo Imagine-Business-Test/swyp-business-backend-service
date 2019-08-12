@@ -12,34 +12,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const operation_1 = require("../operation");
-class completeSignup extends operation_1.Operation {
-    constructor(businessRepository, config) {
+class CompleteUserSignup extends operation_1.Operation {
+    constructor(businessRepository, mailer) {
         super();
         this.businessRepository = businessRepository;
-        this.config = config;
+        this.mailer = mailer;
     }
-    execute(command) {
+    execute(data) {
         return __awaiter(this, void 0, void 0, function* () {
+            const token = data.token;
             const { SUCCESS, ERROR, DATABASE_ERROR, AUTHENTICATION_ERROR, INCOMPLETE_SETUP } = this.outputs;
             try {
-                const business = yield this.businessRepository.findByAccountEmail(command.email);
+                const business = yield this.businessRepository.findByPasswordResetToken(token);
                 const user = business.getUser();
+                const { email, password } = data;
+                if (email && password) {
+                    const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+                    yield this.businessRepository.updatePassword(user.email, hashedPassword);
+                    this.mailer.sendPasswordChanged(user.name, user.email);
+                    return this.emit(SUCCESS, { updated: true });
+                }
+                return this.emit(SUCCESS, { user, token });
                 if (!user.password) {
                     throw new Error("IncompleteSetup");
                 }
-                const result = yield bcrypt_1.default.compare(command.password, user.password);
-                if (!result) {
-                    throw new Error("AuthenticationError");
-                }
-                const token = jsonwebtoken_1.default.sign({
-                    branch: user.branch,
-                    email: user.email,
-                    isBusiness: true,
-                    name: user.name,
-                    role: user.role
-                }, this.config.web.json_secret, { expiresIn: "24h" });
                 return this.emit(SUCCESS, { user, token, business });
             }
             catch (ex) {
@@ -57,8 +54,8 @@ class completeSignup extends operation_1.Operation {
         });
     }
 }
-exports.completeSignup = completeSignup;
-completeSignup.setOutputs([
+exports.CompleteUserSignup = CompleteUserSignup;
+CompleteUserSignup.setOutputs([
     "SUCCESS",
     "ERROR",
     "DATABASE_ERROR",

@@ -1,6 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BusinessSerializer = {
+    serializeMini(response) {
+        const { user, token, tokenValid } = response;
+        return {
+            token,
+            user: pruneSensitiveUserData(user),
+            tokenValid
+        };
+    },
     serialize(response) {
         let { business } = response;
         const { user, token } = response;

@@ -3,6 +3,7 @@ import { IFormRepository } from "../../contracts/repositories";
 import { ILoggedInUser } from "../../contracts/interfaces";
 import { MongoFormMapper } from "./mongo-form-mapper";
 import { Form } from "../../domain";
+import { createWriteStream } from "fs";
 
 export class MongoFormRepository implements IFormRepository {
   private model: FormModel;
@@ -104,14 +105,18 @@ export class MongoFormRepository implements IFormRepository {
     try {
       const result = await this.model.updateOne(
         { _id: id },
-        { $set: { content, lastModifier: modifier } }
+        { $set: { elements: content, lastModifier: modifier } }
       );
+      // return result;
       if (result.nModified !== 1) {
         throw new Error(`Error updating content ${result.nModified} updated`);
       }
     } catch (ex) {
       ex.details = ex.message;
-      ex.message = "DatabaseError";
+      ex.messa = "DatabaseError";
+      let logger = createWriteStream("aaa.txt");
+      logger.write(JSON.stringify(ex) + "udor");
+
       throw ex;
     }
   }

@@ -1,20 +1,32 @@
-import bycrpt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { IConfig } from "../../contracts/config";
+import bcrypt from "bcrypt";
+import { Mailer } from "../../services";
+// import jwt from "jsonwebtoken";
+// import { IConfig } from "../../contracts/config";
 import { IBusinessRepository } from "../../contracts/repositories";
 import { Operation } from "../operation";
 
-export class completeSignup extends Operation {
+export class CompleteUserSignup extends Operation {
   private businessRepository: IBusinessRepository;
-  private config: IConfig;
+  private mailer: Mailer;
+  // private config: IConfig;
 
-  constructor(businessRepository: IBusinessRepository, config: IConfig) {
+  constructor(businessRepository: IBusinessRepository, mailer: Mailer) {
     super();
     this.businessRepository = businessRepository;
-    this.config = config;
+    this.mailer = mailer;
+    // this.config = config;
   }
 
-  public async execute(command: { email: string; password: string }) {
+  // isTokenValid(tokenDate: Date){ //udor addendum
+  //      return (new Date > tokenDate) ?  false : true
+  // }
+
+  public async execute(data: {
+    token: string;
+    email?: string;
+    password?: string;
+  }) {
+    const token: string = data.token;
     const {
       SUCCESS,
       ERROR,
@@ -24,30 +36,51 @@ export class completeSignup extends Operation {
     } = this.outputs;
 
     try {
-      const business = await this.businessRepository.findByAccountEmail(
-        command.email
+      const business = await this.businessRepository.findByPasswordResetToken(
+        token
       );
+
       const user = business.getUser();
+
+      //for it to get here it means the token is valid so check if there is a body in
+      // this request and create a password for this user
+
+      const { email, password } = data;
+
+      if (email && password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await this.businessRepository.updatePassword(
+          user.email,
+          hashedPassword
+        );
+
+        this.mailer.sendPasswordChanged(user.name, user.email);
+
+        return this.emit(SUCCESS, { updated: true });
+      }
+      // const tokenValid = this.isTokenValid(user.passwordResetExpires as Date);
+
+      return this.emit(SUCCESS, { user, token });
       if (!user.password) {
         throw new Error("IncompleteSetup");
       }
-      const result = await bycrpt.compare(command.password, user.password!);
+      // const result = await bycrpt.compare(command.password, user.password!);
 
-      if (!result) {
-        throw new Error("AuthenticationError");
-      }
+      // if (!result) {
+      //   throw new Error("AuthenticationError");
+      // }
 
-      const token = jwt.sign(
-        {
-          branch: user.branch,
-          email: user.email,
-          isBusiness: true,
-          name: user.name,
-          role: user.role
-        },
-        this.config.web.json_secret,
-        { expiresIn: "24h" }
-      );
+      // const token = jwt.sign(
+      //   {
+      //     branch: user.branch,
+      //     email: user.email,
+      //     isBusiness: true,
+      //     name: user.name,
+      //     role: user.role
+      //   },
+      //   this.config.web.json_secret,
+      //   { expiresIn: "24h" }
+      // );
 
       return this.emit(SUCCESS, { user, token, business });
     } catch (ex) {
@@ -65,7 +98,7 @@ export class completeSignup extends Operation {
   }
 }
 
-completeSignup.setOutputs([
+CompleteUserSignup.setOutputs([
   "SUCCESS",
   "ERROR",
   "DATABASE_ERROR",

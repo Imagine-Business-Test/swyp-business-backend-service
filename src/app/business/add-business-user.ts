@@ -26,6 +26,7 @@ export class AddBusinessUser extends Operation {
     try {
       const { businessId, account } = command;
       const urlToken = uuid4();
+      account.passwordResetToken = urlToken; //ezugudor addendum
 
       const business = await this.businessRepository.addAccount(
         businessId,
@@ -33,7 +34,7 @@ export class AddBusinessUser extends Operation {
       );
       const user = business.getUser();
 
-      const link = command.origin + `?token=${urlToken}`;
+      const link = command.origin + `/token/${urlToken}`;
 
       // new account created event
       this.mailer.welcome(user.name, command.user.name, user.email, link);

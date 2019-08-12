@@ -17,12 +17,19 @@ class MongoBusinessRepository {
     constructor(businessModel) {
         this.model = businessModel;
     }
+    isTokenValid(tokenDate) {
+        return (new Date > tokenDate) ? false : true;
+    }
     findByPasswordResetToken(token) {
         return __awaiter(this, void 0, void 0, function* () {
             const doc = yield this.fetchOne({
                 "accounts.passwordResetToken": token
             });
             const currentUser = this.processCurrentUser(doc.accounts, "", token);
+            const tokenValid = this.isTokenValid(currentUser.passwordResetExpires);
+            if (!tokenValid) {
+                throw new Error(`Token Invalid`);
+            }
             return mongo_business_mapper_1.MongoBusinessMapper.toEntity(doc, currentUser);
         });
     }
@@ -86,11 +93,11 @@ class MongoBusinessRepository {
             }
         });
     }
-    updateBranch(userId, newBranch) {
+    updateUser(userId, otherInfo) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.accountRelatedUpdate({
                 $set: {
-                    "accounts.$[element].branch": newBranch
+                    "accounts.$[element]": otherInfo
                 }
             }, {
                 arrayFilters: [{ "element._id": mongoose_1.default.Types.ObjectId(userId) }]

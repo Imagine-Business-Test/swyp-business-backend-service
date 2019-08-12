@@ -12,7 +12,7 @@ exports.BusinessController = {
         const router = express_1.Router();
         router
             .get("/", this.all)
-            .put("/updatebranch", middleware_1.auth, middleware_1.admin, this.updateBranch)
+            .put("/updateuser", middleware_1.auth, middleware_1.admin, this.updateUser)
             .put("/updatedetails", middleware_1.auth, middleware_1.admin, this.updateDetails)
             .post("/", this.create);
         return router;
@@ -46,9 +46,9 @@ exports.BusinessController = {
             .on(ERROR, next);
         handler.execute(req.body);
     },
-    updateBranch(req, res, next) {
+    updateUser(req, res, next) {
         req.validateBody(validation_1.BusinessRule.updateBranch);
-        const handler = req.container.resolve("updateUserBranch");
+        const handler = req.container.resolve("updateUserDetails");
         const serializer = req.container.resolve("businessSerializer");
         const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
         handler
@@ -63,9 +63,14 @@ exports.BusinessController = {
         })
             .on(ERROR, next);
         const command = {
-            userId: req.body.userId,
-            newBranch: req.body.branch,
-            user: req.user
+            userId: req.body.id,
+            branch: req.body.branch,
+            user: req.user,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            phone: req.body.phone,
+            email: req.body.email,
+            role: req.body.role
         };
         handler.execute(command);
     },

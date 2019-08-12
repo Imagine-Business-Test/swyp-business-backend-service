@@ -9,7 +9,7 @@ exports.default = (config) => {
         authenticate(logger) {
             return mongoose_1.default
                 .connect(config.db.mongo_url)
-                .then(() => logger.info("Connection to database established "))
+                .then(() => logger.info("Connection to u database established "))
                 .catch(err => logger.error(err.message));
         },
         drop(logger) {

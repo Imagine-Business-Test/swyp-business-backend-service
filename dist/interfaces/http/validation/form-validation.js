@@ -13,6 +13,15 @@ exports.FormRules = {
         formTypeId: joi_1.default.string().required()
     })
         .required(),
+    updateContent: joi_1.default
+        .object()
+        .keys({
+        name: joi_1.default.string().required(),
+        elements: joi_1.default.array().required(),
+        formTypeId: joi_1.default.string().required(),
+        formId: joi_1.default.string().required()
+    })
+        .required(),
     deleteForm: joi_1.default
         .object()
         .keys({

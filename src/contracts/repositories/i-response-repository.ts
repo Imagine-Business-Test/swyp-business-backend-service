@@ -13,6 +13,7 @@ export interface IResponseRepository {
   findByStatus: (
     business: string,
     branch: string,
+    role: string,
     status: string,
     page: number,
     limit: number,
