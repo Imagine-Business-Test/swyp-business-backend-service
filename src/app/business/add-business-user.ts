@@ -34,7 +34,8 @@ export class AddBusinessUser extends Operation {
       );
       const user = business.getUser();
 
-      const link = command.origin + `/token/${urlToken}`;
+      // const link = command.origin + `/token/${urlToken}`;
+      const link = command.origin + `/${urlToken}`;
 
       // new account created event
       this.mailer.welcome(user.name, command.user.name, user.email, link);

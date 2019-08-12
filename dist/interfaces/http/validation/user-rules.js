@@ -5,11 +5,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const joi_1 = __importDefault(require("joi"));
 exports.UserRules = {
-    completeSignup: joi_1.default.object().required()
+    completeSignup: joi_1.default
+        .object()
+        .required()
         .keys({
         token: joi_1.default.string().required()
     }),
-    completeSignupSubmit: joi_1.default.object().required()
+    completeSignupSubmit: joi_1.default
+        .object()
+        .required()
         .keys({
         token: joi_1.default.string().required(),
         email: joi_1.default.string().required(),

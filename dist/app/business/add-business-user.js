@@ -28,7 +28,7 @@ class AddBusinessUser extends operation_1.Operation {
                 account.passwordResetToken = urlToken;
                 const business = yield this.businessRepository.addAccount(businessId, account);
                 const user = business.getUser();
-                const link = command.origin + `/token/${urlToken}`;
+                const link = command.origin + `/${urlToken}`;
                 this.mailer.welcome(user.name, command.user.name, user.email, link);
                 return this.emit(SUCCESS, { business });
             }

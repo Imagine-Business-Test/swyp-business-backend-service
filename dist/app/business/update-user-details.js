@@ -18,7 +18,10 @@ class UpdateUserDetails extends operation_1.Operation {
         return __awaiter(this, void 0, void 0, function* () {
             const { SUCCESS, ERROR, DATABASE_ERROR } = this.outputs;
             try {
-                yield this.model.updateUser(command.userId, Object.assign({}, command, { id: command.userId, name: `${command.firstname} ${command.lastname}` }));
+                yield this.model.updateUser(command.userId, Object.assign({}, command, {
+                    id: command.userId,
+                    name: `${command.firstname} ${command.lastname}`
+                }));
                 const business = yield this.model.findByAccountEmail(command.user.email);
                 return this.emit(SUCCESS, { business });
             }

@@ -18,7 +18,7 @@ class MongoBusinessRepository {
         this.model = businessModel;
     }
     isTokenValid(tokenDate) {
-        return (new Date > tokenDate) ? false : true;
+        return new Date() > tokenDate ? false : true;
     }
     findByPasswordResetToken(token) {
         return __awaiter(this, void 0, void 0, function* () {
