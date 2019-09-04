@@ -36,12 +36,14 @@ export class CreateBusiness extends Operation {
       const slug = name.toLowerCase().replace(" ", "");
       const deleted = false;
       const approved = true;
+      const color = "#cccccc";
       const newBusiness = new Business(
         name,
         slug,
         approved,
         deleted,
         [],
+        color,
         branches,
         logoUrl
       );

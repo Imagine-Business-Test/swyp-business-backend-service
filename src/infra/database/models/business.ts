@@ -43,7 +43,8 @@ const Schema = new mongoose.Schema({
   approved: { type: Boolean, default: false },
   deleted: { type: Boolean, default: false },
   description: String,
-  logoUrl: String
+  logoUrl: String,
+  color: String
 });
 
 export const BusinessModel = mongoose.model("businesses", Schema);

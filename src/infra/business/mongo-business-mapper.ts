@@ -13,7 +13,8 @@ export const MongoBusinessMapper = {
       deleted,
       accounts,
       branches,
-      description
+      description,
+      color
     } = dbRow;
     const business = new Business(
       name,
@@ -21,6 +22,7 @@ export const MongoBusinessMapper = {
       approved,
       deleted,
       accounts,
+      color,
       branches,
       logoUrl,
       description,

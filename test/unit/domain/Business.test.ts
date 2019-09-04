@@ -24,6 +24,7 @@ const business = new Business(
   false,
   false,
   accounts,
+  "#ff0000",
   branches,
   "http://ww.gtbank.com/logo",
   "1234"

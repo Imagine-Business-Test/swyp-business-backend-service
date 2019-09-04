@@ -21,6 +21,7 @@ export type IBusinessInterface = mongoose.Document & {
   name: string;
   slug: string;
   _id: string;
+  color: string;
 };
 
 export type BusinessModel = mongoose.Model<IBusinessInterface>;

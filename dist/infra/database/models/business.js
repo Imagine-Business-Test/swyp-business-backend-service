@@ -46,7 +46,8 @@ const Schema = new mongoose_1.default.Schema({
     approved: { type: Boolean, default: false },
     deleted: { type: Boolean, default: false },
     description: String,
-    logoUrl: String
+    logoUrl: String,
+    color: String
 });
 exports.BusinessModel = mongoose_1.default.model("businesses", Schema);
 //# sourceMappingURL=business.js.map

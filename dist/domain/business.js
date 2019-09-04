@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Business {
-    constructor(name, slug, approved, deleted, accounts, branches, logoUrl, description, id) {
+    constructor(name, slug, approved, deleted, accounts, color, branches, logoUrl, description, id) {
         this.description = description;
         this.accounts = accounts;
         this.approved = approved;
@@ -11,6 +11,7 @@ class Business {
         this.slug = slug;
         this.name = name;
         this.id = id;
+        this.color = color;
     }
     setUser(user) {
         for (const entry of this.accounts) {
@@ -40,6 +41,9 @@ class Business {
     }
     getLogo() {
         return this.logoUrl;
+    }
+    getColor() {
+        return this.color;
     }
     getName() {
         return this.name;

@@ -24,7 +24,8 @@ export const BusinessSerializer = {
       branches: business.getBranches(),
       name: business.getName(),
       slug: business.getSlug(),
-      id: business.getId()
+      id: business.getId(),
+      color: business.getColor()
     };
 
     if (!user) {
@@ -45,7 +46,8 @@ export const BusinessSerializer = {
         logo: res.logoUrl,
         name: res.name,
         slug: res.slug,
-        id: res._id
+        id: res._id,
+        color: res.color
       };
     });
   }

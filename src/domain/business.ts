@@ -12,6 +12,7 @@ export class Business {
   private name: string;
   private slug: string;
   private id?: string;
+  private color: string;
 
   constructor(
     name: string,
@@ -19,6 +20,7 @@ export class Business {
     approved: boolean,
     deleted: boolean,
     accounts: IAccount[],
+    color: string,
     branches?: IBranch[],
     logoUrl?: string,
     description?: string,
@@ -33,6 +35,7 @@ export class Business {
     this.slug = slug;
     this.name = name;
     this.id = id;
+    this.color = color;
   }
 
   public setUser(user: IAccount) {
@@ -69,6 +72,10 @@ export class Business {
 
   public getLogo(): string {
     return this.logoUrl!;
+  }
+
+  public getColor(): string {
+    return this.color!;
   }
 
   public getName(): string {
