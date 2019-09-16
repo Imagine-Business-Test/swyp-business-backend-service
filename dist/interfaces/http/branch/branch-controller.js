@@ -16,6 +16,7 @@ exports.BranchController = {
             .post("/resetpassword", this.resetPassword)
             .post("/add", middleware_1.auth, middleware_1.admin, this.addBranch)
             .get("/stats", middleware_1.auth, this.getStats)
+            .put("/updatebranch", middleware_1.auth, this.updateBranch)
             .post("/login", this.loginUser);
         return router;
     },
@@ -68,6 +69,37 @@ exports.BranchController = {
             origin: req.body.origin,
             user: req.user,
             businessId: req.body.business
+        };
+        handler.execute(command);
+    },
+    updateBranch(req, res, next) {
+        req.validateBody(validation_1.BranchRules.updateBranch);
+        const handler = req.container.resolve("updateBranchDetails");
+        const serializer = req.container.resolve("businessSerializer");
+        const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+        handler
+            .on(SUCCESS, resp => {
+            res.status(http_status_1.default.OK).json(serializer.serialize(resp));
+        })
+            .on(DATABASE_ERROR, error => {
+            res.status(http_status_1.default.BAD_REQUEST).json({
+                details: error.details,
+                type: "DatabaseError"
+            });
+        })
+            .on(ERROR, next);
+        const command = {
+            branch: {
+                name: req.body.name,
+                area: req.body.area,
+                address: req.body.address,
+                state: req.body.state,
+                stateId: req.body.stateId
+            },
+            origin: req.body.origin,
+            user: req.user,
+            businessId: req.body.business,
+            branchId: req.body.id
         };
         handler.execute(command);
     },

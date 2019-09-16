@@ -3,7 +3,7 @@ import { IFormRepository } from "../../contracts/repositories";
 import { ILoggedInUser } from "../../contracts/interfaces";
 import { MongoFormMapper } from "./mongo-form-mapper";
 import { Form } from "../../domain";
-import { createWriteStream } from "fs";
+// import { createWriteStream } from "fs";
 
 export class MongoFormRepository implements IFormRepository {
   private model: FormModel;
@@ -114,8 +114,8 @@ export class MongoFormRepository implements IFormRepository {
     } catch (ex) {
       ex.details = ex.message;
       ex.messa = "DatabaseError";
-      let logger = createWriteStream("aaa.txt");
-      logger.write(JSON.stringify(ex) + "udor");
+      // let logger = createWriteStream("aaa.txt");
+      // logger.write(JSON.stringify(ex) + "udor");
 
       throw ex;
     }

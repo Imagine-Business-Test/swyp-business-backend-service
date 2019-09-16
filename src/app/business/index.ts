@@ -7,6 +7,7 @@ export * from "./login-business-user";
 export * from "./complete-user-signup";
 export * from "./complete-user-signup-submit";
 export * from "./update-user-details";
+export * from "./update-branch-details";
 export * from "./add-business-user";
 export * from "./add-business-branch";
 export * from "./create-business";

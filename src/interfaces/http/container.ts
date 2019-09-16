@@ -48,6 +48,7 @@ import {
   CompleteUserSignup,
   CompleteUserSignupSubmit,
   UpdateUserDetails,
+  UpdateBranchDetails,
   AddBusinessUser,
   AddBusinessBranch,
   CreateBusiness,
@@ -138,6 +139,7 @@ container.register({
   createForm: asClass(CreateForm),
 
   updateBusinessDetails: asClass(UpdateBusinessDetails),
+  updateBranchDetails: asClass(UpdateBranchDetails),
   requestPasswordReset: asClass(RequestPasswordReset),
   deleteBusinessBranch: asClass(DeleteBusinessBranch),
   deleteBusinessUser: asClass(DeleteBusinessUser),

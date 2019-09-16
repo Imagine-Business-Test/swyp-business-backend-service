@@ -3,6 +3,7 @@ import { Router, Response } from "express";
 import { UserRules, BranchRules } from "../validation";
 import Status from "http-status";
 import {
+  UpdateBranchDetails,
   GetBusinessUserActivityStats,
   RequestPasswordReset,
   DeleteBusinessBranch,
@@ -12,7 +13,6 @@ import {
 } from "../../../app/business";
 // import { AddBusinessBranch } from "src/app/business/add-business-branch";
 // import { DeleteBusinessBranch } from "src/app/business/delete-business-branch";
-
 export const BranchController = {
   get router() {
     const router = Router();
@@ -22,6 +22,7 @@ export const BranchController = {
       .post("/resetpassword", this.resetPassword)
       .post("/add", auth, admin, this.addBranch)
       .get("/stats", auth, this.getStats)
+      .put("/updatebranch", auth, this.updateBranch)
       .post("/login", this.loginUser);
     return router;
   },
@@ -90,6 +91,43 @@ export const BranchController = {
       origin: req.body.origin,
       user: req.user,
       businessId: req.body.business
+    };
+    handler.execute(command);
+  },
+
+  updateBranch(req: any, res: Response, next: any) {
+    // res.send(req.body);
+    // return;
+
+    req.validateBody(BranchRules.updateBranch);
+    const handler = req.container.resolve(
+      "updateBranchDetails"
+    ) as UpdateBranchDetails;
+    const serializer = req.container.resolve("businessSerializer");
+    const { SUCCESS, ERROR, DATABASE_ERROR } = handler.outputs;
+    handler
+      .on(SUCCESS, resp => {
+        res.status(Status.OK).json(serializer.serialize(resp));
+      })
+      .on(DATABASE_ERROR, error => {
+        res.status(Status.BAD_REQUEST).json({
+          details: error.details,
+          type: "DatabaseError"
+        });
+      })
+      .on(ERROR, next);
+    const command = {
+      branch: {
+        name: req.body.name,
+        area: req.body.area,
+        address: req.body.address,
+        state: req.body.state,
+        stateId: req.body.stateId
+      },
+      origin: req.body.origin,
+      user: req.user,
+      businessId: req.body.business,
+      branchId: req.body.id
     };
     handler.execute(command);
   },

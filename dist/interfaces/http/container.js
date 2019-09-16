@@ -70,6 +70,7 @@ container.register({
     deleteForm: awilix_1.asClass(form_3.DeleteForm),
     createForm: awilix_1.asClass(form_3.CreateForm),
     updateBusinessDetails: awilix_1.asClass(business_3.UpdateBusinessDetails),
+    updateBranchDetails: awilix_1.asClass(business_3.UpdateBranchDetails),
     requestPasswordReset: awilix_1.asClass(business_3.RequestPasswordReset),
     deleteBusinessBranch: awilix_1.asClass(business_3.DeleteBusinessBranch),
     deleteBusinessUser: awilix_1.asClass(business_3.DeleteBusinessUser),

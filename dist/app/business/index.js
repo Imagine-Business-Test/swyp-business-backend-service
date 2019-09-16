@@ -12,6 +12,7 @@ __export(require("./login-business-user"));
 __export(require("./complete-user-signup"));
 __export(require("./complete-user-signup-submit"));
 __export(require("./update-user-details"));
+__export(require("./update-branch-details"));
 __export(require("./add-business-user"));
 __export(require("./add-business-branch"));
 __export(require("./create-business"));

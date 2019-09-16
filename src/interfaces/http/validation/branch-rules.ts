@@ -28,6 +28,23 @@ export const BranchRules = {
     })
     .required(),
 
+  updateBranch: joi
+    .object()
+    .keys({
+      id: joi.string(),
+      name: joi.string().required(),
+      area: joi.string().required(),
+      state: joi.string().required(),
+      origin: joi.string().required(),
+      business: joi.string().required(),
+      stateId: joi.number().required(),
+      address: joi.string().required(),
+      updatedAt: joi.date(),
+      created: joi.date(),
+      deleted: joi.boolean()
+    })
+    .required(),
+
   deleteBranch: joi
     .object()
     .keys({

@@ -104,6 +104,18 @@ class MongoBusinessRepository {
             });
         });
     }
+    updateBranch(branchId, otherInfo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("other info from update branch", otherInfo);
+            yield this.accountRelatedUpdate({
+                $set: {
+                    "branches.$[element]": otherInfo
+                }
+            }, {
+                arrayFilters: [{ "element._id": mongoose_1.default.Types.ObjectId(branchId) }]
+            });
+        });
+    }
     updatePassword(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.accountRelatedUpdate({
@@ -206,7 +218,10 @@ class MongoBusinessRepository {
     accountRelatedUpdate(update, arrayCondition) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.model.updateOne({}, update, arrayCondition);
+                const result = yield this.model.update({}, update, arrayCondition);
+                console.log("account related updates nModified status", result.nModified);
+                console.log("update", result);
+                console.log("array condition", arrayCondition);
                 if (result.nModified !== 1) {
                     throw new Error("Update operation failed");
                 }

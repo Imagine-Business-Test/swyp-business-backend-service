@@ -115,6 +115,20 @@ export class MongoBusinessRepository implements IBusinessRepository {
     );
   }
 
+  public async updateBranch(branchId: string, otherInfo: object) {
+    console.log("other info from update branch", otherInfo);
+    await this.accountRelatedUpdate(
+      {
+        $set: {
+          "branches.$[element]": otherInfo
+        }
+      },
+      {
+        arrayFilters: [{ "element._id": mongoose.Types.ObjectId(branchId) }]
+      }
+    );
+  }
+
   public async updatePassword(email: string, password: string) {
     await this.accountRelatedUpdate(
       {
@@ -245,7 +259,10 @@ export class MongoBusinessRepository implements IBusinessRepository {
     arrayCondition: { [key: string]: any }
   ) {
     try {
-      const result = await this.model.updateOne({}, update, arrayCondition);
+      const result = await this.model.update({}, update, arrayCondition);
+      console.log("account related updates nModified status", result.nModified);
+      console.log("update", result);
+      console.log("array condition", arrayCondition);
       if (result.nModified !== 1) {
         throw new Error("Update operation failed");
       }

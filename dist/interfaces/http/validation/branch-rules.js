@@ -30,6 +30,22 @@ exports.BranchRules = {
         deleted: joi_1.default.boolean()
     })
         .required(),
+    updateBranch: joi_1.default
+        .object()
+        .keys({
+        id: joi_1.default.string(),
+        name: joi_1.default.string().required(),
+        area: joi_1.default.string().required(),
+        state: joi_1.default.string().required(),
+        origin: joi_1.default.string().required(),
+        business: joi_1.default.string().required(),
+        stateId: joi_1.default.number().required(),
+        address: joi_1.default.string().required(),
+        updatedAt: joi_1.default.date(),
+        created: joi_1.default.date(),
+        deleted: joi_1.default.boolean()
+    })
+        .required(),
     deleteBranch: joi_1.default
         .object()
         .keys({
